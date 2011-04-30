@@ -44,6 +44,8 @@ The following types are supplied built-in to CPPS:
     - All IO classes inherit from this class.
   * file
     - Enhanced stream class used for file reading/writing.
+  * array
+    - Numerically keyed array.
 
 You can cast from one type to another using either C or C++ style casing (i.e.
 (<type>)<variable> or <type>(<variable)).
