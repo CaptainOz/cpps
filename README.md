@@ -27,7 +27,6 @@ inherit from the given type, or the type has a conversion constructor for can be
 assigned to it. In the case where this is not followed, a fatal error is raised.
 
 The following types are supplied built-in to CPPS:
-
   * object
     - Base type inherited by all other classes.
   * string
@@ -47,8 +46,11 @@ The following types are supplied built-in to CPPS:
   * array
     - Numerically keyed array.
 
-You can cast from one type to another using either C or C++ style casing (i.e.
-(<type>)<variable> or <type>(<variable)).
+You can cast from one type to another using either C or C++ style casting:
+
+    (<type>)<variable> 
+        - OR -
+    <type>(<variable))
 
 
 Functions in CPPS
@@ -59,7 +61,7 @@ number of and type of parameters is used. In this fashion it is possible to
 overload functions similar to how C++ overloads. Function delcarations are in
 the following format:
 
-    [<type>] function <name>( [[<type>][&] <name> [, [<type>][&] <name> [, ...]]] )
+    [<type>] function <name>( [[<type>][&] $<name> [, [<type>][&] $<name> [, ...]]] )
     {
         [<code>]
     }
@@ -70,4 +72,7 @@ reference instead of by value to the function. CPPS will not do any implicit
 referencing. It will pass variables by reference as a performance increase,
 but unless the variable is explicitly passed by reference its contents will be
 copied to a new variable upon first modification.
+
+
+
 
