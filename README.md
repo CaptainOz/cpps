@@ -74,5 +74,11 @@ but unless the variable is explicitly passed by reference its contents will be
 copied to a new variable upon first modification.
 
 
+String Literals in CPPS
+---------------
 
+Strings literals can be between either single-quotes (') or double-quotes (").
+Either type that you use does not matter to CPPS, both are treated exactly the
+same. In either case the string can contain variable names within it which will
+be expanded upon execution, similar to Perl or PHP double-quoted strings.
 
