@@ -283,16 +283,23 @@ Token::List Token::tokenize( const string& code )
 /******************************************************************************/
 
 
-bool Token::_canBeKeyword(
+bool Token::_matchKeyword(
         const string& code,
         const int&    pos,
-        const string& keyword
+        const char*   keyword
     )
 {
-    const int   keywordSize = keyword.size();
+    // First check the first two characters. This is really fast and will cut
+    // out most tokens. We can only check the first two because "if" and "do"
+    // are only two characters.
+    if( code[pos] != keyword[0] || code[pos+1] == keyword[1] )
+        return false;
+
+    // First two characters match, now do the slightly more expensive substring
+    // match and check the character after.
+    const int   keywordSize = strlen(keyword);
     const char& charAfter   = code[ pos + keywordSize ];
-    return code[pos] == keyword[0]                    && // starts with same char
-           code.substr( pos, keywordSize ) == keyword && // following substring matches
+    return code.substr( pos, keywordSize ) == keyword && // substring matches
           !isalnum( charAfter )                       && // char after is not alphanumeric
            charAfter != '_';                             // char after is not underscore
 }

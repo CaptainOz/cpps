@@ -148,10 +148,10 @@ private:
     const unsigned int mLineNumber;
     static const char* _keywords[];
 
-    static bool _canBeKeyword(
+    static bool _matchKeyword(
             const std::string& code,
             const int&         pos,
-            const std::string& keyword
+            const char*        keyword
         );
 
 }; // end class Token
