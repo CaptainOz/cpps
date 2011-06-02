@@ -56,6 +56,7 @@ const char* Token::TypeNames[] = {
         "Assign",          // =
         "AssignPlus",      // \+=
         "AssignMinus",     // -=
+        "AssignConcat",    // .=
         "AssignMultiply",  // \*=
         "AssignDivide",    // \/=
         "AssignModulo",    // %=
@@ -174,7 +175,7 @@ Token::List Token::tokenize( const string& code )
     for( int pos = 0; pos < codeLength; ++pos )
     {
         const char& thisC = code[pos];
-        const char& nextC = code[pos+1];
+        const char& nextC = pos+1 < codeLength ? code[pos+1] : 0;
 
         // Skip whitespace.
         if( isspace( thisC ) )
@@ -202,6 +203,10 @@ Token::List Token::tokenize( const string& code )
         // Or possibly a variable identifier? (Identifier)
         else if( thisC == '$' )
             tokenList.push_back( Token::_extractIdentifier( code, pos ) );
+
+        // Or possibly a typename? (TypeName)
+        else if( isalpha( thisC ) || thisC == '_' )
+            tokenList.push_back( Token::_extractTypeName( code, pos ) );
 
         // Or a scope operator? (Scope)
         else if( thisC == ':' && nextC == ':' )
@@ -266,6 +271,34 @@ Token::List Token::tokenize( const string& code )
         // Or is this a right-shift-assignment? (AssignRightShift)
         else if( thisC == '>' && nextC == '>' && code[pos+2] == '=' )
             tokenList.push_back( Token::_extractAssignRightShift( code, pos ) );
+
+        // Or is this a concatentation-assignment? (AssignConcat)
+        else if( thisC == '.' && nextC == '=' )
+            tokenList.push_back( Token::_extractAssignConcat( code, pos ) );
+
+        // Or is this an equality check? (Equality)
+        else if( thisC == '=' && nextC == '=' )
+            tokenList.push_back( Token::_extractEquality( code, pos ) );
+
+        // Or is this a not-equals check? (NotEquality)
+        else if( thisC == '!' && nextC == '=' )
+            tokenList.push_back( Token::_extractNotEquality( code, pos ) );
+
+        // Or is this a greater-than-or-equal-to check? (GreaterEqual)
+        else if( thisC == '>' && nextC == '=' )
+            tokenList.push_back( Token::_extractGreaterEqual( code, pos ) );
+
+        // Or is this a less-than-or-equal-to check? (LessEqual)
+        else if( thisC == '<' && nextC == '=' )
+            tokenList.push_back( Token::_extractLessEqual( code, pos ) );
+
+        // Or is this a right shift? (RightShift)
+        else if( thisC == '>' && nextC == '>' )
+            tokenList.push_back( Token::_extractRightShift( code, pos ) );
+
+        // Or is this a left shift? (LeftShift)
+        else if( thisC == '<' && nextC == '<' )
+            tokenList.push_back( Token::_extractLeftShift( code, pos ) );
 
         // Or possibly a string concatenation operator? (Concat)
         else if( thisC == '.' && !isdigit( nextC ) )

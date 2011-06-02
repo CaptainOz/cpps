@@ -26,7 +26,7 @@ public:
     //  Token type          Regex to match          detection   extraction
 
         // *** Begin Miscelaneous Token Types *** //
-        TypeName,        // [a-zA-Z_]\w*
+        TypeName,        // [a-zA-Z_]\w*            DONE
         Identifier,      // \$[a-zA-Z_]\w*          DONE
         StringLiteral,   // (['"]).*?(?<!\\)\1      DONE
         NumericLiteral,  // (?:\d+|\d*\.\d+)d?      DONE
@@ -62,15 +62,16 @@ public:
         Increment,       // \+\+                    DONE
         Decrement,       // --                      DONE
         LogicalNot,      // !
-        Equality,        // ==
-        NotEquality,     // !=
+        Equality,        // ==                      DONE
+        NotEquality,     // !=                      DONE
         GreaterThan,     // >
         LessThan,        // <
-        GreaterEqual,    // >=
-        LessEqual,       // <=
+        GreaterEqual,    // >=                      DONE
+        LessEqual,       // <=                      DONE
         Assign,          // =
         AssignPlus,      // \+=                     DONE
         AssignMinus,     // -=                      DONE
+        AssignConcat,    // .=                      DONE
         AssignMultiply,  // \*=                     DONE
         AssignDivide,    // \/=                     DONE
         AssignModulo,    // %=                      DONE
@@ -83,8 +84,8 @@ public:
         BitwiseAnd,      // &
         BitwiseXOr,      // \^
         BitwiseOr,       // \|
-        RighShift,       // >>
-        LeftShift,       // <<
+        RighShift,       // >>                      DONE
+        LeftShift,       // <<                      DONE
         // *** End Overloadable Operators *** //
 
         // *** Begin Keywords *** //
