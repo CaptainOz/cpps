@@ -27,9 +27,9 @@ const char* Token::TypeNames[] = {
         "Comma",           // ,
         "LogicalOr",       // \|\|
         "LogicalAnd",      // &&
+        "TernaryIf",       // \?
         "OpenBrace",       // \{
         "CloseBrace",      // \}
-        "TernaryIf",       // \?
         // *** End Non-Overloadable Operators *** //
 
         // *** Begin Overloadable Operators *** //
@@ -37,20 +37,8 @@ const char* Token::TypeNames[] = {
         "CloseParen",      // \)
         "OpenBracket",     // \[
         "CloseBracket",    // \]
-        "MemberAccess",    // ->
-        "Plus",            // \+
-        "Minus",           // -
-        "Multiply",        // \*
-        "Divide",          // \/
-        "Modulo",          // %
-        "Concat",          // \.
-        "Increment",       // \+\+
-        "Decrement",       // --
-        "LogicalNot",      // !
         "Equality",        // ==
         "NotEquality",     // !=
-        "GreaterThan",     // >
-        "LessThan",        // <
         "GreaterEqual",    // >=
         "LessEqual",       // <=
         "Assign",          // =
@@ -65,12 +53,24 @@ const char* Token::TypeNames[] = {
         "AssignBitOr",     // |=
         "AssignLeftShift", // <<=
         "AssignRightShift",// >>=
+        "RighShift",       // >>
+        "LeftShift",       // <<
+        "Increment",       // \+\+
+        "Decrement",       // --
+        "MemberAccess",    // ->
+        "GreaterThan",     // >
+        "LessThan",        // <
+        "Plus",            // \+
+        "Minus",           // -
+        "Multiply",        // \*
+        "Divide",          // \/
+        "Modulo",          // %
+        "Concat",          // \.
+        "LogicalNot",      // !
         "BitwiseNot",      // ~
         "BitwiseAnd",      // &
         "BitwiseXOr",      // \^
         "BitwiseOr",       // \|
-        "RighShift",       // >>
-        "LeftShift",       // <<
         // *** End Overloadable Operators *** //
 
         // *** Begin Keywords *** //
@@ -164,6 +164,10 @@ const char* Token::_keywords[] = {
         "var",
 
         0 // End array
+    };
+
+const char* Token::_operators[] = {
+        
     };
 
 Token::List Token::tokenize( const string& code )

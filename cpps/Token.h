@@ -32,7 +32,7 @@ public:
         NumericLiteral,  // (?:\d+|\d*\.\d+)d?      DONE
         CommentLine,     // \/\/[^\n]*              DONE
         CommentBlock,    // \/\*.*?\*\/             DONE
-        RegexMatch,      // \/.?(?<!\\)\/
+        RegexMatch,      // \/.*(?<!\\)\/
         // *** End Miscelaneous Token Types *** //
 
         // *** Begin Non-Overloadable Operators *** //
@@ -42,9 +42,9 @@ public:
         Comma,           // ,
         LogicalOr,       // \|\|                    DONE
         LogicalAnd,      // &&                      DONE
+        TernaryIf,       // \?
         OpenBrace,       // \{
         CloseBrace,      // \}
-        TernaryIf,       // \?
         // *** End Non-Overloadable Operators *** //
 
         // *** Begin Overloadable Operators *** //
@@ -52,20 +52,8 @@ public:
         CloseParen,      // \)                      DONE
         OpenBracket,     // \[
         CloseBracket,    // \]
-        MemberAccess,    // ->                      DONE
-        Plus,            // \+
-        Minus,           // -
-        Multiply,        // \*
-        Divide,          // \/
-        Modulo,          // %
-        Concat,          // \.                      DONE
-        Increment,       // \+\+                    DONE
-        Decrement,       // --                      DONE
-        LogicalNot,      // !
         Equality,        // ==                      DONE
         NotEquality,     // !=                      DONE
-        GreaterThan,     // >
-        LessThan,        // <
         GreaterEqual,    // >=                      DONE
         LessEqual,       // <=                      DONE
         Assign,          // =
@@ -80,12 +68,24 @@ public:
         AssignBitOr,     // |=                      DONE
         AssignLeftShift, // <<=                     DONE
         AssignRightShift,// >>=                     DONE
+        RighShift,       // >>                      DONE
+        LeftShift,       // <<                      DONE
+        Increment,       // \+\+                    DONE
+        Decrement,       // --                      DONE
+        MemberAccess,    // ->                      DONE
+        GreaterThan,     // >
+        LessThan,        // <
+        Plus,            // \+
+        Minus,           // -
+        Multiply,        // \*
+        Divide,          // \/
+        Modulo,          // %
+        Concat,          // \.                      DONE
+        LogicalNot,      // !
         BitwiseNot,      // ~
         BitwiseAnd,      // &
         BitwiseXOr,      // \^
         BitwiseOr,       // \|
-        RighShift,       // >>                      DONE
-        LeftShift,       // <<                      DONE
         // *** End Overloadable Operators *** //
 
         // *** Begin Keywords *** //
@@ -148,6 +148,7 @@ private:
     Token::Type mType;
     const unsigned int mLineNumber;
     static const char* _keywords[];
+    static const char* _operators[];
 
     static bool _matchKeyword(
             const std::string& code,
