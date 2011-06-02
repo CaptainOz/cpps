@@ -12,6 +12,7 @@
 #include <string>
 
 #include "Object.h"
+#include "Scope.h"
 
 namespace cpps
 {
@@ -22,8 +23,12 @@ private:
 
 public:
     Interpreter( void );
-    
-    Object exec( const std::string& code, Scope& scope, unsigned int lineNumber = 0 );
+
+    Object exec(
+            const std::string& code,
+            Scope& scope,
+            unsigned int lineNumber = 0
+        );
 
 }; // end class Interpreter#include "Object.h"
 
