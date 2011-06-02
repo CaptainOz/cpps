@@ -121,53 +121,26 @@ const char* Token::TypeNames[] = {
     };
 
 const char* Token::_keywords[] = {
-        "break",
-        "case",
-        "catch",
-        "class",
-        "const",
-        "continue",
-        "default",
-        "delete",
-        "do",
-        "else",
-        "enum",
-        "false",
-        "for",
-        "foreach",
-        "friend",
-        "function",
-        "if",
-        "include",
-        "instanceof",
-        "namespace",
-        "new",
-        "null",
-        "operator",
-        "private",
-        "protected",
-        "public",
-        "return",
-        "sizeof",
-        "static",
-        "struct",
-        "switch",
-        "this",
-        "throw",
-        "true",
-        "try",
-        "typedef",
-        "typename",
-        "union",
-        "using",
-        "while",
-        "var",
+        "break",      "case",      "catch",  "class",    "const",    "continue",
+        "default",    "delete",    "do",     "else",     "enum",     "false",
+        "for",        "foreach",   "friend", "function", "if",       "include",
+        "instanceof", "namespace", "new",    "null",     "operator", "private",
+        "protected",  "public",    "return", "sizeof",   "static",   "struct",
+        "switch",     "this",      "throw",  "true",     "try",      "typedef",
+        "typename",   "union",     "using",  "while",    "var",
 
         0 // End array
     };
 
 const char* Token::_operators[] = {
-        
+        "::",  ";",   ":",  ",",  "||", "&&", "?",  "{",  "}",
+        "(",   ")",   "[",  "]",  "==", "!=", ">=", "<=", "=",
+        "+=",  "-=",  ".=", "*=", "/=", "%=", "&=", "^=", "|=",
+        "<<=", ">>=", ">>", "<<", "++", "--", "->", ">",  "<",
+        "+",   "-",   "*",  "/",  "%",  ".",  "!",  "~",  "&",
+        "^",   "|",
+
+        0 // End array
     };
 
 Token::List Token::tokenize( const string& code )
