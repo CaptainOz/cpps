@@ -88,47 +88,47 @@ public:
         // *** End Overloadable Operators *** //
 
         // *** Begin Keywords *** //
-        Break,           // break
-        Case,            // case
-        Catch,           // catch
-        Class,           // class
-        Const,           // const
-        Continue,        // continue
-        Default,         // default
+        Break,           // break                   DONE
+        Case,            // case                    DONE
+        Catch,           // catch                   DONE
+        Class,           // class                   DONE
+        Const,           // const                   DONE
+        Continue,        // continue                DONE
+        Default,         // default                 DONE
         Delete,          // delete                  DONE
-        Do,              // do
-        Else,            // else
-        Enum,            // enum
-        False,           // false
-        For,             // for
-        Foreach,         // foreach
-        Friend,          // friend
-        Function,        // function
-        If,              // if
-        Include,         // include
+        Do,              // do                      DONE
+        Else,            // else                    DONE
+        Enum,            // enum                    DONE
+        False,           // false                   DONE
+        For,             // for                     DONE
+        Foreach,         // foreach                 DONE
+        Friend,          // friend                  DONE
+        Function,        // function                DONE
+        If,              // if                      DONE
+        Include,         // include                 DONE
         InstanceOf,      // instanceof              DONE
-        Namespace,       // namespace
+        Namespace,       // namespace               DONE
         New,             // new                     DONE
-        Null,            // null
-        Operator,        // operator
-        Private,         // private
-        Protected,       // protected
-        Public,          // public
-        Return,          // return
+        Null,            // null                    DONE
+        Operator,        // operator                DONE
+        Private,         // private                 DONE
+        Protected,       // protected               DONE
+        Public,          // public                  DONE
+        Return,          // return                  DONE
         SizeOf,          // sizeof                  DONE
-        Static,          // static
-        Struct,          // struct
-        Switch,          // switch
-        This,            // this
-        Throw,           // throw
-        True,            // true
-        Try,             // try
-        TypeDef,         // typedef
+        Static,          // static                  DONE
+        Struct,          // struct                  DONE
+        Switch,          // switch                  DONE
+        This,            // this                    DONE
+        Throw,           // throw                   DONE
+        True,            // true                    DONE
+        Try,             // try                     DONE
+        TypeDef,         // typedef                 DONE
         TypeNameOperator,// typename                DONE
-        Union,           // union
-        Using,           // using
-        While,           // while
-        Var,             // var
+        Union,           // union                   DONE
+        Using,           // using                   DONE
+        While,           // while                   DONE
+        Var,             // var                     DONE
         // *** End Keywords *** //
 
         TokenTypeCount
@@ -146,6 +146,7 @@ private:
     const std::string mTokenStr;
     Token::Type mType;
     const unsigned int mLineNumber;
+    static const char* _keywords[];
 
     static bool _canBeKeyword(
             const std::string& code,

@@ -119,6 +119,52 @@ const char* Token::TypeNames[] = {
         0 // End array
     };
 
+const char* Token::_keywords[] = {
+        "break",
+        "case",
+        "catch",
+        "class",
+        "const",
+        "continue",
+        "default",
+        "delete",
+        "do",
+        "else",
+        "enum",
+        "false",
+        "for",
+        "foreach",
+        "friend",
+        "function",
+        "if",
+        "include",
+        "instanceof",
+        "namespace",
+        "new",
+        "null",
+        "operator",
+        "private",
+        "protected",
+        "public",
+        "return",
+        "sizeof",
+        "static",
+        "struct",
+        "switch",
+        "this",
+        "throw",
+        "true",
+        "try",
+        "typedef",
+        "typename",
+        "union",
+        "using",
+        "while",
+        "var",
+
+        0 // End array
+    };
+
 Token::List Token::tokenize( const string& code )
 {
     unsigned int lineCounter = 0;
@@ -137,6 +183,17 @@ Token::List Token::tokenize( const string& code )
                 ++lineCounter;
             continue;
         }
+
+        // Next lets check for a keyword
+        bool isKeyword = false;
+        for( const char** mvr = Token::_keywords; !isKeyword && *mvr; ++mvr )
+            if( Token::_matchKeyword( code, pos, *mvr ) )
+            {
+                isKeyword = true;
+                tokenList.push_back( Token::_extractKeyword( code, pos, *mvr ) );
+            }
+        if( isKeyword )
+            continue;
 
         // Are we starting a string literal? (StringLiteral)
         if( thisC == '\'' || thisC == '"' )
@@ -169,26 +226,6 @@ Token::List Token::tokenize( const string& code )
         // Or a member accessor operator? (MemberAccess)
         else if( thisC == '-' && nextC == '>' )
             tokenList.push_back( Token::_extactMemberAccess( code, pos ) );
-
-        // Or are we getting a typename? (TypeNameOperator)
-        else if( Token::_canBeKeyword( code, pos, "typename" ) )
-            tokenList.push_back( Token::_extractTypeNameOperator( code, pos ) );
-
-        // Or possibly getting the sizeof a variable? (SizeOf)
-        else if( Token::_canBeKeyword( code, pos, "sizeof" ) )
-            tokenList.push_back( Token::_extractSizeOf( code, pos ) );
-
-        // Or checking the class type of a variable? (InstanceOf)
-        else if( Token::_canBeKeyword( code, pos, "instanceof" ) )
-            tokenList.push_back( Token::_extractInstanceOf( code, pos ) );
-
-        // Or creating a new object? (New)
-        else if( Token::_canBeKeyword( code, pos, "new" ) )
-            tokenList.push_back( Token::_extractNew( code, pos ) );
-
-        // Or deleting an object? (Delete)
-        else if( Token::_canBeKeyword( code, pos, "delete" ) )
-            tokenList.push_back( Token::_extractDelete( code, pos ) );
 
         // Or is this a plus-assignment? (AssignPlus)
         else if( thisC == '+' && nextC == '=' )
