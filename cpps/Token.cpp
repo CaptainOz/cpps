@@ -212,6 +212,14 @@ Token::List Token::tokenize( const string& code )
         else if( thisC == ':' && nextC == ':' )
             tokenList.push_back( Token::_extractScope( code, pos ) );
 
+        // Or a logical or? (LogicalOr)
+        else if( thisC == '|' && nextC == '|' )
+            tokenList.push_back( Token::_extractLogicalOr( code, pos ) );
+
+        // Or a logical and? (LogicalAnd)
+        else if( thisC == '&' && nextC == '&' )
+            tokenList.push_back( Token::_extractLogicalAnd( code, pos ) );
+
         // Or a pre/post increment? (Incrememnt)
         else if( thisC == '+' && nextC == '+' )
             tokenList.push_back( Token::_extractIncrement( code, pos ) );

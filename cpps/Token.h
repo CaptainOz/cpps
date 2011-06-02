@@ -40,8 +40,8 @@ public:
         Semicolon,       // ;
         Colon,           // :
         Comma,           // ,
-        LogicalOr,       // \|\|
-        LogicalAnd,      // &&
+        LogicalOr,       // \|\|                    DONE
+        LogicalAnd,      // &&                      DONE
         OpenBrace,       // \{
         CloseBrace,      // \}
         TernaryIf,       // \?
