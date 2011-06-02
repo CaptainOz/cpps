@@ -30,8 +30,8 @@ public:
         Identifier,      // \$[a-zA-Z_]\w*          DONE
         StringLiteral,   // (['"]).*?(?<!\\)\1      DONE
         NumericLiteral,  // (?:\d+|\d*\.\d+)d?      DONE
-        CommentLine,     // \/\/[^\n]*
-        CommentBlock,    // \/\*.*?\*\/
+        CommentLine,     // \/\/[^\n]*              DONE
+        CommentBlock,    // \/\*.*?\*\/             DONE
         RegexMatch,      // \/.?(?<!\\)\/
         // *** End Miscelaneous Token Types *** //
 

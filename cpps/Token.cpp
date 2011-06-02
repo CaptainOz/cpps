@@ -200,6 +200,14 @@ Token::List Token::tokenize( const string& code )
         if( thisC == '\'' || thisC == '"' )
             tokenList.push_back( Token::_extractString( code, pos ) );
 
+        // Or is this a single-line comment? (CommentLine)
+        else if( thisC == '/' && nextC == '/' )
+            Token::_extractCommentLine( code, pos );
+
+        // Or is this a comment block? (CommentBlock)
+        else if( thisC == '/' && nextC == '*' )
+            Token::_extractCommentBlock( code, pos, lineCounter );
+
         // Or possibly a variable identifier? (Identifier)
         else if( thisC == '$' )
             tokenList.push_back( Token::_extractIdentifier( code, pos ) );
