@@ -17,17 +17,18 @@ namespace cpps
 class Object
 {
 private:
-    TypeID mTypeID;
+    int mTypeID;
 
 protected:
-    Object( const TypeID& typeID );
+    Object( const int& typeID );
 
 public:
     std::string getType( void );
+    std::string toString( void );
 
 }; // end class Object
 
 } // end namespace cpps
 
-#endif __CPPS_OBJECT_H_INCLUDED__
+#endif // __CPPS_OBJECT_H_INCLUDED__
 
