@@ -10,32 +10,43 @@ namespace cpps
 {
 
 const char* Token::TypeNames[] = {
+        // *** Begin Miscelaneous Token Types *** //
         "TypeName",        // [a-zA-Z_]\w*
         "Identifier",      // \$[a-zA-Z_]\w*
         "StringLiteral",   // (['"]).*?(?<!\\)\1
-        "NumericLiteral",  // (?:\d+|\d*\.\d+)
+        "NumericLiteral",  // (?:\d+|\d*\.\d+)d?
+        "CommentLine",     // \/\/[^\n]*
+        "CommentBlock",    // \/\*.*?\*\/
+        "RegexMatch",      // \/.?(?<!\\)\/
+        // *** End Miscelaneous Token Types *** //
+
+        // *** Begin Non-Overloadable Operators *** //
         "Scope",           // ::
-        "MemberAccess",    // ->
         "Semicolon",       // ;
         "Colon",           // :
         "Comma",           // ,
+        "LogicalOr",       // \|\|
+        "LogicalAnd",      // &&
+        "OpenBrace",       // \{
+        "CloseBrace",      // \}
+        "TernaryIf",       // \?
+        // *** End Non-Overloadable Operators *** //
+
+        // *** Begin Overloadable Operators *** //
+        "OpenParen",       // \(
+        "CloseParen",      // \)
+        "OpenBracket",     // \[
+        "CloseBracket",    // \]
+        "MemberAccess",    // ->
         "Plus",            // \+
         "Minus",           // -
         "Multiply",        // \*
-        "Divide",          // /
+        "Divide",          // \/
         "Modulo",          // %
         "Concat",          // \.
         "Increment",       // \+\+
         "Decrement",       // --
-        "OpenParen",       // \(
-        "CloseParen",      // \)
-        "OpenBrace",       // \{
-        "CloseBrace",      // \}
-        "OpenBracket",     // \[
-        "CloseBracket",    // \]
         "LogicalNot",      // !
-        "LogicalOr",       // \|\|
-        "LogicalAnd",      // &&
         "Equality",        // ==
         "NotEquality",     // !=
         "GreaterThan",     // >
@@ -46,7 +57,7 @@ const char* Token::TypeNames[] = {
         "AssignPlus",      // \+=
         "AssignMinus",     // -=
         "AssignMultiply",  // \*=
-        "AssignDivide",    // /=
+        "AssignDivide",    // \/=
         "AssignModulo",    // %=
         "AssignBitAnd",    // &=
         "AssignBitXOr",    // \^=
@@ -57,17 +68,53 @@ const char* Token::TypeNames[] = {
         "BitwiseAnd",      // &
         "BitwiseXOr",      // \^
         "BitwiseOr",       // \|
-        "TypeNameOperator",// typename
-        "SizeOf",          // sizeof
-        "InstanceOf",      // instanceof
-        "New",             // new
-        "Delete",          // delete
         "RighShift",       // >>
         "LeftShift",       // <<
-        "TernaryIf",       // \?
-        "CommentLine",     // \/\/[^\n]*
-        "CommentBlock",    // \/\*.*?\*\/
-        "RegexMatch",      // \/.?(?<!\\)\/
+        // *** End Overloadable Operators *** //
+
+        // *** Begin Keywords *** //
+        "Break",           // break
+        "Case",            // case
+        "Catch",           // catch
+        "Class",           // class
+        "Const",           // const
+        "Continue",        // continue
+        "Default",         // default
+        "Delete",          // delete
+        "Do",              // do
+        "Else",            // else
+        "Enum",            // enum
+        "False",           // false
+        "For",             // for
+        "Foreach",         // foreach
+        "Friend",          // friend
+        "Function",        // function
+        "If",              // if
+        "Include",         // include
+        "InstanceOf",      // instanceof
+        "Namespace",       // namespace
+        "New",             // new
+        "Null",            // null
+        "Operator",        // operator
+        "Private",         // private
+        "Protected",       // protected
+        "Public",          // public
+        "Return",          // return
+        "SizeOf",          // sizeof
+        "Static",          // static
+        "Struct",          // struct
+        "Switch",          // switch
+        "This",            // this
+        "Throw",           // throw
+        "True",            // true
+        "Try",             // try
+        "TypeDef",         // typedef
+        "TypeNameOperator",// typename
+        "Union",           // union
+        "Using",           // using
+        "While",           // while
+        "Var",             // var
+        // *** End Keywords *** //
 
         0 // End array
     };

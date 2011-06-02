@@ -24,15 +24,35 @@ public:
     enum Type
     {
     //  Token type          Regex to match          detection   extraction
-        TypeName,        // \b[a-zA-Z_]\w*\b
-        Identifier,      // \b\$[a-zA-Z_]\w*\b      DONE
+
+        // *** Begin Miscelaneous Token Types *** //
+        TypeName,        // [a-zA-Z_]\w*
+        Identifier,      // \$[a-zA-Z_]\w*          DONE
         StringLiteral,   // (['"]).*?(?<!\\)\1      DONE
-        NumericLiteral,  // \b(?:\d+|\d*\.\d+)d?\b  DONE
+        NumericLiteral,  // (?:\d+|\d*\.\d+)d?      DONE
+        CommentLine,     // \/\/[^\n]*
+        CommentBlock,    // \/\*.*?\*\/
+        RegexMatch,      // \/.?(?<!\\)\/
+        // *** End Miscelaneous Token Types *** //
+
+        // *** Begin Non-Overloadable Operators *** //
         Scope,           // ::                      DONE
-        MemberAccess,    // ->                      DONE
         Semicolon,       // ;
         Colon,           // :
         Comma,           // ,
+        LogicalOr,       // \|\|
+        LogicalAnd,      // &&
+        OpenBrace,       // \{
+        CloseBrace,      // \}
+        TernaryIf,       // \?
+        // *** End Non-Overloadable Operators *** //
+
+        // *** Begin Overloadable Operators *** //
+        OpenParen,       // \(                      DONE
+        CloseParen,      // \)                      DONE
+        OpenBracket,     // \[
+        CloseBracket,    // \]
+        MemberAccess,    // ->                      DONE
         Plus,            // \+
         Minus,           // -
         Multiply,        // \*
@@ -41,15 +61,7 @@ public:
         Concat,          // \.                      DONE
         Increment,       // \+\+                    DONE
         Decrement,       // --                      DONE
-        OpenParen,       // \(                      DONE
-        CloseParen,      // \)                      DONE
-        OpenBrace,       // \{
-        CloseBrace,      // \}
-        OpenBracket,     // \[
-        CloseBracket,    // \]
         LogicalNot,      // !
-        LogicalOr,       // \|\|
-        LogicalAnd,      // &&
         Equality,        // ==
         NotEquality,     // !=
         GreaterThan,     // >
@@ -71,44 +83,53 @@ public:
         BitwiseAnd,      // &
         BitwiseXOr,      // \^
         BitwiseOr,       // \|
-        TypeNameOperator,// \btypename\b            DONE
-        SizeOf,          // \bsizeof\b              DONE
-        InstanceOf,      // \binstanceof\b          DONE
-        New,             // \bnew\b                 DONE
-        Delete,          // \bdelete\b              DONE
-        If,
-        Else,
-        Function,
-        While,
-        For,
-        Const,
-        Return,
-        Continue,
-        Break,
-        Namespace,
-        Using,
-        Include,
-        Class,
-        Struct,
-        Private,
-        Public,
-        Protected,
-        Friend,
-        Static,
-        TypeDef,
-        Enum,
-        Union,
-        Switch,
-        Case,
-        Default,
-        Do,
-        Var,
         RighShift,       // >>
         LeftShift,       // <<
-        TernaryIf,       // \?
-        CommentLine,     // \/\/[^\n]*
-        CommentBlock,    // \/\*.*?\*\/
-        RegexMatch,      // \/.?(?<!\\)\/
+        // *** End Overloadable Operators *** //
+
+        // *** Begin Keywords *** //
+        Break,           // break
+        Case,            // case
+        Catch,           // catch
+        Class,           // class
+        Const,           // const
+        Continue,        // continue
+        Default,         // default
+        Delete,          // delete                  DONE
+        Do,              // do
+        Else,            // else
+        Enum,            // enum
+        False,           // false
+        For,             // for
+        Foreach,         // foreach
+        Friend,          // friend
+        Function,        // function
+        If,              // if
+        Include,         // include
+        InstanceOf,      // instanceof              DONE
+        Namespace,       // namespace
+        New,             // new                     DONE
+        Null,            // null
+        Operator,        // operator
+        Private,         // private
+        Protected,       // protected
+        Public,          // public
+        Return,          // return
+        SizeOf,          // sizeof                  DONE
+        Static,          // static
+        Struct,          // struct
+        Switch,          // switch
+        This,            // this
+        Throw,           // throw
+        True,            // true
+        Try,             // try
+        TypeDef,         // typedef
+        TypeNameOperator,// typename                DONE
+        Union,           // union
+        Using,           // using
+        While,           // while
+        Var,             // var
+        // *** End Keywords *** //
 
         TokenTypeCount
     };
