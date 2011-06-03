@@ -28,7 +28,7 @@ public:
         // *** Begin Miscelaneous Token Types *** //
         TypeName,        // [a-zA-Z_]\w*            DONE
         Identifier,      // \$[a-zA-Z_]\w*          DONE
-        StringLiteral,   // (['"]).*?(?<!\\)\1      DONE
+        StringLiteral,   // (['"]).*?(?<!\\)\1      DONE        DONE
         NumericLiteral,  // (?:\d+|\d*\.\d+)d?      DONE
         CommentLine,     // \/\/[^\n]*              DONE
         CommentBlock,    // \/\*.*?\*\/             DONE
@@ -145,7 +145,7 @@ public:
 
 private:
     const std::string mTokenStr;
-    Token::Type mType;
+    const Token::Type mType;
     const unsigned int mLineNumber;
     static const char* _keywords[];
     static const char* _operators[];
@@ -180,6 +180,18 @@ private:
             const std::string& code,
             const int&         pos,
             const char*        token
+        );
+
+    static Token _extractString(
+            const std::string&  code,
+                  int&          pos,
+            const unsigned int& lineNumber );
+
+public:
+    Token(
+            const Token::Type&  type,
+            const std::string&  tokenStr,
+            const unsigned int& lineNumber
         );
 
 }; // end class Token

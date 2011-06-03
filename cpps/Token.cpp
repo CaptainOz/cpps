@@ -264,4 +264,43 @@ bool Token::_matchToken( const string& code, const int& pos, const char* token )
 }
 
 
+/******************************************************************************/
+
+
+Token Token::_extractString(
+        const string&       code,
+              int&          pos,
+        const unsigned int& lineNumber )
+{
+    // Loop through the string pulling out each character until we find the
+    // closing quote.
+    string tokenStr;
+    const char& openQuote = code[ pos ];
+    for( ++pos; code[ pos ] != openQuote; ++pos )
+    {
+        // Copy the character.
+        const char& c = code[ pos ];
+        tokenStr += c;
+
+        // Newlines are not allowed inside strings.
+        if( c == '\n' )
+            throw ParseException(
+                    ParseException::UnexpectedToken,
+                    code,
+                    pos,
+                    lineNumber
+                );
+
+        // If this char is an escaper, prematurely jump to and grab the next one
+        // but only if we aren't escaping a newline (those aren't allowed in
+        // strings!).
+        if( c == '\\' && code[ pos + 1 ] != '\n' )
+            tokenStr += code[ ++pos ];
+    }
+
+    // Create and return a new token.
+    return Token( Token::StringLiteral, tokenStr, lineNumber );
+}
+
+
 } // end namespace cpps
