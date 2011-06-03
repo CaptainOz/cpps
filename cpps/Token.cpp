@@ -167,23 +167,23 @@ Token::List Token::tokenize( const string& code )
 
         // Are we starting a string literal? (StringLiteral)
         if( thisC == '\'' || thisC == '"' )
-            tokenList.push_back( Token::_extractString( code, pos ) );
+            tokenList.push_back( Token::_extractString( code, pos, lineCounter ) );
 
         // Or is this a numeric literal? (NumericLiteral)
         else if( isdigit( thisC ) || (thisC == '.' && isdigit( nextC ) )
-            tokenList.push_back( Token::_extractNumber( code, pos ) );
+            tokenList.push_back( Token::_extractNumber( code, pos, lineCounter ) );
 
         // Or is this a variable identifier? (Identifier)
         else if( thisC == '$' )
-            tokenList.push_back( Token::_extractIdentifier( code, pos ) );
+            tokenList.push_back( Token::_extractIdentifier( code, pos, lineCounter ) );
 
         // Or is this a one-line comment? (CommentLine)
         else if( thisC == '/' && nextC == '/' )
-            Token::_extractCommentLine( code, pos );
+            Token::_extractCommentLine( code, pos, lineCounter );
 
         // Or is this a comment block? (CommentBlock)
         else if( thisC == '/' && nextC == '*' )
-            Token::_extractCommentBlock( code, pos );
+            Token::_extractCommentBlock( code, pos, lineCounter );
 
         // Otherwise we haven't tokenized it yet, so set
         else
@@ -194,7 +194,13 @@ Token::List Token::tokenize( const string& code )
             if( Token::_matchKeyword( code, pos, *mvr ) )
             {
                 tokenized = true;
-                tokenList.push_back( Token::_extractKeyword( code, pos, *mvr ) );
+                const Token& token = Token::_extractKeyword(
+                        code, 
+                        pos,
+                        *mvr,
+                        lineCounter
+                    );
+                tokenList.push_back( token );
             }
 
         // Next lets check for an operator.
@@ -202,7 +208,13 @@ Token::List Token::tokenize( const string& code )
             if( Token::_matchToken( code, pos, *mvr ) )
             {
                 tokenized = true;
-                tokenList.push_back( Token::_extractToken( code, pos, *mvr ) );
+                const Token& token = Token::_extractToken(
+                        code,
+                        pos,
+                        *mvr,
+                        lineCounter
+                    );
+                tokenList.push_back( token );
             }
 
         // If we still haven't tokenized the string yet, lets see if its a
@@ -210,7 +222,7 @@ Token::List Token::tokenize( const string& code )
         if( !tokenized && isalpha( thisC ) || thisC == '_' )
         {
             tokenized = true;
-            tokenList.push_back( Token::_extractIdentifier( code, pos ) );
+            tokenList.push_back( Token::_extractIdentifier( code, pos, lineCounter ) );
         }
 
         // Still haven't tokenized it!? Must be an error.
@@ -288,7 +300,8 @@ Token Token::_extractString(
                     ParseException::UnexpectedToken,
                     code,
                     pos,
-                    lineNumber
+                    lineNumber,
+                    "Unclosed string literal."
                 );
 
         // If this char is an escaper, prematurely jump to and grab the next one
