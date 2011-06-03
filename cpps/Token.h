@@ -156,6 +156,12 @@ private:
             const char*        keyword
         );
 
+    static bool _matchToken(
+            const std::string& code,
+            const int&         pos,
+            const char*        token
+        );
+
 }; // end class Token
 
 } // end namespace cpps

@@ -173,129 +173,17 @@ Token::List Token::tokenize( const string& code )
         if( isKeyword )
             continue;
 
+        bool isOperator = false;
+        for( const char** mvr = Token::_operators; !isOperator && *mvr; ++mvr )
+            if( Token::_matchToken( code, pos, *mvr ) )
+            {
+                isOperator = true;
+                tokenList.push_back( Token::_extractToken( code, pos, *mvr ) );
+            }
+
         // Are we starting a string literal? (StringLiteral)
         if( thisC == '\'' || thisC == '"' )
             tokenList.push_back( Token::_extractString( code, pos ) );
-
-        // Or is this a single-line comment? (CommentLine)
-        else if( thisC == '/' && nextC == '/' )
-            Token::_extractCommentLine( code, pos );
-
-        // Or is this a comment block? (CommentBlock)
-        else if( thisC == '/' && nextC == '*' )
-            Token::_extractCommentBlock( code, pos, lineCounter );
-
-        // Or possibly a variable identifier? (Identifier)
-        else if( thisC == '$' )
-            tokenList.push_back( Token::_extractIdentifier( code, pos ) );
-
-        // Or possibly a typename? (TypeName)
-        else if( isalpha( thisC ) || thisC == '_' )
-            tokenList.push_back( Token::_extractTypeName( code, pos ) );
-
-        // Or a scope operator? (Scope)
-        else if( thisC == ':' && nextC == ':' )
-            tokenList.push_back( Token::_extractScope( code, pos ) );
-
-        // Or a logical or? (LogicalOr)
-        else if( thisC == '|' && nextC == '|' )
-            tokenList.push_back( Token::_extractLogicalOr( code, pos ) );
-
-        // Or a logical and? (LogicalAnd)
-        else if( thisC == '&' && nextC == '&' )
-            tokenList.push_back( Token::_extractLogicalAnd( code, pos ) );
-
-        // Or a pre/post increment? (Incrememnt)
-        else if( thisC == '+' && nextC == '+' )
-            tokenList.push_back( Token::_extractIncrement( code, pos ) );
-
-        // Or a pre/post decrement? (Decrement)
-        else if( thisC == '-' && nextC == '-' )
-            tokenList.push_back( Token::_extractDecrement( code, pos ) );
-
-        // Or possibly a parenthesized expression? (OpenParen/CloseParen)
-        else if( thisC == '(' || thisC == ')' )
-            tokenList.push_back( Token::_extractChar( code, pos, thisC ) );
-
-        // Or possibly an array indexing? (OpenBracket/CloseBracket)
-        else if( thisC == '[' || thisC == ']' )
-            tokenList.push_back( Token::_extractChar( code, pos, thisC ) );
-
-        // Or a member accessor operator? (MemberAccess)
-        else if( thisC == '-' && nextC == '>' )
-            tokenList.push_back( Token::_extactMemberAccess( code, pos ) );
-
-        // Or is this a plus-assignment? (AssignPlus)
-        else if( thisC == '+' && nextC == '=' )
-            tokenList.push_back( Token::_extractAssignPlus( code, pos ) );
-
-        // Or is this a minus-assignment? (AssignMinus)
-        else if( thisC == '-' && nextC == '=' )
-            tokenList.push_back( Token::_extractAssignMinus( code, pos ) );
-
-        // Or is this a multiply-assignment? (AssignMultiply)
-        else if( thisC == '*' && nextC == '=' )
-            tokenList.push_back( Token::_extractAssignMultiply( code, pos ) );
-
-        // Or is this a divide-assignment? (AssignDivide)
-        else if( thisC == '/' && nextC == '=' )
-            tokenList.push_back( Token::_extractAssignDivide( code, pos ) );
-
-        // Or is this a modulo-assignment? (AssignModulo)
-        else if( thisC == '%' && nextC == '=' )
-            tokenList.push_back( Token::_extractAssignModulo( code, pos ) );
-
-        // Or is this a bitwise-and-assignment? (AssignBitAnd)
-        else if( thisC == '&' && nextC == '=' )
-            tokenList.push_back( Token::_extractAssignBitAnd( code, pos ) );
-
-        // Or is this a bitwise-xor-assignment? (AssignBitXOr)
-        else if( thisC == '^' && nextC == '=' )
-            tokenList.push_back( Token::_extractAssignBitXOr( code, pos ) );
-
-        // Or is this a bitwise-or-assignment? (AssignBitOr)
-        else if( thisC == '|' && nextC == '=' )
-            tokenList.push_back( Token::_extractAssignBitOr( code, pos ) );
-
-        // Or is this a left-shift-assignment? (AssignLeftShift)
-        else if( thisC == '<' && nextC == '<' && code[pos+2] == '=' )
-            tokenList.push_back( Token::_extractAssignLeftShift( code, pos ) );
-
-        // Or is this a right-shift-assignment? (AssignRightShift)
-        else if( thisC == '>' && nextC == '>' && code[pos+2] == '=' )
-            tokenList.push_back( Token::_extractAssignRightShift( code, pos ) );
-
-        // Or is this a concatentation-assignment? (AssignConcat)
-        else if( thisC == '.' && nextC == '=' )
-            tokenList.push_back( Token::_extractAssignConcat( code, pos ) );
-
-        // Or is this an equality check? (Equality)
-        else if( thisC == '=' && nextC == '=' )
-            tokenList.push_back( Token::_extractEquality( code, pos ) );
-
-        // Or is this a not-equals check? (NotEquality)
-        else if( thisC == '!' && nextC == '=' )
-            tokenList.push_back( Token::_extractNotEquality( code, pos ) );
-
-        // Or is this a greater-than-or-equal-to check? (GreaterEqual)
-        else if( thisC == '>' && nextC == '=' )
-            tokenList.push_back( Token::_extractGreaterEqual( code, pos ) );
-
-        // Or is this a less-than-or-equal-to check? (LessEqual)
-        else if( thisC == '<' && nextC == '=' )
-            tokenList.push_back( Token::_extractLessEqual( code, pos ) );
-
-        // Or is this a right shift? (RightShift)
-        else if( thisC == '>' && nextC == '>' )
-            tokenList.push_back( Token::_extractRightShift( code, pos ) );
-
-        // Or is this a left shift? (LeftShift)
-        else if( thisC == '<' && nextC == '<' )
-            tokenList.push_back( Token::_extractLeftShift( code, pos ) );
-
-        // Or possibly a string concatenation operator? (Concat)
-        else if( thisC == '.' && !isdigit( nextC ) )
-            tokenList.push_back( Token::_extractChar( code, pos, thisC ) );
 
         // Or is this a numeric literal? (NumericLiteral)
         else if( isdigit( thisC ) || thisC == '.' )
@@ -315,19 +203,32 @@ bool Token::_matchKeyword(
         const char*   keyword
     )
 {
-    // First check the first two characters. This is really fast and will cut
-    // out most tokens. We can only check the first two because "if" and "do"
-    // are only two characters.
-    if( code[pos] != keyword[0] || code[pos+1] == keyword[1] )
+    // Does the token match the keyword?
+    if( !Token::_matchToken( code, pos, keyword ) )
         return false;
 
-    // First two characters match, now do the slightly more expensive substring
-    // match and check the character after.
-    const int   keywordSize = strlen(keyword);
-    const char& charAfter   = code[ pos + keywordSize ];
-    return code.substr( pos, keywordSize ) == keyword && // substring matches
-          !isalnum( charAfter )                       && // char after is not alphanumeric
-           charAfter != '_';                             // char after is not underscore
+    // The string matches the keyword, but is it the whole word? It could be the
+    // start of another (i.e. newFooBar).
+    const char& charAfter   = code[ pos + strlen(keyword) ];
+    return !isalnum( charAfter ) && // char after is not alphanumeric
+            charAfter != '_';       // char after is not underscore
+}
+
+
+/******************************************************************************/
+
+
+bool Token::_matchToken( const string& code, const int& pos, const char* token )
+{
+    // Loop through the string to find a non-matching character.
+    codeLength = code.size();
+    for( int i = 0; token[i] && pos+i < codeLength; ++i )
+        if( code[ pos+i ] != token[i] )
+            return false;
+
+    // We didn't find a non-matching character, but did we get through the whole
+    // token? (remaining code could be shorter than token length.)
+    return token[i] == 0;
 }
 
 
