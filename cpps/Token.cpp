@@ -214,6 +214,7 @@ Token::List Token::tokenize( const string& code )
         }
 
         // Still haven't tokenized it!? Must be an error.
+        // TODO: Create ParseException class.
         if( !tokenized )
             throw ParseException(
                     ParseException::UnknownToken,   // Exception type
