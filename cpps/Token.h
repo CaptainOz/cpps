@@ -150,12 +150,32 @@ private:
     static const char* _keywords[];
     static const char* _operators[];
 
+    //! Detects if the @p code at the given @p position matches the @p keyword.
+    /**
+     * This is different from Token::_matchToken in that it does an additional
+     * check that the character following the keyword is not alphanumeric or an
+     * underscore.
+     *
+     * @param code    The plain code string to read.
+     * @param pos     The position to start the comparison at.
+     * @param keyword The keyword to compare it to.
+     *
+     * @return True if the following code chunk is the given keyword.
+     */
     static bool _matchKeyword(
             const std::string& code,
             const int&         pos,
             const char*        keyword
         );
 
+    //! Detects if the @p code at the given @p position matches the @p token.
+    /**
+     * @param code  The plain code string to read.
+     * @param pos   The position to start the comparison at.
+     * @param token The token to compare it to.
+     *
+     * @return True if the following code chunk is the given token.
+     */
     static bool _matchToken(
             const std::string& code,
             const int&         pos,
