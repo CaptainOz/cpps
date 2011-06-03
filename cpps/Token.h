@@ -37,26 +37,26 @@ public:
 
         // *** Begin Non-Overloadable Operators *** //
         Scope,           // ::                      DONE
-        Semicolon,       // ;
-        Colon,           // :
-        Comma,           // ,
+        Semicolon,       // ;                       DONE
+        Colon,           // :                       DONE
+        Comma,           // ,                       DONE
         LogicalOr,       // \|\|                    DONE
         LogicalAnd,      // &&                      DONE
-        TernaryIf,       // \?
-        OpenBrace,       // \{
-        CloseBrace,      // \}
+        TernaryIf,       // \?                      DONE
+        OpenBrace,       // \{                      DONE
+        CloseBrace,      // \}                      DONE
         // *** End Non-Overloadable Operators *** //
 
         // *** Begin Overloadable Operators *** //
         OpenParen,       // \(                      DONE
         CloseParen,      // \)                      DONE
-        OpenBracket,     // \[
-        CloseBracket,    // \]
+        OpenBracket,     // \[                      DONE
+        CloseBracket,    // \]                      DONE
         Equality,        // ==                      DONE
         NotEquality,     // !=                      DONE
         GreaterEqual,    // >=                      DONE
         LessEqual,       // <=                      DONE
-        Assign,          // =
+        Assign,          // =                       DONE
         AssignPlus,      // \+=                     DONE
         AssignMinus,     // -=                      DONE
         AssignConcat,    // .=                      DONE
@@ -73,19 +73,19 @@ public:
         Increment,       // \+\+                    DONE
         Decrement,       // --                      DONE
         MemberAccess,    // ->                      DONE
-        GreaterThan,     // >
-        LessThan,        // <
-        Plus,            // \+
-        Minus,           // -
-        Multiply,        // \*
-        Divide,          // \/
-        Modulo,          // %
+        GreaterThan,     // >                       DONE
+        LessThan,        // <                       DONE
+        Plus,            // \+                      DONE
+        Minus,           // -                       DONE
+        Multiply,        // \*                      DONE
+        Divide,          // \/                      DONE
+        Modulo,          // %                       DONE
         Concat,          // \.                      DONE
-        LogicalNot,      // !
-        BitwiseNot,      // ~
-        BitwiseAnd,      // &
-        BitwiseXOr,      // \^
-        BitwiseOr,       // \|
+        LogicalNot,      // !                       DONE
+        BitwiseNot,      // ~                       DONE
+        BitwiseAnd,      // &                       DONE
+        BitwiseXOr,      // \^                      DONE
+        BitwiseOr,       // \|                      DONE
         // *** End Overloadable Operators *** //
 
         // *** Begin Keywords *** //
