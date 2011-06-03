@@ -152,7 +152,6 @@ Token::List Token::tokenize( const string& code )
     for( int pos = 0; pos < codeLength; ++pos )
     {
         const char& thisC = code[pos];
-        const char& nextC = pos+1 < codeLength ? code[pos+1] : 0;
 
         // Skip whitespace.
         if( isspace( thisC ) )
@@ -162,34 +161,66 @@ Token::List Token::tokenize( const string& code )
             continue;
         }
 
-        // Next lets check for a keyword
-        bool isKeyword = false;
-        for( const char** mvr = Token::_keywords; !isKeyword && *mvr; ++mvr )
-            if( Token::_matchKeyword( code, pos, *mvr ) )
-            {
-                isKeyword = true;
-                tokenList.push_back( Token::_extractKeyword( code, pos, *mvr ) );
-            }
-        if( isKeyword )
-            continue;
-
-        bool isOperator = false;
-        for( const char** mvr = Token::_operators; !isOperator && *mvr; ++mvr )
-            if( Token::_matchToken( code, pos, *mvr ) )
-            {
-                isOperator = true;
-                tokenList.push_back( Token::_extractToken( code, pos, *mvr ) );
-            }
+        // Set up the additional variables we'll need.
+        const char& nextC = pos+1 < codeLength ? code[pos+1] : 0;
+        bool tokenized = true;
 
         // Are we starting a string literal? (StringLiteral)
         if( thisC == '\'' || thisC == '"' )
             tokenList.push_back( Token::_extractString( code, pos ) );
 
         // Or is this a numeric literal? (NumericLiteral)
-        else if( isdigit( thisC ) || thisC == '.' )
+        else if( isdigit( thisC ) || (thisC == '.' && isdigit( nextC ) )
             tokenList.push_back( Token::_extractNumber( code, pos ) );
 
-        // 
+        // Or is this a variable identifier? (Identifier)
+        else if( thisC == '$' )
+            tokenList.push_back( Token::_extractIdentifier( code, pos ) );
+
+        // Or is this a one-line comment? (CommentLine)
+        else if( thisC == '/' && nextC == '/' )
+            Token::_extractCommentLine( code, pos );
+
+        // Or is this a comment block? (CommentBlock)
+        else if( thisC == '/' && nextC == '*' )
+            Token::_extractCommentBlock( code, pos );
+
+        // Otherwise we haven't tokenized it yet, so set
+        else
+            tokenized = false;
+
+        // Next lets check for a keyword
+        for( const char** mvr = Token::_keywords; !tokenized && *mvr; ++mvr )
+            if( Token::_matchKeyword( code, pos, *mvr ) )
+            {
+                tokenized = true;
+                tokenList.push_back( Token::_extractKeyword( code, pos, *mvr ) );
+            }
+
+        // Next lets check for an operator.
+        for( const char** mvr = Token::_operators; !tokenized && *mvr; ++mvr )
+            if( Token::_matchToken( code, pos, *mvr ) )
+            {
+                tokenized = true;
+                tokenList.push_back( Token::_extractToken( code, pos, *mvr ) );
+            }
+
+        // If we still haven't tokenized the string yet, lets see if its a
+        // typename (i.e. class name, function name, etc).
+        if( !tokenized && isalpha( thisC ) || thisC == '_' )
+        {
+            tokenized = true;
+            tokenList.push_back( Token::_extractIdentifier( code, pos ) );
+        }
+
+        // Still haven't tokenized it!? Must be an error.
+        if( !tokenized )
+            throw ParseException(
+                    ParseException::UnknownToken,   // Exception type
+                    code,                           // Erroneous code string
+                    pos,                            // Position in string
+                    lineCounter                     // Line number of error
+                );
     }
 }
 
