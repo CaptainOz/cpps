@@ -207,6 +207,12 @@ private:
             const unsigned int& lineNumber
         );
 
+    static void _extractCommentBlock(
+            const std::string&  code,
+                  int&          pos,
+                  unsigned int& lineNumber
+        );
+
 public:
     Token(
             const Token::Type&  type,

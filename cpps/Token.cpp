@@ -442,5 +442,36 @@ void Token::_extractCommentLine(
 }
 
 
+/******************************************************************************/
+
+
+void Token::_extractCommentBlock(
+        const std::string&  code,
+              int&          pos,
+              unsigned int& lineNumber
+    )
+{
+    const int codeLength = code.size();
+    pos += 2;
+    for( char c = code[ pos ]; !(c == '*' && c == '/'); c = code[ ++pos ] )
+    {
+        // Make sure we haven't reached the end of the code before the comment
+        // was closed.
+        if( pos >= codeLength )
+            throw ParseException(
+                    ParseException::UnexpectedToken,
+                    code,
+                    pos,
+                    lineNumber,
+                    "Unclosed block comment."
+                );
+
+        // Be sure to count up the lines within the comment
+        if( c == '\n' )
+            ++lineNumber;
+    }
+}
+
+
 } // end namespace cpps
 
