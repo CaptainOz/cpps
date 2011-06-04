@@ -27,7 +27,7 @@ public:
 
         // *** Begin Miscelaneous Token Types *** //
         TypeName,        // [a-zA-Z_]\w*            DONE
-        Identifier,      // \$[a-zA-Z_]\w*          DONE
+        Identifier,      // \$[a-zA-Z_]\w*          DONE        DONE
         StringLiteral,   // (['"]).*?(?<!\\)\1      DONE        DONE
         NumericLiteral,  // (?i:[1-9]\d*|\d+\.\d*|0[0-7]*|0x[\da-f]+|0b[01]+)
                          //                         DONE        DONE
@@ -190,6 +190,12 @@ private:
         );
 
     static Token _extractNumber(
+            const std::string&  code,
+                  int&          pos,
+            const unsigned int& lineNumber
+        );
+
+    static Token _extractIdentifier(
             const std::string&  code,
                   int&          pos,
             const unsigned int& lineNumber

@@ -358,10 +358,12 @@ Token Token::_extractNumber(
 
     // Extract all the digits
     bool decimalIncluded = false;
+    const int codeLength = code.size();
     for( char c = tolower(code[pos]);
-         isdigit(c)             ||
+         pos < codeLength       &&
+        (isdigit(c)             ||
          c == '.'               ||
-         (c <= 'f' && c >= 'a') ;
+         (c <= 'f' && c >= 'a')  );
          c = tolower(code[++pos]) )
     {
         if( (c == '.' && type != nb_Decimal)            || // Only decimal has decimal points
@@ -389,6 +391,41 @@ Token Token::_extractNumber(
     // Create and return a new token.
     return Token( Token::NumericLiteral, tokenStr, lineNumber );
 }
+
+
+/******************************************************************************/
+
+
+Token Token::_extractIdentifier(
+        const std::string&  code,
+              int&          pos,
+        const unsigned int& lineNumber
+    )
+{
+
+    // Check that the first character after the $ is valid.
+    ++pos;
+    if( !isalpha( code[pos] ) && code[pos] != '_' )
+        throw ParseException(
+                ParseException::InvalidName,
+                code,
+                pos,
+                lineNumber,
+                "Variable names must start with an alphabetic character."
+            );
+
+    // Now extract the identifier's name
+    string tokenStr;
+    const int codeLength = code.size();
+    for( char c = code[ pos ];
+         pos < codeLength && isalnum( c ) || c == '_';
+         c = code[ ++pos ] )
+        tokenStr += c;
+
+    // Create and return a new token.
+    return Token( Token::Identifier, tokenStr, lineNumber );
+}
+
 
 } // end namespace cpps
 
