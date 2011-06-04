@@ -50,7 +50,7 @@ You can cast from one type to another using either C or C++ style casting:
 
     (<type>)<variable> 
         - OR -
-    <type>(<variable))
+    <type>(<variable>)
 
 
 Functions in CPPS
