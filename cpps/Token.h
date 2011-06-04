@@ -32,7 +32,7 @@ public:
         NumericLiteral,  // (?i:[1-9]\d*|\d+\.\d*|0[0-7]*|0x[\da-f]+|0b[01]+)
                          //                         DONE        DONE
         CommentLine,     // \/\/[^\n]*              DONE        DONE
-        CommentBlock,    // \/\*.*?\*\/             DONE
+        CommentBlock,    // \/\*.*?\*\/             DONE        DONE
         RegexMatch,      // \/.*(?<!\\)\/
         // *** End Miscelaneous Token Types *** //
 
@@ -90,47 +90,47 @@ public:
         // *** End Overloadable Operators *** //
 
         // *** Begin Keywords *** //
-        Break,           // break                   DONE
-        Case,            // case                    DONE
-        Catch,           // catch                   DONE
-        Class,           // class                   DONE
-        Const,           // const                   DONE
-        Continue,        // continue                DONE
-        Default,         // default                 DONE
-        Delete,          // delete                  DONE
-        Do,              // do                      DONE
-        Else,            // else                    DONE
-        Enum,            // enum                    DONE
-        False,           // false                   DONE
-        For,             // for                     DONE
-        Foreach,         // foreach                 DONE
-        Friend,          // friend                  DONE
-        Function,        // function                DONE
-        If,              // if                      DONE
-        Include,         // include                 DONE
-        InstanceOf,      // instanceof              DONE
-        Namespace,       // namespace               DONE
-        New,             // new                     DONE
-        Null,            // null                    DONE
-        Operator,        // operator                DONE
-        Private,         // private                 DONE
-        Protected,       // protected               DONE
-        Public,          // public                  DONE
-        Return,          // return                  DONE
-        SizeOf,          // sizeof                  DONE
-        Static,          // static                  DONE
-        Struct,          // struct                  DONE
-        Switch,          // switch                  DONE
-        This,            // this                    DONE
-        Throw,           // throw                   DONE
-        True,            // true                    DONE
-        Try,             // try                     DONE
-        TypeDef,         // typedef                 DONE
-        TypeNameOperator,// typename                DONE
-        Union,           // union                   DONE
-        Using,           // using                   DONE
-        While,           // while                   DONE
-        Var,             // var                     DONE
+        Break,           // break                   DONE        DONE
+        Case,            // case                    DONE        DONE
+        Catch,           // catch                   DONE        DONE
+        Class,           // class                   DONE        DONE
+        Const,           // const                   DONE        DONE
+        Continue,        // continue                DONE        DONE
+        Default,         // default                 DONE        DONE
+        Delete,          // delete                  DONE        DONE
+        Do,              // do                      DONE        DONE
+        Else,            // else                    DONE        DONE
+        Enum,            // enum                    DONE        DONE
+        False,           // false                   DONE        DONE
+        For,             // for                     DONE        DONE
+        Foreach,         // foreach                 DONE        DONE
+        Friend,          // friend                  DONE        DONE
+        Function,        // function                DONE        DONE
+        If,              // if                      DONE        DONE
+        Include,         // include                 DONE        DONE
+        InstanceOf,      // instanceof              DONE        DONE
+        Namespace,       // namespace               DONE        DONE
+        New,             // new                     DONE        DONE
+        Null,            // null                    DONE        DONE
+        Operator,        // operator                DONE        DONE
+        Private,         // private                 DONE        DONE
+        Protected,       // protected               DONE        DONE
+        Public,          // public                  DONE        DONE
+        Return,          // return                  DONE        DONE
+        SizeOf,          // sizeof                  DONE        DONE
+        Static,          // static                  DONE        DONE
+        Struct,          // struct                  DONE        DONE
+        Switch,          // switch                  DONE        DONE
+        This,            // this                    DONE        DONE
+        Throw,           // throw                   DONE        DONE
+        True,            // true                    DONE        DONE
+        Try,             // try                     DONE        DONE
+        TypeDef,         // typedef                 DONE        DONE
+        TypeNameOperator,// typename                DONE        DONE
+        Union,           // union                   DONE        DONE
+        Using,           // using                   DONE        DONE
+        While,           // while                   DONE        DONE
+        Var,             // var                     DONE        DONE
         // *** End Keywords *** //
 
         TokenTypeCount
@@ -211,6 +211,13 @@ private:
             const std::string&  code,
                   int&          pos,
                   unsigned int& lineNumber
+        );
+
+    static Token _extractKeyword(
+            const std::string&  code,
+                  int&          pos,
+            const int&          keywordIndex
+            const unsigned int& lineNumber
         );
 
 public:

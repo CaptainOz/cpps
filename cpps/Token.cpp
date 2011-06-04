@@ -185,7 +185,7 @@ Token::List Token::tokenize( const string& code )
         else if( thisC == '/' && nextC == '*' )
             Token::_extractCommentBlock( code, pos, lineCounter );
 
-        // Otherwise we haven't tokenized it yet, so set
+        // Otherwise we haven't tokenized it yet, so set the tokenized flag
         else
             tokenized = false;
 
@@ -197,7 +197,7 @@ Token::List Token::tokenize( const string& code )
                 const Token& token = Token::_extractKeyword(
                         code, 
                         pos,
-                        *mvr,
+                        mvr - Token::_keywords,
                         lineCounter
                     );
                 tokenList.push_back( token );
@@ -208,10 +208,10 @@ Token::List Token::tokenize( const string& code )
             if( Token::_matchToken( code, pos, *mvr ) )
             {
                 tokenized = true;
-                const Token& token = Token::_extractToken(
+                const Token& token = Token::_extractOperator(
                         code,
                         pos,
-                        *mvr,
+                        mvr - Token::_operators,
                         lineCounter
                     );
                 tokenList.push_back( token );
@@ -471,6 +471,24 @@ void Token::_extractCommentBlock(
             ++lineNumber;
     }
 }
+
+
+/******************************************************************************/
+
+
+Token Token::_extractKeyword(
+        const std::string&  code,
+              int&          pos,
+        const int&          keywordIndex
+        const unsigned int& lineNumber
+    )
+{
+    const Token::Type tokenType = (Token::Type)((int)Token::Break + keywordIndex);
+    const string      tokenStr  = Token::_keywords[ keywordIndex ];
+    pos += tokenStr.size();
+    return Token( tokenType, tokenStr, lineNumber );
+}
+
 
 
 } // end namespace cpps
