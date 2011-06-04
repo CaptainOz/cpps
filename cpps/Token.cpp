@@ -402,7 +402,6 @@ Token Token::_extractIdentifier(
         const unsigned int& lineNumber
     )
 {
-
     // Check that the first character after the $ is valid.
     ++pos;
     if( !isalpha( code[pos] ) && code[pos] != '_' )
@@ -424,6 +423,22 @@ Token Token::_extractIdentifier(
 
     // Create and return a new token.
     return Token( Token::Identifier, tokenStr, lineNumber );
+}
+
+
+/******************************************************************************/
+
+
+void Token::_extractCommentLine(
+        const std::string&  code,
+              int&          pos,
+        const unsigned int& lineNumber
+    )
+{
+    // Comment lines end at the new-line.
+    const int codeLength = code.size();
+    while( ++pos < codeLength && code[ pos ] != '\n' )
+        ; // Do nothing in the loop
 }
 
 

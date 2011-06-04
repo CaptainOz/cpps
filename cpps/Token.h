@@ -31,7 +31,7 @@ public:
         StringLiteral,   // (['"]).*?(?<!\\)\1      DONE        DONE
         NumericLiteral,  // (?i:[1-9]\d*|\d+\.\d*|0[0-7]*|0x[\da-f]+|0b[01]+)
                          //                         DONE        DONE
-        CommentLine,     // \/\/[^\n]*              DONE
+        CommentLine,     // \/\/[^\n]*              DONE        DONE
         CommentBlock,    // \/\*.*?\*\/             DONE
         RegexMatch,      // \/.*(?<!\\)\/
         // *** End Miscelaneous Token Types *** //
@@ -196,6 +196,12 @@ private:
         );
 
     static Token _extractIdentifier(
+            const std::string&  code,
+                  int&          pos,
+            const unsigned int& lineNumber
+        );
+
+    static void _extractCommentLine(
             const std::string&  code,
                   int&          pos,
             const unsigned int& lineNumber
