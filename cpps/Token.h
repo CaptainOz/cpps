@@ -29,7 +29,8 @@ public:
         TypeName,        // [a-zA-Z_]\w*            DONE
         Identifier,      // \$[a-zA-Z_]\w*          DONE
         StringLiteral,   // (['"]).*?(?<!\\)\1      DONE        DONE
-        NumericLiteral,  // (?:\d+|\d*\.\d+)d?      DONE
+        NumericLiteral,  // (?i:[1-9]\d*|\d+\.\d*|0[0-7]*|0x[\da-f]+|0b[01]+)
+                         //                         DONE        DONE
         CommentLine,     // \/\/[^\n]*              DONE
         CommentBlock,    // \/\*.*?\*\/             DONE
         RegexMatch,      // \/.*(?<!\\)\/
@@ -185,7 +186,14 @@ private:
     static Token _extractString(
             const std::string&  code,
                   int&          pos,
-            const unsigned int& lineNumber );
+            const unsigned int& lineNumber
+        );
+
+    static Token _extractNumber(
+            const std::string&  code,
+                  int&          pos,
+            const unsigned int& lineNumber
+        );
 
 public:
     Token(

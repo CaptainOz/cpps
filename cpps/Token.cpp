@@ -14,7 +14,7 @@ const char* Token::TypeNames[] = {
         "TypeName",        // [a-zA-Z_]\w*
         "Identifier",      // \$[a-zA-Z_]\w*
         "StringLiteral",   // (['"]).*?(?<!\\)\1
-        "NumericLiteral",  // (?:\d+|\d*\.\d+)d?
+        "NumericLiteral",  // (?i:[1-9]\d*|\d+\.\d*|0[0-7]*|0x[\da-f]+|0b[01]+)
         "CommentLine",     // \/\/[^\n]*
         "CommentBlock",    // \/\*.*?\*\/
         "RegexMatch",      // \/.?(?<!\\)\/
@@ -170,7 +170,7 @@ Token::List Token::tokenize( const string& code )
             tokenList.push_back( Token::_extractString( code, pos, lineCounter ) );
 
         // Or is this a numeric literal? (NumericLiteral)
-        else if( isdigit( thisC ) || (thisC == '.' && isdigit( nextC ) )
+        else if( isdigit( thisC ) )
             tokenList.push_back( Token::_extractNumber( code, pos, lineCounter ) );
 
         // Or is this a variable identifier? (Identifier)
@@ -282,20 +282,22 @@ bool Token::_matchToken( const string& code, const int& pos, const char* token )
 Token Token::_extractString(
         const string&       code,
               int&          pos,
-        const unsigned int& lineNumber )
+        const unsigned int& lineNumber
+    )
 {
     // Loop through the string pulling out each character until we find the
     // closing quote.
     string tokenStr;
     const char& openQuote = code[ pos ];
+    const int& codeLength = code.size();
     for( ++pos; code[ pos ] != openQuote; ++pos )
     {
         // Copy the character.
         const char& c = code[ pos ];
         tokenStr += c;
 
-        // Newlines are not allowed inside strings.
-        if( c == '\n' )
+        // Check that we are still within range and the line hasn't ended.
+        if( pos >= codeLength || c == '\n' )
             throw ParseException(
                     ParseException::UnexpectedToken,
                     code,
@@ -316,4 +318,77 @@ Token Token::_extractString(
 }
 
 
+/******************************************************************************/
+
+
+Token Token::_extractNumber(
+        const string&       code,
+              int&          pos,
+        const unsigned int& lineNumber
+    )
+{
+    enum NumberBase {
+        nb_Binary,
+        nb_Octal,
+        nb_Decimal,
+        nb_Hex
+    }
+
+    // First lets figure out what kind of digit string this is. This will be
+    // used further down while extracting to ensure valid characters.
+    int type;
+    const char& nextC = code[pos+1];
+    string tokenStr;
+    if( code[pos] != '0' || nextC == '.' )
+        type = nb_Decimal;
+    else if( nextC == 'b' || nextC == 'B' )
+    {
+        type = nb_Binary;
+        tokenStr += "0b";
+        pos += 2;
+    }
+    else if( nextC == 'x' || nextC == 'X' )
+    {
+        type = nb_Hex;
+        tokenStr += "0x";
+        pos += 2;
+    }
+    else
+        type = nb_Octal;
+
+    // Extract all the digits
+    bool decimalIncluded = false;
+    for( char c = tolower(code[pos]);
+         isdigit(c)             ||
+         c == '.'               ||
+         (c <= 'f' && c >= 'a') ;
+         c = tolower(code[++pos]) )
+    {
+        if( (c == '.' && type != nb_Decimal)            || // Only decimal has decimal points
+            (c != '.' && !isdigit(c) && type != nb_Hex) || // Only hex has non-digit chars
+            (c >  '7' && type == nb_Octal)              || // Octal must be between 0 and 7
+            (c >  '1' && type == nb_Binary)              ) // Binary must be 0 or 1
+            throw ParseException(
+                    ParseException::UnexpectedToken,
+                    code,
+                    pos,
+                    lineNumber,
+                    "Invalid character in numeric literal."
+                );
+
+        // If we've come across another decimal place and we've already included
+        // a decimal place, break the loop here.
+        if( decimalIncluded && c == '.' )
+            break;
+
+        // Extract the character and update the decimalIncluded flag.
+        tokenStr += c;
+        decimalIncluded = decimalIncluded || c == '.';
+    }
+
+    // Create and return a new token.
+    return Token( Token::NumericLiteral, tokenStr, lineNumber );
+}
+
 } // end namespace cpps
+
