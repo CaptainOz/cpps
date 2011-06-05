@@ -12,7 +12,7 @@ namespace cpps
 const char* Token::TypeNames[] = {
         // *** Begin Miscelaneous Token Types *** //
         "TypeName",        // [a-zA-Z_]\w*
-        "Identifier",      // \$[a-zA-Z_]\w*
+        "Variable",        // \$[a-zA-Z_]\w*
         "StringLiteral",   // (['"]).*?(?<!\\)\1
         "NumericLiteral",  // (?i:[1-9]\d*|\d+\.\d*|0[0-7]*|0x[\da-f]+|0b[01]+)
         "CommentLine",     // \/\/[^\n]*
@@ -402,8 +402,18 @@ Token Token::_extractIdentifier(
         const unsigned int& lineNumber
     )
 {
+    // What type of identifier are we extracting?
+    Token::Type tokenType;
+    if( code[pos] == '$' )
+    {
+        tokenType = Token::Variable;
+        ++pos;
+    }
+    else
+        tokenType = Token::TypeName;
+
+
     // Check that the first character after the $ is valid.
-    ++pos;
     if( !isalpha( code[pos] ) && code[pos] != '_' )
         throw ParseException(
                 ParseException::InvalidName,
@@ -422,7 +432,7 @@ Token Token::_extractIdentifier(
         tokenStr += c;
 
     // Create and return a new token.
-    return Token( Token::Identifier, tokenStr, lineNumber );
+    return Token( tokenType, tokenStr, lineNumber );
 }
 
 

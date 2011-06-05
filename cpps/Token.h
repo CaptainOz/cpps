@@ -26,8 +26,8 @@ public:
     //  Token type          Regex to match          detection   extraction
 
         // *** Begin Miscelaneous Token Types *** //
-        TypeName,        // [a-zA-Z_]\w*            DONE
-        Identifier,      // \$[a-zA-Z_]\w*          DONE        DONE
+        TypeName,        // [a-zA-Z_]\w*            DONE        DONE
+        Variable,        // \$[a-zA-Z_]\w*          DONE        DONE
         StringLiteral,   // (['"]).*?(?<!\\)\1      DONE        DONE
         NumericLiteral,  // (?i:[1-9]\d*|\d+\.\d*|0[0-7]*|0x[\da-f]+|0b[01]+)
                          //                         DONE        DONE
