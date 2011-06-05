@@ -484,9 +484,24 @@ Token Token::_extractKeyword(
     )
 {
     const Token::Type tokenType = (Token::Type)((int)Token::Break + keywordIndex);
-    const string      tokenStr  = Token::_keywords[ keywordIndex ];
-    pos += tokenStr.size();
-    return Token( tokenType, tokenStr, lineNumber );
+    pos += strlen( Token::_keywords[ keywordIndex ] );
+    return Token( tokenType, "", lineNumber );
+}
+
+
+/******************************************************************************/
+
+
+Token Token::_extractOperator(
+        const std::string&  code,
+              int&          pos,
+        const int&          operatorIndex
+        const unsigned int& lineNumber
+    )
+{
+    const Token::Type tokenType = (Token::Type)((int)Token::Scope + operatorIndex);
+    pos += strlen( Token::_operators[ operatorIndex ] );
+    return Token( tokenType, "", lineNumber );
 }
 
 

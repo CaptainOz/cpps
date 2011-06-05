@@ -37,56 +37,56 @@ public:
         // *** End Miscelaneous Token Types *** //
 
         // *** Begin Non-Overloadable Operators *** //
-        Scope,           // ::                      DONE
-        Semicolon,       // ;                       DONE
-        Colon,           // :                       DONE
-        Comma,           // ,                       DONE
-        LogicalOr,       // \|\|                    DONE
-        LogicalAnd,      // &&                      DONE
-        TernaryIf,       // \?                      DONE
-        OpenBrace,       // \{                      DONE
-        CloseBrace,      // \}                      DONE
+        Scope,           // ::                      DONE        DONE
+        Semicolon,       // ;                       DONE        DONE
+        Colon,           // :                       DONE        DONE
+        Comma,           // ,                       DONE        DONE
+        LogicalOr,       // \|\|                    DONE        DONE
+        LogicalAnd,      // &&                      DONE        DONE
+        TernaryIf,       // \?                      DONE        DONE
+        OpenBrace,       // \{                      DONE        DONE
+        CloseBrace,      // \}                      DONE        DONE
         // *** End Non-Overloadable Operators *** //
 
         // *** Begin Overloadable Operators *** //
-        OpenParen,       // \(                      DONE
-        CloseParen,      // \)                      DONE
-        OpenBracket,     // \[                      DONE
-        CloseBracket,    // \]                      DONE
-        Equality,        // ==                      DONE
-        NotEquality,     // !=                      DONE
-        GreaterEqual,    // >=                      DONE
-        LessEqual,       // <=                      DONE
-        Assign,          // =                       DONE
-        AssignPlus,      // \+=                     DONE
-        AssignMinus,     // -=                      DONE
-        AssignConcat,    // .=                      DONE
-        AssignMultiply,  // \*=                     DONE
-        AssignDivide,    // \/=                     DONE
-        AssignModulo,    // %=                      DONE
-        AssignBitAnd,    // &=                      DONE
-        AssignBitXOr,    // \^=                     DONE
-        AssignBitOr,     // |=                      DONE
-        AssignLeftShift, // <<=                     DONE
-        AssignRightShift,// >>=                     DONE
-        RighShift,       // >>                      DONE
-        LeftShift,       // <<                      DONE
-        Increment,       // \+\+                    DONE
-        Decrement,       // --                      DONE
-        MemberAccess,    // ->                      DONE
-        GreaterThan,     // >                       DONE
-        LessThan,        // <                       DONE
-        Plus,            // \+                      DONE
-        Minus,           // -                       DONE
-        Multiply,        // \*                      DONE
-        Divide,          // \/                      DONE
-        Modulo,          // %                       DONE
-        Concat,          // \.                      DONE
-        LogicalNot,      // !                       DONE
-        BitwiseNot,      // ~                       DONE
-        BitwiseAnd,      // &                       DONE
-        BitwiseXOr,      // \^                      DONE
-        BitwiseOr,       // \|                      DONE
+        OpenParen,       // \(                      DONE        DONE
+        CloseParen,      // \)                      DONE        DONE
+        OpenBracket,     // \[                      DONE        DONE
+        CloseBracket,    // \]                      DONE        DONE
+        Equality,        // ==                      DONE        DONE
+        NotEquality,     // !=                      DONE        DONE
+        GreaterEqual,    // >=                      DONE        DONE
+        LessEqual,       // <=                      DONE        DONE
+        Assign,          // =                       DONE        DONE
+        AssignPlus,      // \+=                     DONE        DONE
+        AssignMinus,     // -=                      DONE        DONE
+        AssignConcat,    // .=                      DONE        DONE
+        AssignMultiply,  // \*=                     DONE        DONE
+        AssignDivide,    // \/=                     DONE        DONE
+        AssignModulo,    // %=                      DONE        DONE
+        AssignBitAnd,    // &=                      DONE        DONE
+        AssignBitXOr,    // \^=                     DONE        DONE
+        AssignBitOr,     // |=                      DONE        DONE
+        AssignLeftShift, // <<=                     DONE        DONE
+        AssignRightShift,// >>=                     DONE        DONE
+        RighShift,       // >>                      DONE        DONE
+        LeftShift,       // <<                      DONE        DONE
+        Increment,       // \+\+                    DONE        DONE
+        Decrement,       // --                      DONE        DONE
+        MemberAccess,    // ->                      DONE        DONE
+        GreaterThan,     // >                       DONE        DONE
+        LessThan,        // <                       DONE        DONE
+        Plus,            // \+                      DONE        DONE
+        Minus,           // -                       DONE        DONE
+        Multiply,        // \*                      DONE        DONE
+        Divide,          // \/                      DONE        DONE
+        Modulo,          // %                       DONE        DONE
+        Concat,          // \.                      DONE        DONE
+        LogicalNot,      // !                       DONE        DONE
+        BitwiseNot,      // ~                       DONE        DONE
+        BitwiseAnd,      // &                       DONE        DONE
+        BitwiseXOr,      // \^                      DONE        DONE
+        BitwiseOr,       // \|                      DONE        DONE
         // *** End Overloadable Operators *** //
 
         // *** Begin Keywords *** //
@@ -217,6 +217,13 @@ private:
             const std::string&  code,
                   int&          pos,
             const int&          keywordIndex
+            const unsigned int& lineNumber
+        );
+
+    static Token _extractOperator(
+            const std::string&  code,
+                  int&          pos,
+            const int&          operatorIndex
             const unsigned int& lineNumber
         );
 
