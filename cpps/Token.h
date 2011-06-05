@@ -183,36 +183,82 @@ private:
             const char*        token
         );
 
+    //! Extracts a quoted string.
+    /**
+     * @param code       The plain code string to extract from.
+     * @param pos        The starting point to extract the string.
+     * @param lineNumber The line number the token is on.
+     *
+     * @return The extracted string literal token.
+     */
     static Token _extractString(
             const std::string&  code,
                   int&          pos,
             const unsigned int& lineNumber
         );
 
+    //! Extracts a number.
+    /**
+     * @param code       The plain code string to extract from.
+     * @param pos        The starting point to extract the number.
+     * @param lineNumber The line number the token is on.
+     *
+     * @return The extracted numeric literal token.
+     */
     static Token _extractNumber(
             const std::string&  code,
                   int&          pos,
             const unsigned int& lineNumber
         );
 
+    //! Extracts an identifier for a variable or typename.
+    /**
+     * @param code       The plain code string to extract from.
+     * @param pos        The starting point to extract the identifier.
+     * @param lineNumber The line number the token is on.
+     *
+     * @return The extracted identifier token.
+     */
     static Token _extractIdentifier(
             const std::string&  code,
                   int&          pos,
             const unsigned int& lineNumber
         );
 
+    //! Extracts a single-line comment.
+    /**
+     * @param code       The plain code string to extract from.
+     * @param pos        The starting point to extract the comment.
+     * @param lineNumber The line number the token is on.
+     */
     static void _extractCommentLine(
             const std::string&  code,
                   int&          pos,
             const unsigned int& lineNumber
         );
 
+    //! Extracts a block comment.
+    /**
+     * @param code       The plain code string to extract from.
+     * @param pos        The starting point to extract the comment.
+     * @param lineNumber The line number the token is on.
+     */
     static void _extractCommentBlock(
             const std::string&  code,
                   int&          pos,
                   unsigned int& lineNumber
         );
 
+    //! Extracts the given keyword.
+    /**
+     * @param code         The plain code string to extract from.
+     * @param pos          The starting point to extract the keyword.
+     * @param keywordIndex The index of the keyword from the Token::_keywords
+     *                     array to extract.
+     * @param lineNumber   The line number the token is on.
+     *
+     * @return The extracted keyword token.
+     */
     static Token _extractKeyword(
             const std::string&  code,
                   int&          pos,
@@ -220,6 +266,16 @@ private:
             const unsigned int& lineNumber
         );
 
+    //! Extracts the given operator.
+    /**
+     * @param code          The plain code string to extract from.
+     * @param pos           The starting point to extract the operator.
+     * @param operatorIndex The index of the keyword from the Token::_operators
+     *                      array to extract.
+     * @param lineNumber    The line number the token is on.
+     *
+     * @return The extracted keyword token.
+     */
     static Token _extractOperator(
             const std::string&  code,
                   int&          pos,

@@ -412,7 +412,6 @@ Token Token::_extractIdentifier(
     else
         tokenType = Token::TypeName;
 
-
     // Check that the first character after the $ is valid.
     if( !isalpha( code[pos] ) && code[pos] != '_' )
         throw ParseException(
@@ -493,6 +492,7 @@ Token Token::_extractKeyword(
         const unsigned int& lineNumber
     )
 {
+    // Calculate the token type and move the position up
     const Token::Type tokenType = (Token::Type)((int)Token::Break + keywordIndex);
     pos += strlen( Token::_keywords[ keywordIndex ] );
     return Token( tokenType, "", lineNumber );
@@ -509,6 +509,7 @@ Token Token::_extractOperator(
         const unsigned int& lineNumber
     )
 {
+    // Calculate the token type and move the position up
     const Token::Type tokenType = (Token::Type)((int)Token::Scope + operatorIndex);
     pos += strlen( Token::_operators[ operatorIndex ] );
     return Token( tokenType, "", lineNumber );
