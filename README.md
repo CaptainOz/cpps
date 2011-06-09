@@ -75,7 +75,7 @@ pass it by reference explicitly.
 
 
 String Literals in CPPS
----------------
+-----------------------
 
 Strings literals can be between either single-quotes (') or double-quotes (").
 Either type that you use does not matter to CPPS, both are treated exactly the
@@ -156,4 +156,25 @@ This will output the following text:
 So you see, Foo::foo has access to all levels (public, protected, and private)
 while Bar::bar only has access to public and protected (since Bar inherits from
 Foo) and the function foobar only has access to public attributes.
+
+
+JSON and CPPS
+-------------
+
+CPPS supports in-line JSON to define arrays and objects much like JavaScript.
+Objects created using JSON will be of the class `object`. The syntax for JSON in
+CPPS is very simple:
+
+    // JSON defining an object:
+    { <key> : <json> [, <key> : <json> [, ...]] }
+
+Because CPPS uses JSON notation, the C style array literal used for variable
+initialization is not valid in CPPS. In C array literals are wrapped in curly
+braces, in CPPS we use square braces:
+
+    // C-Style is not valid in CPPS
+    const char* foo[] = { "foo", "bar", "foobar" };
+
+    // CPPS-Style uses JSON
+    var $foo = [ "foo", "bar", "foobar" ];
 
