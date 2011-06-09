@@ -317,7 +317,7 @@ Token Token::_extractString(
     }
 
     // Create and return a new token.
-    return Token( Token::StringLiteral, tokenStr, lineNumber );
+    return Token( Token::StringLiteral, lineNumber, tokenStr );
 }
 
 
@@ -328,7 +328,7 @@ Token Token::_extractNumber(
         const string&       code,
               int&          pos,
         const unsigned int& lineNumber
-    )
+    ) throw( ParseException )
 {
     enum NumberBase {
         nb_Binary,
@@ -392,7 +392,7 @@ Token Token::_extractNumber(
     }
 
     // Create and return a new token.
-    return Token( Token::NumericLiteral, tokenStr, lineNumber );
+    return Token( Token::NumericLiteral, lineNumber, tokenStr );
 }
 
 
@@ -403,7 +403,7 @@ Token Token::_extractIdentifier(
         const std::string&  code,
               int&          pos,
         const unsigned int& lineNumber
-    )
+    ) throw( ParseException )
 {
     // What type of identifier are we extracting?
     Token::Type tokenType;
@@ -434,7 +434,7 @@ Token Token::_extractIdentifier(
         tokenStr += c;
 
     // Create and return a new token.
-    return Token( tokenType, tokenStr, lineNumber );
+    return Token( tokenType, lineNumber, tokenStr );
 }
 
 
@@ -445,7 +445,7 @@ void Token::_extractCommentLine(
         const std::string&  code,
               int&          pos,
         const unsigned int& lineNumber
-    )
+    ) throw()
 {
     // Comment lines end at the new-line.
     const int codeLength = code.size();
@@ -461,7 +461,7 @@ void Token::_extractCommentBlock(
         const std::string&  code,
               int&          pos,
               unsigned int& lineNumber
-    )
+    ) throw( ParseException )
 {
     const int codeLength = code.size();
     pos += 2;
@@ -493,12 +493,12 @@ Token Token::_extractKeyword(
               int&          pos,
         const int&          keywordIndex
         const unsigned int& lineNumber
-    )
+    ) throw()
 {
     // Calculate the token type and move the position up
     const Token::Type tokenType = (Token::Type)((int)Token::Break + keywordIndex);
     pos += strlen( Token::_keywords[ keywordIndex ] );
-    return Token( tokenType, "", lineNumber );
+    return Token( tokenType, lineNumber );
 }
 
 
@@ -510,14 +510,28 @@ Token Token::_extractOperator(
               int&          pos,
         const int&          operatorIndex
         const unsigned int& lineNumber
-    )
+    ) throw()
 {
     // Calculate the token type and move the position up
     const Token::Type tokenType = (Token::Type)((int)Token::Scope + operatorIndex);
     pos += strlen( Token::_operators[ operatorIndex ] );
-    return Token( tokenType, "", lineNumber );
+    return Token( tokenType, lineNumber );
 }
 
+
+/******************************************************************************/
+
+
+Token::Token(
+        const Token::Type& type,
+        const unsigned int& lineNumber,
+        const string& tokenStr
+    ) throw()
+    : mType( type ),
+      mLineNumber( lineNumber ),
+      mTokenStr( tokenStr )
+{
+}
 
 
 } // end namespace cpps

@@ -1,5 +1,9 @@
 /**
+ * @file
  *
+ * @brief Contains the Token class description.
+ *
+ * @author Nate Lillich
  */
 
 #ifndef __CPPS_TOKEN_H_INCLUDED__
@@ -11,6 +15,12 @@
 namespace cpps
 {
 
+//! Class for the first-pass of parsing code.
+/**
+ * Each Token is an individual lexeme extracted from a source file. The public
+ * static member Token::tokenize is a Token factory that generates tokens from
+ * source code. It is the intended way to create Tokens.
+ */
 class Token
 {
 public:
@@ -219,6 +229,8 @@ private:
 
     //! Extracts a number.
     /**
+     * @throws ParseException if the number contains illegal characters.
+     *
      * @param code       The plain code string to extract from.
      * @param pos        The starting point to extract the number.
      * @param lineNumber The line number the token is on.
@@ -229,10 +241,12 @@ private:
             const std::string&  code,
                   int&          pos,
             const unsigned int& lineNumber
-        );
+        ) throw( ParseException );
 
     //! Extracts an identifier for a variable or typename.
     /**
+     * @throws ParseException if the identifier contains illegal characters.
+     *
      * @param code       The plain code string to extract from.
      * @param pos        The starting point to extract the identifier.
      * @param lineNumber The line number the token is on.
@@ -243,7 +257,7 @@ private:
             const std::string&  code,
                   int&          pos,
             const unsigned int& lineNumber
-        );
+        ) throw( ParseException );
 
     //! Extracts a single-line comment.
     /**
@@ -255,10 +269,12 @@ private:
             const std::string&  code,
                   int&          pos,
             const unsigned int& lineNumber
-        );
+        ) throw();
 
     //! Extracts a block comment.
     /**
+     * @throws ParseException if the comment block is not closed.
+     *
      * @param code       The plain code string to extract from.
      * @param pos        The starting point to extract the comment.
      * @param lineNumber The line number the token is on.
@@ -267,7 +283,7 @@ private:
             const std::string&  code,
                   int&          pos,
                   unsigned int& lineNumber
-        );
+        ) throw( ParseException );
 
     //! Extracts the given keyword.
     /**
@@ -284,7 +300,7 @@ private:
                   int&          pos,
             const int&          keywordIndex
             const unsigned int& lineNumber
-        );
+        ) throw();
 
     //! Extracts the given operator.
     /**
@@ -301,14 +317,23 @@ private:
                   int&          pos,
             const int&          operatorIndex
             const unsigned int& lineNumber
-        );
+        ) throw();
 
-public:
+    //! Private token constructor used by Token::tokenize.
+    /**
+     * @param type          The type of token this is.
+     * @param lineNumber    The line number the token was extracted from.
+     * @param tokenStr      The extract string taken from the source file.
+     *
+     * @note The @p tokenStr is only required for TypeName, Variable,
+     *       StringLiteral, and NumericLiteral tokens. All other token types
+     *       have well-defined representations.
+     */
     Token(
             const Token::Type&  type,
-            const std::string&  tokenStr,
-            const unsigned int& lineNumber
-        );
+            const unsigned int& lineNumber,
+            const std::string&  tokenStr = ""
+        ) throw();
 
 }; // end class Token
 
