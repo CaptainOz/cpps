@@ -9,6 +9,7 @@ using namespace std;
 namespace cpps
 {
 
+// Token typenames as suitable for humans to read ordered same as Token::Type.
 const char* Token::TypeNames[] = {
         // *** Begin Miscelaneous Token Types *** //
         "TypeName",        // [a-zA-Z_]\w*
@@ -120,6 +121,7 @@ const char* Token::TypeNames[] = {
         0 // End array
     };
 
+// Keyword strings as they appear in the code ordered the same as Token::Type.
 const char* Token::_keywords[] = {
         "break",      "case",      "catch",  "class",    "const",    "continue",
         "default",    "delete",    "do",     "else",     "enum",     "false",
@@ -132,6 +134,7 @@ const char* Token::_keywords[] = {
         0 // End array
     };
 
+// Operator strings as they appear in the code ordered the same as Token::Type.
 const char* Token::_operators[] = {
         "::",  ";",   ":",  ",",  "||", "&&", "?",  "{",  "}",
         "(",   ")",   "[",  "]",  "==", "!=", ">=", "<=", "=",
@@ -195,7 +198,7 @@ Token::List Token::tokenize( const string& code )
             {
                 tokenized = true;
                 const Token& token = Token::_extractKeyword(
-                        code, 
+                        code,
                         pos,
                         mvr - Token::_keywords,
                         lineCounter
