@@ -1,9 +1,10 @@
 CPPS - C Plus Plus Script
 =========================
 
-CPPS is to C++ as JS is to Java, that is to say it has a similar syntax and some
-shared standard objects. CPPS is not .cpp files interpreted as scripts, it has
-its own syntax which, while similar to C++, is fundamentally different.
+C++ Script is to C++ as JavaScript is to Java, that is to say it has a similar
+syntax and some shared standard objects. CPPS is not .cpp files interpreted as
+scripts, it has its own syntax which, while similar to C++, is considerably
+different.
 
 
 Variable Typing in CPPS
@@ -48,7 +49,7 @@ The following types are supplied built-in to CPPS:
 
 You can cast from one type to another using either C or C++ style casting:
 
-    (<type>)<variable> 
+    (<type>)<variable>
         - OR -
     <type>(<variable>)
 
@@ -124,7 +125,7 @@ following example:
                 cout << $bar << '\n';
         }
     };
-    
+
     function foobar( $foobar )
     {
         foreach( $foobar as $foo )
