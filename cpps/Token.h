@@ -170,7 +170,7 @@ public:
      *
      * @return A list of Token objects extracted from the source code.
      */
-    static Token::List tokenize( const std::string& code ) throw( ParseException );
+    static Token::List* tokenize( const std::string& code ) throw( ParseException );
 
     const Token::Type& getType( void ) const;
     const std::string getTypeString( void ) const;
