@@ -168,7 +168,7 @@ public:
      *
      * @return A list of Token objects extracted from the source code.
      */
-    static Token::List tokenize( const std::string& code );
+    static Token::List tokenize( const std::string& code ) throw( ParseException );
 
 private:
     const std::string mTokenStr;
@@ -197,7 +197,7 @@ private:
             const std::string& code,
             const int&         pos,
             const char*        keyword
-        );
+        ) throw();
 
     //! Detects if the @p code at the given @p position matches the @p token.
     /**
@@ -211,10 +211,13 @@ private:
             const std::string& code,
             const int&         pos,
             const char*        token
-        );
+        ) throw();
 
     //! Extracts a quoted string.
     /**
+     * @throws ParseException if a newline or end of file is encountered before
+     *         the end of the line.
+     *
      * @param code       The plain code string to extract from.
      * @param pos        The starting point to extract the string.
      * @param lineNumber The line number the token is on.
@@ -225,7 +228,7 @@ private:
             const std::string&  code,
                   int&          pos,
             const unsigned int& lineNumber
-        );
+        ) throw( ParseException );
 
     //! Extracts a number.
     /**

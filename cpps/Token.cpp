@@ -146,7 +146,7 @@ const char* Token::_operators[] = {
         0 // End array
     };
 
-Token::List Token::tokenize( const string& code )
+Token::List Token::tokenize( const string& code ) throw( ParseException )
 {
     unsigned int lineCounter = 0;
     int codeLength = code.size();
@@ -248,7 +248,7 @@ bool Token::_matchKeyword(
         const string& code,
         const int&    pos,
         const char*   keyword
-    )
+    ) throw()
 {
     // Does the token match the keyword?
     if( !Token::_matchToken( code, pos, keyword ) )
@@ -266,6 +266,7 @@ bool Token::_matchKeyword(
 
 
 bool Token::_matchToken( const string& code, const int& pos, const char* token )
+    throw()
 {
     // Loop through the string to find a non-matching character.
     codeLength = code.size();
@@ -286,7 +287,7 @@ Token Token::_extractString(
         const string&       code,
               int&          pos,
         const unsigned int& lineNumber
-    )
+    ) throw( ParseException )
 {
     // Loop through the string pulling out each character until we find the
     // closing quote.
