@@ -173,9 +173,9 @@ public:
     static Token::List tokenize( const std::string& code ) throw( ParseException );
 
     const Token::Type& getType( void ) const;
-    const std::string& getTypeString( void ) const;
+    const std::string getTypeString( void ) const;
     const std::string& getString( void ) const;
-    const unsigned int& getLineNUmber( void ) const;
+    const unsigned int& getLineNumber( void ) const;
 
 private:
     const std::string mTokenStr;
@@ -360,7 +360,7 @@ inline const Token::Type& Token::getType( void ) const
 /******************************************************************************/
 
 
-inline const std::string& Token::getTypeString( void ) const
+inline const std::string Token::getTypeString( void ) const
 {
     return Token::TypeNames[ getType() ];
 }
