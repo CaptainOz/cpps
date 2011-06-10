@@ -493,7 +493,7 @@ void Token::_extractCommentBlock(
 Token Token::_extractKeyword(
         const std::string&  code,
               int&          pos,
-        const int&          keywordIndex
+        const int&          keywordIndex,
         const unsigned int& lineNumber
     ) throw()
 {
@@ -510,7 +510,7 @@ Token Token::_extractKeyword(
 Token Token::_extractOperator(
         const std::string&  code,
               int&          pos,
-        const int&          operatorIndex
+        const int&          operatorIndex,
         const unsigned int& lineNumber
     ) throw()
 {
