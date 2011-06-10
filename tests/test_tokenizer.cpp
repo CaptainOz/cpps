@@ -11,7 +11,7 @@
  * @author Nate Lillich
  */
 
-#include <cpps/CPPS.h>
+#include <cpps/cpps.h>
 
 #include <string>
 #include <iostream>
@@ -30,17 +30,17 @@ int main( void )
 void tokenTest_one( void )
 {
     string code = "'hello world'";
-    Token::List tokenList = Token::tokenize( code );
+    Token::List* tokenList = Token::tokenize( code );
 
-    if( tokenList.size() < 1 )
+    if( tokenList->size() < 1 )
         cout << "Error: Too few tokens found. Expected 1, found "
-             << tokenList.size() << endl;
+             << tokenList->size() << endl;
 
-    if( tokenList.size() > 1 )
+    if( tokenList->size() > 1 )
         cout << "Error: Too many tokens found. Expected 1, found "
-             << tokenList.size() << endl;
+             << tokenList->size() << endl;
 
-    Token token = tokenList[0];
+    Token& token = *tokenList->at(0);
     if( token.getType() != Token::StringLiteral )
         cout << "Error: Wrong token type found. Expected StringLiteral, found "
              << token.getTypeString() << endl;
