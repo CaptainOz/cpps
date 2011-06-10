@@ -3,6 +3,7 @@
  */
 
 #include <cctype>
+#include "Token.h"
 
 using namespace std;
 
