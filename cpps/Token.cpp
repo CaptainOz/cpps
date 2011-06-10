@@ -3,6 +3,8 @@
  */
 
 #include <cctype>
+#include <cstring>
+
 #include "Token.h"
 
 using namespace std;
@@ -202,7 +204,7 @@ Token::List Token::tokenize( const string& code ) throw( ParseException )
             if( Token::_matchKeyword( code, pos, *mvr ) )
             {
                 tokenized = true;
-                const Token& token = Token::_extractKeyword(
+                Token* const token = Token::_extractKeyword(
                         code,
                         pos,
                         mvr - Token::_keywords,
@@ -216,7 +218,7 @@ Token::List Token::tokenize( const string& code ) throw( ParseException )
             if( Token::_matchToken( code, pos, *mvr ) )
             {
                 tokenized = true;
-                const Token& token = Token::_extractOperator(
+                Token* const token = Token::_extractOperator(
                         code,
                         pos,
                         mvr - Token::_operators,
@@ -234,13 +236,13 @@ Token::List Token::tokenize( const string& code ) throw( ParseException )
         }
 
         // Still haven't tokenized it!? Must be an error.
-        // TODO: Create ParseException class.
         if( !tokenized )
             throw ParseException(
                     ParseException::UnknownToken,   // Exception type
                     code,                           // Erroneous code string
                     pos,                            // Position in string
-                    lineCounter                     // Line number of error
+                    lineCounter,                    // Line number of error
+                    "Unrecognized token."
                 );
     }
 }
@@ -274,8 +276,9 @@ bool Token::_matchToken( const string& code, const int& pos, const char* token )
     throw()
 {
     // Loop through the string to find a non-matching character.
-    codeLength = code.size();
-    for( int i = 0; token[i] && pos+i < codeLength; ++i )
+    const int codeLength = code.size();
+    int i;
+    for( i = 0; token[i] && pos+i < codeLength; ++i )
         if( code[ pos+i ] != token[i] )
             return false;
 
@@ -288,7 +291,7 @@ bool Token::_matchToken( const string& code, const int& pos, const char* token )
 /******************************************************************************/
 
 
-Token Token::_extractString(
+Token* Token::_extractString(
         const string&       code,
               int&          pos,
         const unsigned int& lineNumber
@@ -323,14 +326,14 @@ Token Token::_extractString(
     }
 
     // Create and return a new token.
-    return Token( Token::StringLiteral, lineNumber, tokenStr );
+    return new Token( Token::StringLiteral, lineNumber, tokenStr );
 }
 
 
 /******************************************************************************/
 
 
-Token Token::_extractNumber(
+Token* Token::_extractNumber(
         const string&       code,
               int&          pos,
         const unsigned int& lineNumber
@@ -341,7 +344,7 @@ Token Token::_extractNumber(
         nb_Octal,
         nb_Decimal,
         nb_Hex
-    }
+    };
 
     // First lets figure out what kind of digit string this is. This will be
     // used further down while extracting to ensure valid characters.
@@ -398,14 +401,14 @@ Token Token::_extractNumber(
     }
 
     // Create and return a new token.
-    return Token( Token::NumericLiteral, lineNumber, tokenStr );
+    return new Token( Token::NumericLiteral, lineNumber, tokenStr );
 }
 
 
 /******************************************************************************/
 
 
-Token Token::_extractIdentifier(
+Token* Token::_extractIdentifier(
         const std::string&  code,
               int&          pos,
         const unsigned int& lineNumber
@@ -440,7 +443,7 @@ Token Token::_extractIdentifier(
         tokenStr += c;
 
     // Create and return a new token.
-    return Token( tokenType, lineNumber, tokenStr );
+    return new Token( tokenType, lineNumber, tokenStr );
 }
 
 
@@ -494,7 +497,7 @@ void Token::_extractCommentBlock(
 /******************************************************************************/
 
 
-Token Token::_extractKeyword(
+Token* Token::_extractKeyword(
         const std::string&  code,
               int&          pos,
         const int&          keywordIndex,
@@ -504,14 +507,14 @@ Token Token::_extractKeyword(
     // Calculate the token type and move the position up
     const Token::Type tokenType = (Token::Type)((int)Token::Break + keywordIndex);
     pos += strlen( Token::_keywords[ keywordIndex ] );
-    return Token( tokenType, lineNumber );
+    return new Token( tokenType, lineNumber );
 }
 
 
 /******************************************************************************/
 
 
-Token Token::_extractOperator(
+Token* Token::_extractOperator(
         const std::string&  code,
               int&          pos,
         const int&          operatorIndex,
@@ -521,7 +524,7 @@ Token Token::_extractOperator(
     // Calculate the token type and move the position up
     const Token::Type tokenType = (Token::Type)((int)Token::Scope + operatorIndex);
     pos += strlen( Token::_operators[ operatorIndex ] );
-    return Token( tokenType, lineNumber );
+    return new Token( tokenType, lineNumber );
 }
 
 
