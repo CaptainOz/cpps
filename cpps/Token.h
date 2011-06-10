@@ -172,6 +172,11 @@ public:
      */
     static Token::List tokenize( const std::string& code ) throw( ParseException );
 
+    const Token::Type& getType( void ) const;
+    const std::string& getTypeString( void ) const;
+    const std::string& getString( void ) const;
+    const unsigned int& getLineNUmber( void ) const;
+
 private:
     const std::string mTokenStr;
     const Token::Type mType;
@@ -341,6 +346,43 @@ private:
         ) throw();
 
 }; // end class Token
+
+
+/******************************************************************************/
+
+
+inline const Token::Type& Token::getType( void ) const
+{
+    return mType;
+}
+
+
+/******************************************************************************/
+
+
+inline const std::string& Token::getTypeString( void ) const
+{
+    return Token::TypeNames[ getType() ];
+}
+
+
+/******************************************************************************/
+
+
+inline const std::string& Token::getString( void ) const
+{
+    return mTokenStr;
+}
+
+
+/******************************************************************************/
+
+
+inline const unsigned int& Token::getLineNumber( void ) const
+{
+    return mLineNumber;
+}
+
 
 } // end namespace cpps
 
