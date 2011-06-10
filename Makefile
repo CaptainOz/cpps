@@ -3,6 +3,7 @@ CWD  = ${shell pwd}
 BIN  = bin
 CPPS = cpps
 CLI  = cli
+TEST = tests
 BUILD = build
 
 # Compiler
@@ -28,8 +29,8 @@ all: cpps cli
 
 # CPPS Core
 cppsObjs 	= \
-			Interpreter.o \
-			Object.o \
+			Exceptions.o \
+			Token.o \
 
 cppsBuildObjs = $(patsubst %,$(CPPS)/%,$(cppsObjs))
 cppsDirObjs   = $(patsubst %,$(BUILD)/%,$(cppsBuildObjs))
@@ -43,4 +44,13 @@ cliBuildObjs = $(patsubst %,$(CLI)/%,$(cliObjs))
 cliDirObjs	 = $(patsubst %,$(BUILD)/%,$(cliBuildObjs)) $(cppsDirObjs)
 cli: cpps $(cliBuildObjs)
 	$(CC_FLAGS) $(LFLAGS) -o $(BIN)/cpps $(cliDirObjs)
+
+
+# Test Targets
+test-all: test-tokenizer
+
+testTokenizerBuildObjs = $(patsubst %,$(TEST)/%,test_tokenizer.o)
+testTokenizerDirObjs   = $(patsubst %,$(BUILD)/%,$(testTokenizerBuildObjs))
+test-tokenizer: cpps $(testTokenizerBuildObjs)
+	$(CC_FLAGS) $(LFLAGS) -o $(BIN)/test_tokenizer $(testTokenizerDirObjs) $(cppsDirObjs)
 

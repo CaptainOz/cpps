@@ -11,7 +11,7 @@
  * @author Nate Lillich
  */
 
-#include <CPPS.h>
+#include <cpps/CPPS.h>
 
 #include <string>
 #include <iostream>
