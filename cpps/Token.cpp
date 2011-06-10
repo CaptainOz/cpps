@@ -147,6 +147,10 @@ const char* Token::_operators[] = {
         0 // End array
     };
 
+
+/******************************************************************************/
+
+
 Token::List Token::tokenize( const string& code ) throw( ParseException )
 {
     unsigned int lineCounter = 0;
