@@ -177,6 +177,8 @@ public:
     const std::string& getString( void ) const;
     const unsigned int& getLineNumber( void ) const;
 
+    static const std::string getTypeString( const Token::Type& type );
+
 private:
     const std::string mTokenStr;
     const Token::Type mType;
@@ -362,7 +364,16 @@ inline const Token::Type& Token::getType( void ) const
 
 inline const std::string Token::getTypeString( void ) const
 {
-    return Token::TypeNames[ getType() ];
+    return getTypeString( getType() );
+}
+
+
+/******************************************************************************/
+
+
+inline const std::string Token::getTypeString( const Token::Type& type )
+{
+    return Token::TypeNames[ type ];
 }
 
 

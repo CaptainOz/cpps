@@ -501,7 +501,7 @@ Token* Token::_extractKeyword(
 {
     // Calculate the token type and move the position up
     const Token::Type tokenType = (Token::Type)((int)Token::Break + keywordIndex);
-    pos += strlen( Token::_keywords[ keywordIndex ] );
+    pos += strlen( Token::_keywords[ keywordIndex ] ) - 1;
     return new Token( tokenType, lineNumber );
 }
 
@@ -518,7 +518,7 @@ Token* Token::_extractOperator(
 {
     // Calculate the token type and move the position up
     const Token::Type tokenType = (Token::Type)((int)Token::Scope + operatorIndex);
-    pos += strlen( Token::_operators[ operatorIndex ] );
+    pos += strlen( Token::_operators[ operatorIndex ] ) - 1;
     return new Token( tokenType, lineNumber );
 }
 
