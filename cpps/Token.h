@@ -188,7 +188,7 @@ public:
     /**
      * @return The string from the code.
      */
-    const std::string& getString( void ) const;
+    const std::string getString( void ) const;
 
     //! Returns the line number the token was extracted from.
     /**
@@ -405,9 +405,12 @@ inline const std::string Token::getTypeString( const Token::Type& type )
 /******************************************************************************/
 
 
-inline const std::string& Token::getString( void ) const
+inline const std::string Token::getString( void ) const
 {
-    return mTokenStr;
+    const Token::Type& type = getType();
+    return type >= Token::Scope && type <= Token::BitwiseOr ? Token::_operators[ type ] :
+           type >= Token::Break && type <= Token::Var       ? Token::_keywords[ type ]  :
+                                                              mTokenStr                 ;
 }
 
 
