@@ -172,11 +172,36 @@ public:
      */
     static Token::List* tokenize( const std::string& code ) throw( ParseException );
 
+    //! Returns the type of this token.
+    /**
+     * @return The Token::Type of this token.
+     */
     const Token::Type& getType( void ) const;
+
+    //! Returns the string version of the token's type.
+    /**
+     * @return The string name of the this token's type.
+     */
     const std::string getTypeString( void ) const;
+
+    //! Returns the string as extracted from the code.
+    /**
+     * @return The string from the code.
+     */
     const std::string& getString( void ) const;
+
+    //! Returns the line number the token was extracted from.
+    /**
+     *  @return The line number the token was extracted from.
+     */
     const unsigned int& getLineNumber( void ) const;
 
+    //! Returns the name of the token type.
+    /**
+     * @param type The type to get the name of.
+     *
+     * @return The name of the provided token type.
+     */
     static const std::string getTypeString( const Token::Type& type );
 
 private:
