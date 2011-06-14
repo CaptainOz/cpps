@@ -25,7 +25,7 @@ void spTest_one( void )
 {
     SmartPointer<int> smint( 0 );
 
-    cout << "Basic SmartPointer test ";
+    cout << "Basic SmartPointer test: ";
 
     if( smint.getReferenceCount() != 1 )
         cout << "Error 1: Wrong reference count. Expected 1, found "
