@@ -159,7 +159,7 @@ inline SmartPointer<D,C>::~SmartPointer( void ) throw()
 template< typename D, typename C >
 void SmartPointer<D,C>::_decrement( void ) throw()
 {
-    if( mRefCount != NULL && --(*mRefCount) )
+    if( mRefCount != NULL && --(*mRefCount) <= 0 )
     {
         delete mRefCount;
         delete mDataPtr;
