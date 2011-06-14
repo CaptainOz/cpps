@@ -23,8 +23,8 @@ namespace cpps
  * @tparam DataType    The type of data that the SmartPointer will point to.
  * @tparam CounterType The type to use to keep count of the number of references
  *                     to the SmartPointer. This type must support the
- *                     pre-increment, pre-decrement, and bool conversion
- *                     operators.
+ *                     pre-increment, pre-decrement, bool conversion, and
+ *                     unsigned int conversion operators.
  */
 template< typename DataType, typename CounterType = unsigned int >
 class SmartPointer
@@ -60,15 +60,28 @@ public:
      */
     SmartPointer( const ThisType& other ) throw();
 
-    //! Conversion constructor
+    //! Pointer conversion constructor
     /**
      * @param dataPtr The pointer to convert into a SmartPointer.
      */
     SmartPointer( DataType* dataPtr ) throw();
 
+    //! Data conversion constructor
+    /**
+     * @param data The data to create a SmartPointer copy of.
+     */
+    explicit SmartPointer( const DataType& data ) throw();
+
     //! ~Destructor decrements the reference count and frees the pointer if it
     //! was the last one.
     ~SmartPointer( void ) throw();
+
+    //! Gets the count of the number of references to this SmartPointer.
+    /**
+     * @return The total number of references to this SmartPointer. This value
+     *         can be zero if this SmartPointer points to nothing.
+     */
+    unsigned int getReferenceCount( void ) const throw();
 
     //! Copy operator
     /**
@@ -114,9 +127,17 @@ SmartPointer<D,C>::SmartPointer( const ThisType& other ) throw()
 }
 
 template< typename D, typename C >
-SmartPointer<D,C>::SmartPointer( D* data ) throw()
+SmartPointer<D,C>::SmartPointer( D* dataPtr ) throw()
     : mRefCount( new C(0) ),
-      mDataPtr( data )
+      mDataPtr( dataPtr )
+{
+    _increment();
+}
+
+template< typename D, typename C >
+SmartPointer<D,C>::SmartPointer( const D& data ) throw()
+    : mRefCount( new C(0) ),
+      mDataPtr( new D(data) )
 {
     _increment();
 }
@@ -168,6 +189,16 @@ void SmartPointer<D,C>::_copy( const ThisType& other ) throw()
     ThisType* otherPtr = const_cast<ThisType*>( &other );
     mRefCount = otherPtr->mRefCount;
     mDataPtr  = otherPtr->mDataPtr;
+}
+
+
+/******************************************************************************/
+
+
+template< typename D, typename C >
+inline unsigned int SmartPointer<D,C>::getReferenceCount( void ) const throw()
+{
+    return mRefCount != NULL ? *mRefCount : 0;
 }
 
 
