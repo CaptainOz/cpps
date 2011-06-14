@@ -47,10 +47,15 @@ cli: cpps $(cliBuildObjs)
 
 
 # Test Targets
-test-all: test-tokenizer
+test-all: test-tokenizer test-smartpointer
 
 testTokenizerBuildObjs = $(patsubst %,$(TEST)/%,test_tokenizer.o)
 testTokenizerDirObjs   = $(patsubst %,$(BUILD)/%,$(testTokenizerBuildObjs))
 test-tokenizer: cpps $(testTokenizerBuildObjs)
 	$(CC_FLAGS) $(LFLAGS) -o $(BIN)/test_tokenizer $(testTokenizerDirObjs) $(cppsDirObjs)
+
+testSmartPointerBuildObjs = $(patsubst %,$(TEST)/%,test_smartpointer.o)
+testSmartPointerDirObjs   = $(patsubst %,$(BUILD)/%,$(testSmartPointerBuildObjs))
+test-smartpointer: $(testSmartPointerBuildObjs)
+	$(CC_FLAGS) $(LFLAGS) -o $(BIN)/test_smartpointer $(testSmartPointerDirObjs)
 
