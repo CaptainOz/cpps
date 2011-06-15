@@ -1,13 +1,13 @@
 /**
- * @file Interpreter.cpp
+ * @file
  *
- * @brief Contains the code for the CPPS Interpreter.
+ * @brief Contains the code for the Scope class.
  *
  * @author Nate Lillich
  */
 
 
-#include "Interpreter.h"
+#include "Scope.h"
 #include <sstream>
 
 using namespace std;
@@ -15,17 +15,16 @@ using namespace std;
 namespace cpps
 {
 
-Interpreter::Interpreter( void )
+Scope::Scope( void )
 {
 }
 
 
-/*********************************************************/
+/******************************************************************************/
 
 
-Object Interpreter::exec(
+Object Scope::exec(
         const    string& code,
-                 Scope&  scope,
         unsigned int     lineNumber
     )
 {
@@ -33,7 +32,7 @@ Object Interpreter::exec(
     Token::List* tokens = Token::tokenize( code );
 
     // Parse
-    parse( *tokens, scope );
+    ParseTree* statements = _parse( *tokens );
 
     // Execute
     // Convert RPN into op-code where needed
