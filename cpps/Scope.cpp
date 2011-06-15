@@ -8,7 +8,6 @@
 
 
 #include "Scope.h"
-#include <sstream>
 
 using namespace std;
 
@@ -37,6 +36,23 @@ Object Scope::exec(
     // Execute
     // Convert RPN into op-code where needed
     // Replace constant expressions with their values
+}
+
+
+/******************************************************************************/
+
+
+ParseTree* Scope::_parse( const Token::List& tokens )
+{
+    // Convert tokens into RPN stack.
+    for( Token::List::const_iterator it = tokens.begin();
+         it != tokens.end();
+         ++it )
+    {
+        
+    }
+
+    // Create function and block structures as encountered
 }
 
 

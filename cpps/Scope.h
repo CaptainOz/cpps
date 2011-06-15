@@ -9,7 +9,9 @@
 #ifndef __CPPS_SCOPE_H_INCLUDED__
 #define __CPPS_SCOPE_H_INCLUDED__
 
+#include "ParseTree.h"
 #include "Scriptable.h"
+#include "Token.h"
 
 namespace cpps
 {
@@ -17,6 +19,7 @@ namespace cpps
 class Scope : public Scriptable
 {
 private:
+    ParseTree* _parse( const Token::List& tokens );
 
 public:
     Object exec(
