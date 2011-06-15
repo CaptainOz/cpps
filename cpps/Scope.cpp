@@ -30,10 +30,14 @@ Object Interpreter::exec(
     )
 {
     // Tokenize
-    Token::List tokens = Token::tokenize( code );
-    
+    Token::List* tokens = Token::tokenize( code );
 
-    // Parse / Execute
+    // Parse
+    parse( *tokens, scope );
+
+    // Execute
+    // Convert RPN into op-code where needed
+    // Replace constant expressions with their values
 }
 
 
