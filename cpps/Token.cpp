@@ -77,36 +77,27 @@ const char* Token::TypeNames[] = {
         "BitwiseOr",       // \|
         // *** End Overloadable Operators *** //
 
-        // *** Begin Block-Level Keywords *** //
-        "Catch",           // catch
-        "Class",           // class
-        "Do",              // do
-        "Else",            // else
-        "For",             // for
-        "Foreach",         // foreach
-        "Function",        // function
-        "If",              // if
-        "Namespace",       // namespace
-        "Struct",          // struct
-        "Switch",          // switch
-        "Throw",           // throw
-        "Try",             // try
-        "Union",           // union
-        "While",           // while
-        // *** End Block-Level Keywords *** //
-
-        // *** Begin Line Keywords *** //
+        // *** Begin Keywords *** //
         "Break",           // break
         "Case",            // case
+        "Catch",           // catch
+        "Class",           // class
         "Const",           // const
         "Continue",        // continue
         "Default",         // default
         "Delete",          // delete
+        "Do",              // do
+        "Else",            // else
         "Enum",            // enum
         "False",           // false
+        "For",             // for
+        "Foreach",         // foreach
         "Friend",          // friend
+        "Function",        // function
+        "If",              // if
         "Include",         // include
         "InstanceOf",      // instanceof
+        "Namespace",       // namespace
         "New",             // new
         "Null",            // null
         "Operator",        // operator
@@ -116,29 +107,32 @@ const char* Token::TypeNames[] = {
         "Return",          // return
         "SizeOf",          // sizeof
         "Static",          // static
+        "Struct",          // struct
+        "Switch",          // switch
         "This",            // this
+        "Throw",           // throw
         "True",            // true
+        "Try",             // try
         "TypeDef",         // typedef
         "TypeNameOperator",// typename
+        "Union",           // union
         "Using",           // using
+        "While",           // while
         "Var",             // var
-        // *** End Line Keywords *** //
+        // *** End Keywords *** //
 
         0 // End array
     };
 
 // Keyword strings as they appear in the code ordered the same as Token::Type.
 const char* Token::_keywords[] = {
-        "catch",      "class",    "do",      "else",      "for",
-        "foreach",    "function", "if",      "namespace", "struct",
-        "switch",     "throw",    "try",     "union",     "while",
-
-        "break",      "case",     "const",   "continue",  "default",
-        "delete",     "enum",     "false",   "friend",    "include",
-        "instanceof", "new",      "null",    "operator",  "private",
-        "protected",  "public",   "return",  "sizeof",    "static",
-        "this",       "true",     "typedef", "typename",  "using",
-        "var",
+        "break",      "case",      "catch",  "class",    "const",    "continue",
+        "default",    "delete",    "do",     "else",     "enum",     "false",
+        "for",        "foreach",   "friend", "function", "if",       "include",
+        "instanceof", "namespace", "new",    "null",     "operator", "private",
+        "protected",  "public",    "return", "sizeof",   "static",   "struct",
+        "switch",     "this",      "throw",  "true",     "try",      "typedef",
+        "typename",   "union",     "using",  "while",    "var",
 
         0 // End array
     };
@@ -506,7 +500,7 @@ Token* Token::_extractKeyword(
     ) throw()
 {
     // Calculate the token type and move the position up
-    const Token::Type tokenType = (Token::Type)((int)Token::Catch + keywordIndex);
+    const Token::Type tokenType = (Token::Type)((int)Token::Break + keywordIndex);
     pos += strlen( Token::_keywords[ keywordIndex ] ) - 1;
     return new Token( tokenType, lineNumber );
 }

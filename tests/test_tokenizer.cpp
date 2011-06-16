@@ -87,21 +87,19 @@ void tokenTest_two( void )
 void tokenTest_three( void )
 {
     string code =
-        "catch;      class;    do;      else;      for;     \
-         foreach;    function; if;      namespace; struct;  \
-         switch;     throw;    try;     union;     while;   \
-         break;      case;     const;   continue;  default; \
-         delete;     enum;     false;   friend;    include; \
-         instanceof; new;      null;    operator;  private; \
-         protected;  public;   return;  sizeof;    static;  \
-         this;       true;     typedef; typename;  using;   \
-         var;";
+        "break;        case;        catch;    class;      const;      continue;\
+         default;      delete;      do;       else;       enum;       false;   \
+         for;          foreach;     friend;   function;   if;         include; \
+         instanceof;   namespace;   new;      null;       operator;   private; \
+         protected;    public;      return;   sizeof;     static;     struct;  \
+         switch;       this;        throw;    true;       try;        typedef; \
+         typename;     union;       using;    while;      var;";
     Token::List* tokenList = Token::tokenize( code );
 
     cout << "Operator extraction test: ";
 
     bool error = false;
-    int type = (int)Token::Catch;
+    int type = (int)Token::Break;
     for( Token::List::iterator it = tokenList->begin();
          it != tokenList->end();
          ++it )

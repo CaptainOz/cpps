@@ -108,36 +108,27 @@ public:
         BitwiseOr,       // \|                      DONE        DONE
         // *** End Overloadable Operators *** //
 
-        // *** Begin Block-Level Keywords *** //
-        Catch,           // catch                   DONE        DONE
-        Class,           // class                   DONE        DONE
-        Do,              // do                      DONE        DONE
-        Else,            // else                    DONE        DONE
-        For,             // for                     DONE        DONE
-        Foreach,         // foreach                 DONE        DONE
-        Function,        // function                DONE        DONE
-        If,              // if                      DONE        DONE
-        Namespace,       // namespace               DONE        DONE
-        Struct,          // struct                  DONE        DONE
-        Switch,          // switch                  DONE        DONE
-        Throw,           // throw                   DONE        DONE
-        Try,             // try                     DONE        DONE
-        Union,           // union                   DONE        DONE
-        While,           // while                   DONE        DONE
-        // *** End Block-Level Keywords *** //
-
-        // *** Begin Line Keywords *** //
+        // *** Begin Keywords *** //
         Break,           // break                   DONE        DONE
         Case,            // case                    DONE        DONE
+        Catch,           // catch                   DONE        DONE
+        Class,           // class                   DONE        DONE
         Const,           // const                   DONE        DONE
         Continue,        // continue                DONE        DONE
         Default,         // default                 DONE        DONE
         Delete,          // delete                  DONE        DONE
+        Do,              // do                      DONE        DONE
+        Else,            // else                    DONE        DONE
         Enum,            // enum                    DONE        DONE
         False,           // false                   DONE        DONE
+        For,             // for                     DONE        DONE
+        Foreach,         // foreach                 DONE        DONE
         Friend,          // friend                  DONE        DONE
+        Function,        // function                DONE        DONE
+        If,              // if                      DONE        DONE
         Include,         // include                 DONE        DONE
         InstanceOf,      // instanceof              DONE        DONE
+        Namespace,       // namespace               DONE        DONE
         New,             // new                     DONE        DONE
         Null,            // null                    DONE        DONE
         Operator,        // operator                DONE        DONE
@@ -147,13 +138,19 @@ public:
         Return,          // return                  DONE        DONE
         SizeOf,          // sizeof                  DONE        DONE
         Static,          // static                  DONE        DONE
+        Struct,          // struct                  DONE        DONE
+        Switch,          // switch                  DONE        DONE
         This,            // this                    DONE        DONE
+        Throw,           // throw                   DONE        DONE
         True,            // true                    DONE        DONE
+        Try,             // try                     DONE        DONE
         TypeDef,         // typedef                 DONE        DONE
         TypeNameOperator,// typename                DONE        DONE
+        Union,           // union                   DONE        DONE
         Using,           // using                   DONE        DONE
+        While,           // while                   DONE        DONE
         Var,             // var                     DONE        DONE
-        // *** End Line Keywords *** //
+        // *** End Keywords *** //
 
         TokenTypeCount
     }; // end Token::Type
