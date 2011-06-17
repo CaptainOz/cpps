@@ -52,7 +52,7 @@ of the statement.
 
 Statement Tree
 --------------
-The expressions are then ordered into a heirarchy and put into a statement tree
+The expressions are then ordered into a hierarchy and put into a statement tree
 which denotes the order of execution. Operators make up the switch nodes, and
 identifiers, variables, and literal constants make up leaf nodes.
 
@@ -79,10 +79,34 @@ down to `<< (2)`, then `<< (1)`. `<< (1)` would get executed using `$cout` and
 `<< (3)`. And finally the result of `<< (3)` would be the value returned by this
 statement in the statement tree.
 
-Parse trees are not binary trees, a node can have 3 or more sub-statements. For
+Parse trees are not binary trees, a node can have 1 or more sub-statements. For
 example, an `if-then-else` statement would result in a root node with 3
 immediate child expressions: the if conditional, the then code block, and the
 else code block. Code blocks can have any number of child statements which each
-get executed sequentially.
+get executed sequentially. And unary operators only have one child node.
+
+The direction the tree is traversed is always left-right-middle, regardless of
+the associativity of the operators. However the direction the tree is built
+(which side the branching goes down), _is_ dependent on the associativity of the
+operators. For example, take the following statement:
+
+    $foo["bar"] = 2 + 3;
+
+That statement would have the equality sign as the root node with either side
+being branches:
+
+                                   +---+
+                                   | = |
+                                   +---+
+                                  /     \
+                            +----+       +---+
+                            | [] |       | + |
+                            +----+       +---+
+                           /     |       |    \
+                   +------+ +-------+    +---+ +---+
+                   | $foo | | "bar" |    | 2 | | 3 |
+                   +------+ +-------+    +---+ +---+
+
+
 
 
