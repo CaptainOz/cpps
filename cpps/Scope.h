@@ -20,6 +20,44 @@ class Scope : public Scriptable
 {
 private:
     ParseTree* _parse( const Token::List& tokens );
+    ParseTree::Node* _parse(
+                  Token::List::const_iterator& it,
+            const Token::List::const_iterator& end
+        );
+
+    ParseTree::Node* _parseLoop(
+                  Token::List::const_iterator& it,
+            const Token::List::const_iterator& end
+        );
+    ParseTree::Node* _parseBranch(
+                  Token::List::const_iterator& it,
+            const Token::List::const_iterator& end
+        );
+    ParseTree::Node* _parseTryCatch(
+                  Token::List::const_iterator& it,
+            const Token::List::const_iterator& end
+        );
+    ParseTree::Node* _parseBlock(
+                  Token::List::const_iterator& it,
+            const Token::List::const_iterator& end
+        );
+    ParseTree::Node* _parseStatement(
+                  Token::List::const_iterator& it,
+            const Token::List::const_iterator& end
+        );
+
+    void _addFunction(
+                  Token::List::const_iterator& it,
+            const Token::List::const_iterator& end
+        );
+    void _addNamespace(
+                  Token::List::const_iterator& it,
+            const Token::List::const_iterator& end
+        );
+    void _addClass(
+                  Token::List::const_iterator& it,
+            const Token::List::const_iterator& end
+        );
 
 public:
     Object exec(

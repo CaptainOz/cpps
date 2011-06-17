@@ -117,6 +117,74 @@ ParseTree::Node* Scope::_parse(
     return statement;
 }
 
+void Scope::_addFunction(
+              Token::List::const_iterator& it,
+        const Token::List::const_iterator& end
+    )
+{
+    // Figure out the function's return type.
+    string returnType = "";
+    if( (*it).getType() == Token::TypeName )
+    {
+        returnType = (*it).getString();
+        ++it;
+    }
+
+    // Skip the function token and get the function's name.
+    ++it;
+    if( it == end )
+        throw ParseException::unexpectedEndOfFile();
+    if( (*it).getType() != Token::TypeName )
+        throw ParseException::unexpectedToken(
+                (*it), 0, Token::getTypeString( Token::TypeName ) );
+    string name = (*it).getString();
+    ++it;
+
+    // Now we are at the parameter list, so loop through until we find the
+    // closing parenthesis.
+    if( (*it).getType() != Token::OpenParen )
+        throw ParseException::unexpectedToken(
+                (*it), 0, Token::getTypeString( Token::OpenParen ) );
+    vector< Object > parameterList;
+    for( ++it; (*it).getType() != Token::CloseParen; ++it )
+    {
+        // We should never reach the end while parsing the parameter list!
+        if( it+1 == end )
+            throw ParseException::unexpectedEndOfFile();
+        
+    }
+}
+
+void _addNamespace(
+              Token::List::const_iterator& it,
+        const Token::List::const_iterator& end
+    );
+void _addClass(
+              Token::List::const_iterator& it,
+        const Token::List::const_iterator& end
+    );
+
+ParseTree::Node* _parseLoop(
+              Token::List::const_iterator& it,
+        const Token::List::const_iterator& end
+    );
+ParseTree::Node* _parseBranch(
+              Token::List::const_iterator& it,
+        const Token::List::const_iterator& end
+    );
+ParseTree::Node* _parseTryCatch(
+              Token::List::const_iterator& it,
+        const Token::List::const_iterator& end
+    );
+ParseTree::Node* _parseBlock(
+              Token::List::const_iterator& it,
+        const Token::List::const_iterator& end
+    );
+ParseTree::Node* _parseStatement(
+              Token::List::const_iterator& it,
+        const Token::List::const_iterator& end
+    );
+
 
 
 
