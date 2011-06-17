@@ -22,12 +22,13 @@ Code
 ----
 Code is the actual words and symbols that the programmer writes, combined.
 
-  $cout << "Hello" << " " << "world!";
+    $cout << "Hello" << " " << "world!";
 
 Tokens
 ------
 Tokens are the individual pieces words or symbols in the code. Each of the
 following is a separate token:
+
   * $cout
   * <<
   * "Hello"
@@ -41,9 +42,11 @@ Statements
 ----------
 Statements are the tokens grouped together into one or more expressions. Each of
 the following is a separate expression which make up one statement:
+
   * $cout << "Hello"
   * _previous result_ << " "
   * _previous result_ << " world!"
+
 Note that the semicolon is not part of the statement, but simply denotes the end
 of the statement.
 
@@ -53,21 +56,21 @@ The expressions are then ordered into a heirarchy and put into a statement tree
 which denotes the order of execution. Operators make up the switch nodes, and
 identifiers, variables, and literal constants make up leaf nodes.
 
-                         +--------+
-                         | << (3) |
-                         +--------+
-                         /        \
-                    +--------+ +----------+
-                    | << (2) | | "world!" |
-                    +--------+ +----------+
-                    /        \
-               +--------+  +-----+
-               | << (1) |  | " " |
-               +--------+  +-----+
-               /        \
-          +-------+ +---------+
-          | $cout | | "Hello" |
-          +-------+ +---------+
+                                    +--------+
+                                    | << (3) |
+                                    +--------+
+                                   /          \
+                              +--------+  +----------+
+                              | << (2) |  | "world!" |
+                              +--------+  +----------+
+                             /          \
+                        +--------+    +-----+
+                        | << (1) |    | " " |
+                        +--------+    +-----+
+                       /          \
+                  +-------+   +---------+
+                  | $cout |   | "Hello" |
+                  +-------+   +---------+
 
 The parse tree displayed above in ASCII would start at the node `<< (3)`, step
 down to `<< (2)`, then `<< (1)`. `<< (1)` would get executed using `$cout` and
