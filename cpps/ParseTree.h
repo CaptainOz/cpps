@@ -17,10 +17,13 @@
 namespace cpps
 {
 
+//! An abstract syntax tree model for holding compiled code statements.
 class ParseTree
 {
 public:
     typedef std::vector< ParseTree::Node > StatementList;
+
+    //! A syntax tree node for a single operation or value.
     class Node
     {
     public:
@@ -37,9 +40,14 @@ public:
 }; // end class ParseTree
 
 
+/******************************************************************************/
+
+
+//! This namespace contains all the ParseTree::Node subclasses.
 namespace node
 {
 
+//! TypeName holds a reference to a class or function.
 class TypeName : public ParseTree::Node
 {
 private:
@@ -47,9 +55,13 @@ private:
 
 public
     virtual Scriptable::Reference getValue( Scriptable::Reference args );
-};
+}; // end class TypeName
 
 
+/******************************************************************************/
+
+
+//! Variables holds a reference to a single variable.
 class Variable : public ParseTree::Node
 {
 private:
@@ -57,9 +69,14 @@ private:
 
 public
     virtual Scriptable::Reference getValue( Scriptable::Reference args );
-};
+}; // end class Variable
 
 
+/******************************************************************************/
+
+
+//! StringLiterals hold the value of a quoted string. They are like variables,
+//! but unvarying.
 class StringLiteral : public ParseTree::Node
 {
 private:
@@ -67,9 +84,13 @@ private:
 
 public:
     virtual Scriptable::Reference getValue( Scriptable::Reference args );
-};
+}; // end class StringLiteral
 
 
+/******************************************************************************/
+
+
+//! CodeBlocks contain other statements to be executed.
 class CodeBlock : public ParseTree::Node
 {
 private:
@@ -77,9 +98,13 @@ private:
 
 public:
     virtual Scriptable::Reference getValue( Scriptable::Reference args );
-};
+}; // end class CodeBlock
 
 
+/******************************************************************************/
+
+
+//! UnaryOperators are any operator which take only one operand.
 class UnaryOperator : public ParseTree::Node
 {
 private:
@@ -89,13 +114,17 @@ protected:
     virtual Scriptable::Reference operate(
             const ParseTree::Node& operand,
             Scriptable::Reference args
-        );
+        ) = 0;
 
 public:
     virtual Scriptable::Reference getValue( Scriptable::Reference args );
-};
+}; // end class UnaryOperand
 
 
+/******************************************************************************/
+
+
+//! BinaryOperators are any operators which take two operands.
 class BinaryOperator : public ParseTree::Node
 {
 private:
@@ -107,13 +136,17 @@ protected:
             const ParseTree::Node& leftOperand,
             const ParseTree::Node& rightOperand,
             Scriptable::Reference args
-        );
+        ) = 0;
 
 public:
     virtual Scriptable::Reference getValue( Scriptable::Reference args );
-};
+}; // end class BinaryOperator
 
 
+/******************************************************************************/
+
+
+//! TernaryOperators are any operators which take three operands.
 class TernaryOperator : public ParseTree::Node
 {
 private:
@@ -127,13 +160,17 @@ protected:
             const ParseTree::Node& middleOperand,
             const ParseTree::Node& rightOperand,
             Scriptable::Reference args
-        );
+        ) = 0;
 
 public:
     virtual Scriptable::Reference getValue( Scriptable::Reference args );
-};
+}; // end class TernaryOperator
 
 
+/******************************************************************************/
+
+
+//! ScopeOperator resolves a reference to one within the given scope.
 class ScopeOperator : public BinaryOperator
 {
 protected:
@@ -143,9 +180,13 @@ protected:
             Scriptable::Reference args
         );
 
-};
+}; // end class ScopeOperator
 
 
+/******************************************************************************/
+
+
+//! LogicalOrOperator is true if either of its operands are true.
 class LogicalOrOperator : public BinaryOperator
 {
 protected:
@@ -155,9 +196,13 @@ protected:
             Scriptable::Reference args
         );
 
-};
+}; // end class LogicalOrOperator
 
 
+/******************************************************************************/
+
+
+//! LogicalAndOperator is true if both of its operands are true.
 class LogicalAndOperator : public BinaryOperator
 {
 protected:
@@ -167,9 +212,13 @@ protected:
             Scriptable::Reference args
         );
 
-};
+}; // end class LogicalAndOperator
 
 
+/******************************************************************************/
+
+
+//! InlineIfOperator acts like an if-then-else clause in only one statement.
 class InlineIfOperator : public TernaryOperator
 {
 protected:
@@ -179,9 +228,13 @@ protected:
             const ParseTree::Node& rightOperand,
             Scriptable::Reference args
         );
-};
+}; // end class InlineIfOperator
 
 
+/******************************************************************************/
+
+
+//! FunctionOperator references another function by name.
 class FunctionOperator : public UnaryOperator
 {
 protected:
