@@ -9,9 +9,6 @@
 #ifndef __CPPS_SCRIPTABLE_H_INCLUDED__
 #define __CPPS_SCRIPTABLE_H_INCLUDED__
 
-#include <map>
-#include <string>
-
 #include "SmartPointer.h"
 
 namespace cpps
@@ -21,33 +18,32 @@ namespace cpps
 /**
  * This abstract class is used by anything that wants to be inserted into a CPPS
  * script.
- *
- * @par Abstract Methods:
- * @li accessor Access an individual property of the Scriptable object.
  */
 class Scriptable
 {
 public:
     typedef SmartPointer< Scriptable > Reference;
-    typedef std::map< std::string, Reference > Attributes;
 
-private:
-    Attributes mAttrs;
+    //! Constructor and destructor do nothing.
+    Scriptable( void );
+    ~Scriptable( void );
 
-protected:
-    virtual Reference accessor( const std::string& name ) = 0;
-
-public:
-    Reference operator[]( const std::string& name );
 }; // end class Scriptable
 
 
 /******************************************************************************/
 
 
-inline Scriptable::Reference Scriptable::operator[]( const std::string& name )
+inline Scriptable::Scriptable( void )
 {
-    return accessor( name );
+}
+
+
+/******************************************************************************/
+
+
+inline Scriptable::~Scriptable( void )
+{
 }
 
 
