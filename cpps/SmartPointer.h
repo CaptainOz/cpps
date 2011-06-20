@@ -88,7 +88,7 @@ public:
     /**
      * @return A new copy of the referenced object with a separete counter.
      */
-    ThisType clone( void ) const;
+    ThisType clone( void ) const throw();
 
     //! Copy operator
     /**
@@ -213,7 +213,7 @@ inline unsigned int SmartPointer<D,C>::getReferenceCount( void ) const throw()
 
 
 template< typename D, typename C >
-inline SmartPointer<D,C> SmartPointer<D,C>::clone( void ) const
+inline SmartPointer<D,C> SmartPointer<D,C>::clone( void ) const throw()
 {
     return ThisType( *mDataPtr );
 }
