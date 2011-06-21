@@ -9,6 +9,10 @@
 #ifndef __CPPS_SCOPE_H_INCLUDED__
 #define __CPPS_SCOPE_H_INCLUDED__
 
+#include <map>
+#include <string>
+#include <vector>
+
 #include "ParseTree.h"
 #include "Scriptable.h"
 #include "Token.h"
@@ -19,6 +23,10 @@ namespace cpps
 class Scope : public Scriptable
 {
 private:
+    std::vector< ParseTree::Node > mStatements;
+    std::map< std::string, Object::Reference > mVariables;
+    std::map< std::string, Function::Reference > mFunctions;
+
     ParseTree* _parse( const Token::List& tokens );
     ParseTree::Node* _parse(
                   Token::List::const_iterator& it,
