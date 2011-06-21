@@ -31,11 +31,10 @@ Object Scope::exec(
     Token::List* tokens = Token::tokenize( code );
 
     // Parse
-    ParseTree* statements = _parse( *tokens );
+    ParseTree::Node* start = _parse( *tokens );
 
     // Execute
-    // Convert RPN into op-code where needed
-    // Replace constant expressions with their values
+    return _executeStack( start );
 }
 
 
@@ -44,7 +43,6 @@ Object Scope::exec(
 
 ParseTree* Scope::_parse( const Token::List& tokens )
 {
-    ParseTree *ptree = new ParseTree();
     const Token::List::const_iterator& begin = tokens.begin();
     const Token::List::const_iterator& end   = tokens.end();
 
@@ -52,11 +50,9 @@ ParseTree* Scope::_parse( const Token::List& tokens )
     for( Token::List::const_iterator it = begin; it != end; ++it )
     {
         ParseTree::Node* statement = _parse( it, end );
-        if( statement != NULL );
-        ptree.addStatement( statement );
+        if( statement != NULL )
+            mStatements.push( statement );
     }
-
-    // Create function and block structures as encountered
 }
 
 
@@ -74,7 +70,7 @@ ParseTree::Node* Scope::_parse(
 
     // Functions, namespaces, classes, structs, and unions all get added to
     // the scope directly not parsed into statements.
-    bool block = true;
+    bool parsed = true;
     if( thisType == Token::Function ||
        (thisType == Token::TypeName && nextType == Token::Function) )
         _addFunction( it, end );
@@ -99,21 +95,11 @@ ParseTree::Node* Scope::_parse(
     else if( thisType == Token::OpenBrace )
         statement = _parseBlock( it, end );
     else
-        block = false;
+        parsed = false;
 
     // If it isn't a block statement, lets extract a one-line statement.
-    if( !block )
+    if( !parsed )
         statement = _parseStatement( it, end );
-
-    // If we still haven't parsed this statement, then its an error.
-    if( !block && !statement )
-        throw ParseException(
-                ParseException::UnexpectedToken,
-                token.getString(),
-                0,
-                token.getLineNumber(),
-                "Unexpected token of type " + token.getTypeString()
-            );
     return statement;
 }
 
@@ -180,10 +166,62 @@ ParseTree::Node* _parseBlock(
               Token::List::const_iterator& it,
         const Token::List::const_iterator& end
     );
-ParseTree::Node* _parseStatement(
+
+
+/******************************************************************************/
+
+
+ParseTree::Node* Scope::_parseStatement(
               Token::List::const_iterator& it,
         const Token::List::const_iterator& end
-    );
+    )
+{
+    // To simplify error checking here we'll assume that Scope::_parse correctly
+    // checked for all the cases that would start a non-statement line.
+
+    ParseTree::Node* start = NULL;
+    for( ; it != end && (*it).getType() != Token::Semicolon; ++it )
+    {
+        const Token& token = *it;
+        const Token::Type& type = token.getType();
+        ParseTree::Node* node = NULL:
+    
+        // Is this token a keyword?
+        if( type >= Token::Break && type <= Token::Var )
+            node = ParseTree::Node::getKeywordNode( *it );
+
+        // Or is this token a variable?
+        else if( type == Token::Variable )
+            node = ParseTree::Node::getVariableNode( *it );
+
+        // Or is this a typename?
+        else if( type == Token::TypeName )
+            node = ParseTree::Node::getTypeNameNode( *it );
+
+        // Or is this a string literal? For string literals we also concat
+        // multiple ones together if they are directly next to each other.
+        else if( type == Token::StringLiteral )
+        {
+            string value;
+            for( ; it[1].getType() == Token::StringLiteral; ++it )
+                value += (*it).getString();
+            value += (*it).getString();
+        }
+
+        // TODO: Figure out how to handle parentheticals.
+        // TODO: Consider doing the token checks in a ParseTree::Node::getNode
+        //       method instead of here?
+    }
+
+    // If we reached the end of the file, that's an error! All statements must
+    // end in semicolons.
+    if( it == end )
+        throw ParseExcetion(); // TODO: Fill out this exception.
+    
+    // Skip the semicolon at the end and return our starting node.
+    ++it;
+    return start;
+}
 
 
 
