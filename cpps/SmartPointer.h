@@ -83,6 +83,13 @@ public:
      */
     unsigned int getReferenceCount( void ) const throw();
 
+    //! Creates a new copy of the referenced object with a separate reference
+    //! counter.
+    /**
+     * @return A new copy of the referenced object with a separete counter.
+     */
+    ThisType clone( void ) const throw();
+
     //! Copy operator
     /**
      * @param other The other SmartPointer to copy.
@@ -199,6 +206,16 @@ template< typename D, typename C >
 inline unsigned int SmartPointer<D,C>::getReferenceCount( void ) const throw()
 {
     return mRefCount != NULL ? *mRefCount : 0;
+}
+
+
+/******************************************************************************/
+
+
+template< typename D, typename C >
+inline SmartPointer<D,C> SmartPointer<D,C>::clone( void ) const throw()
+{
+    return ThisType( *mDataPtr );
 }
 
 
