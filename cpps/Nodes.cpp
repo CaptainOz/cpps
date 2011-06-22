@@ -47,6 +47,20 @@ void Scope::Node::getNode(
 
     // TODO: NumericLiteral goes here.
 
+    // TODO: Prefix increment/decrement goes here.
+
+    // TODO: NewOperator goes here.
+    
+    // TODO: DeleteOperator goes here.
+    
+    // TODO: SizeOfOperator goes here.
+    
+    // TODO: TypeCast goes here?
+    
+    // TODO: LogicalNot goes here.
+    
+    // TODO: BitwiseNot goes here.
+
     // Anything else means we didn't get a node.
     else
         nodeGot = false;
