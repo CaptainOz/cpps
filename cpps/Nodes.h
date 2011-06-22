@@ -1,7 +1,7 @@
 /**
  * @file
  *
- * @brief Describes the ParseTree class and its Node.
+ * @brief Describes Scope::Node subclasses.
  *
  * @author Nate Lillich
  */
@@ -12,34 +12,19 @@
 #include <string>
 #include <vector>
 
-#include <Object.h>
+#include "Object.h"
+#include "Scope.h"
 
 namespace cpps
 {
 
-//! A syntax tree node for a single operation or value.
-class Node
-{
-public:
-    virtual Scriptable::Reference getValue( Scriptable::Reference args ) = 0;
 
-    static Node* getNode( 
-                  Token::List::const_iterator& it,
-            const Token::List::const_iterator& end
-        );
-
-}; // end class Node
-
-
-/******************************************************************************/
-
-
-//! This namespace contains all the Node subclasses.
+//! This namespace contains all the Scope::Node subclasses.
 namespace nodeTypes
 {
 
 //! TypeName holds a reference to a class or function.
-class TypeName : public Node
+class TypeName : public Scope::Node
 {
 private:
     const std::string& typeNameStr;
@@ -53,7 +38,7 @@ public
 
 
 //! Variables holds a reference to a single variable.
-class Variable : public Node
+class Variable : public Scope::Node
 {
 private:
     const std::string& variableName;
@@ -68,7 +53,7 @@ public
 
 //! StringLiterals hold the value of a quoted string. They are like variables,
 //! but unvarying.
-class StringLiteral : public Node
+class StringLiteral : public Scope::Node
 {
 private:
     const std::string& value;
@@ -82,7 +67,7 @@ public:
 
 
 //! CodeBlocks contain other statements to be executed.
-class CodeBlock : public Node
+class CodeBlock : public Scope::Node
 {
 private:
     const StatementList& statements;
@@ -96,19 +81,21 @@ public:
 
 
 //! UnaryOperators are any operator which take only one operand.
-class UnaryOperator : public Node
+class UnaryOperator : public Scope::Node
 {
 private:
-    const Node& operand;
+    Scope::Node* operand;
 
 protected:
     virtual Scriptable::Reference operate(
-            const Node& operand,
+            const Scope::Node& operand,
             Scriptable::Reference args
         ) = 0;
 
 public:
     virtual Scriptable::Reference getValue( Scriptable::Reference args );
+
+    void setOperand( Scope::Node* node );
 }; // end class UnaryOperand
 
 
@@ -116,21 +103,24 @@ public:
 
 
 //! BinaryOperators are any operators which take two operands.
-class BinaryOperator : public Node
+class BinaryOperator : public Scope::Node
 {
 private:
-    const Node& leftOperand;
-    const Node& rightOperand;
+    Scope::Node* leftOperand;
+    Scope::Node* rightOperand;
 
 protected:
     virtual Scriptable::Reference operate(
-            const Node& leftOperand,
-            const Node& rightOperand,
+            const Scope::Node& leftOperand,
+            const Scope::Node& rightOperand,
             Scriptable::Reference args
         ) = 0;
 
 public:
     virtual Scriptable::Reference getValue( Scriptable::Reference args );
+
+    void setLeftOperand( Scope::Node* node );
+    void setRightOperand( Scope::Node* node );
 }; // end class BinaryOperator
 
 
@@ -138,23 +128,27 @@ public:
 
 
 //! TernaryOperators are any operators which take three operands.
-class TernaryOperator : public Node
+class TernaryOperator : public Scope::Node
 {
 private:
-    const Node& leftOperand;
-    const Node& middleOperand;
-    const Node& rightOperand;
+    Scope::Node* leftOperand;
+    Scope::Node* middleOperand;
+    Scope::Node* rightOperand;
 
 protected:
     virtual Scriptable::Reference operate(
-            const Node& leftOperand,
-            const Node& middleOperand,
-            const Node& rightOperand,
+            const Scope::Node& leftOperand,
+            const Scope::Node& middleOperand,
+            const Scope::Node& rightOperand,
             Scriptable::Reference args
         ) = 0;
 
 public:
     virtual Scriptable::Reference getValue( Scriptable::Reference args );
+    
+    void setLeftOperand( Scope::Node* node );
+    void setMiddleOperand( Scope::Node* node );
+    void setRightOperand( Scope::Node* node );
 }; // end class TernaryOperator
 
 
@@ -166,8 +160,8 @@ class ScopeOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const Node& leftOperand,
-            const Node& rightOperand,
+            const Scope::Node& leftOperand,
+            const Scope::Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class ScopeOperator
@@ -181,8 +175,8 @@ class LogicalOrOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const Node& leftOperand,
-            const Node& rightOperand,
+            const Scope::Node& leftOperand,
+            const Scope::Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class LogicalOrOperator
@@ -196,8 +190,8 @@ class LogicalAndOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const Node& leftOperand,
-            const Node& rightOperand,
+            const Scope::Node& leftOperand,
+            const Scope::Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class LogicalAndOperator
@@ -211,9 +205,9 @@ class InlineIfOperator : public TernaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const Node& leftOperand,
-            const Node& middleOperand,
-            const Node& rightOperand,
+            const Scope::Node& leftOperand,
+            const Scope::Node& middleOperand,
+            const Scope::Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class InlineIfOperator
@@ -227,7 +221,7 @@ class FunctionOperator : public UnaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const Node& operand,
+            const Scope::Node& operand,
             Scriptable::Reference args
         );
 }; // end class FunctionOperator
@@ -241,8 +235,8 @@ class TypecastOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const Node& leftOperand,
-            const Node& rightOperand,
+            const Scope::Node& leftOperand,
+            const Scope::Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class TypecastOperator
@@ -256,8 +250,8 @@ class IndexOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const Node& leftOperand,
-            const Node& rightOperand,
+            const Scope::Node& leftOperand,
+            const Scope::Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class IndexOperator
@@ -271,8 +265,8 @@ class EqualityOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const Node& leftOperand,
-            const Node& rightOperand,
+            const Scope::Node& leftOperand,
+            const Scope::Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class EqualityOperator
@@ -286,8 +280,8 @@ class NotEqualityOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const Node& leftOperand,
-            const Node& rightOperand,
+            const Scope::Node& leftOperand,
+            const Scope::Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class NotEqualityOperator
@@ -302,8 +296,8 @@ class GreaterEqualOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const Node& leftOperand,
-            const Node& rightOperand,
+            const Scope::Node& leftOperand,
+            const Scope::Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class GreaterEqualOperator
@@ -318,8 +312,8 @@ class LessEqualOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const Node& leftOperand,
-            const Node& rightOperand,
+            const Scope::Node& leftOperand,
+            const Scope::Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class LessEqualOperator
@@ -333,8 +327,8 @@ class AssignOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const Node& leftOperand,
-            const Node& rightOperand,
+            const Scope::Node& leftOperand,
+            const Scope::Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class AssignOperator
@@ -349,8 +343,8 @@ class AssignPlusOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const Node& leftOperand,
-            const Node& rightOperand,
+            const Scope::Node& leftOperand,
+            const Scope::Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class AssignPlusOperator
@@ -365,8 +359,8 @@ class AssignMinusOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const Node& leftOperand,
-            const Node& rightOperand,
+            const Scope::Node& leftOperand,
+            const Scope::Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class AssignMinusOperator
@@ -381,8 +375,8 @@ class AssignConcatOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const Node& leftOperand,
-            const Node& rightOperand,
+            const Scope::Node& leftOperand,
+            const Scope::Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class AssignConcatOperator
@@ -397,8 +391,8 @@ class AssignMultiplyOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const Node& leftOperand,
-            const Node& rightOperand,
+            const Scope::Node& leftOperand,
+            const Scope::Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class AssignMultiplyOperator
@@ -413,8 +407,8 @@ class AssignDivideOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const Node& leftOperand,
-            const Node& rightOperand,
+            const Scope::Node& leftOperand,
+            const Scope::Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class AssignDivideOperator
@@ -429,8 +423,8 @@ class AssignModuloOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const Node& leftOperand,
-            const Node& rightOperand,
+            const Scope::Node& leftOperand,
+            const Scope::Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class AssignModuloOperator
@@ -445,8 +439,8 @@ class AssignBitAndOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const Node& leftOperand,
-            const Node& rightOperand,
+            const Scope::Node& leftOperand,
+            const Scope::Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class AssignBitAndOperator
@@ -461,8 +455,8 @@ class AssignBitXOrOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const Node& leftOperand,
-            const Node& rightOperand,
+            const Scope::Node& leftOperand,
+            const Scope::Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class AssignBitXOrOperator
@@ -476,8 +470,8 @@ class AssignBitOrOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const Node& leftOperand,
-            const Node& rightOperand,
+            const Scope::Node& leftOperand,
+            const Scope::Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class AssignBitOrOperator
@@ -492,8 +486,8 @@ class AssignLeftShiftOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const Node& leftOperand,
-            const Node& rightOperand,
+            const Scope::Node& leftOperand,
+            const Scope::Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class AssignLeftShiftOperator
@@ -508,8 +502,8 @@ class AssignRightShiftOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const Node& leftOperand,
-            const Node& rightOperand,
+            const Scope::Node& leftOperand,
+            const Scope::Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class AssignRightShiftOperator
@@ -524,8 +518,8 @@ class RightShiftOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const Node& leftOperand,
-            const Node& rightOperand,
+            const Scope::Node& leftOperand,
+            const Scope::Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class RightShiftOperator
@@ -540,8 +534,8 @@ class LeftShiftOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const Node& leftOperand,
-            const Node& rightOperand,
+            const Scope::Node& leftOperand,
+            const Scope::Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class LeftShiftOperator
@@ -555,7 +549,7 @@ class PreIncrementOperator : public UnaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const Node& operand,
+            const Scope::Node& operand,
             Scriptable::Reference args
         );
 }; // end class PreIncrementOperator
@@ -570,7 +564,7 @@ class PostIncrementOperator : public UnaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const Node& operand,
+            const Scope::Node& operand,
             Scriptable::Reference args
         );
 }; // end class PostIncrementOperator
@@ -584,7 +578,7 @@ class PreDecrementOperator : public UnaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const Node& operand,
+            const Scope::Node& operand,
             Scriptable::Reference args
         );
 }; // end class PreDecrementOperator
@@ -599,7 +593,7 @@ class PostDecrementOperator : public UnaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const Node& operand,
+            const Scope::Node& operand,
             Scriptable::Reference args
         );
 }; // end class PostDecrementOperator
@@ -614,8 +608,8 @@ class MemberAccessOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const Node& leftOperand,
-            const Node& rightOperand,
+            const Scope::Node& leftOperand,
+            const Scope::Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class MemberAccessOperator
@@ -629,8 +623,8 @@ class GreaterThanOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const Node& leftOperand,
-            const Node& rightOperand,
+            const Scope::Node& leftOperand,
+            const Scope::Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class GreaterThanOperator
@@ -644,8 +638,8 @@ class LessThanOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const Node& leftOperand,
-            const Node& rightOperand,
+            const Scope::Node& leftOperand,
+            const Scope::Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class LessThanOperator
@@ -659,8 +653,8 @@ class PlusOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const Node& leftOperand,
-            const Node& rightOperand,
+            const Scope::Node& leftOperand,
+            const Scope::Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class PlusOperator
@@ -674,8 +668,8 @@ class MinusOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const Node& leftOperand,
-            const Node& rightOperand,
+            const Scope::Node& leftOperand,
+            const Scope::Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class MinusOperator
@@ -689,7 +683,7 @@ class NegativeOperator : public UnaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const Node& operand,
+            const Scope::Node& operand,
             Scriptable::Reference args
         );
 }; // end class NegativeOperator
@@ -703,8 +697,8 @@ class MultiplyOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const Node& leftOperand,
-            const Node& rightOperand,
+            const Scope::Node& leftOperand,
+            const Scope::Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class MultiplyOperator
@@ -718,8 +712,8 @@ class DivideOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const Node& leftOperand,
-            const Node& rightOperand,
+            const Scope::Node& leftOperand,
+            const Scope::Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class DivideOperator
@@ -734,8 +728,8 @@ class ModuloOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const Node& leftOperand,
-            const Node& rightOperand,
+            const Scope::Node& leftOperand,
+            const Scope::Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class ModuloOperator
@@ -749,8 +743,8 @@ class ConcatOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const Node& leftOperand,
-            const Node& rightOperand,
+            const Scope::Node& leftOperand,
+            const Scope::Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class ConcatOperator
@@ -764,7 +758,7 @@ class LogicalNotOperator : public UnaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const Node& operand,
+            const Scope::Node& operand,
             Scriptable::Reference args
         );
 }; // end class LogicalNotOperator
@@ -778,7 +772,7 @@ class BitwiseNotOperator : public UnaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const Node& operand,
+            const Scope::Node& operand,
             Scriptable::Reference args
         );
 }; // end class BitwiseNotOperator
@@ -792,8 +786,8 @@ class BitwiseAndOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const Node& leftOperand,
-            const Node& rightOperand,
+            const Scope::Node& leftOperand,
+            const Scope::Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class BitwiseAndOperator
@@ -807,7 +801,7 @@ class ReferenceOperator : public UnaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const Node& operand,
+            const Scope::Node& operand,
             Scriptable::Reference args
         );
 }; // end class ReferenceOperator
@@ -821,8 +815,8 @@ class BitwiseXOrOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const Node& leftOperand,
-            const Node& rightOperand,
+            const Scope::Node& leftOperand,
+            const Scope::Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class BitwiseXOrOperator
@@ -836,8 +830,8 @@ class BitwiseOrOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const Node& leftOperand,
-            const Node& rightOperand,
+            const Scope::Node& leftOperand,
+            const Scope::Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class BitwiseOrOperator
@@ -847,7 +841,7 @@ protected:
 
 
 //! BreakKeyword stops a loop or breaks out of a block of code.
-class BreakKeyword : public Node
+class BreakKeyword : public Scope::Node
 {
 private:
     const std::string& value;
@@ -861,7 +855,7 @@ public:
 
 
 //! ConstKeyword is used by TypeCast to make a variable reference constant.
-class ConstKeyword : public Node
+class ConstKeyword : public Scope::Node
 {
 private:
     const std::string& value;
@@ -876,7 +870,7 @@ public:
 
 //! ContinueKeyword stops the current iteration of a loop but doesn't stop the
 //! loop from continuing.
-class ContinueKeyword : public Node
+class ContinueKeyword : public Scope::Node
 {
 private:
     const std::string& value;
@@ -894,7 +888,7 @@ class DeleteOperator : public UnaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const Node& operand,
+            const Scope::Node& operand,
             Scriptable::Reference args
         );
 }; // end class DeleteOperator
@@ -908,7 +902,7 @@ class IncludeOperator : public UnaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const Node& operand,
+            const Scope::Node& operand,
             Scriptable::Reference args
         );
 }; // end class IncludeOperator
@@ -922,8 +916,8 @@ class InstanceOfOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const Node& leftOperand,
-            const Node& rightOperand,
+            const Scope::Node& leftOperand,
+            const Scope::Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class InstanceOfOperator
@@ -937,7 +931,7 @@ class NewOperator : public UnaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const Node& operand,
+            const Scope::Node& operand,
             Scriptable::Reference args
         );
 }; // end class NewOperator
@@ -951,7 +945,7 @@ class ReturnOperator : public UnaryOperator;
 {
 protected:
     virtual Scriptable::Reference operate(
-            const Node& operand,
+            const Scope::Node& operand,
             Scriptable::Reference args
         );
 }; // end class ReturnOperator
@@ -965,7 +959,7 @@ class SizeOfOperator : public UnaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const Node& operand,
+            const Scope::Node& operand,
             Scriptable::Reference args
         );
 }; // end class SizeOfOperator
@@ -979,7 +973,7 @@ class ThrowOperator : public UnaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const Node& operand,
+            const Scope::Node& operand,
             Scriptable::Reference args
         );
 }; // end class ThrowOperator
@@ -994,8 +988,8 @@ class TypeDefOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const Node& leftOperand,
-            const Node& rightOperand,
+            const Scope::Node& leftOperand,
+            const Scope::Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class TypeDefOperator
@@ -1009,7 +1003,7 @@ class TypeNameOperator : public UnaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const Node& operand,
+            const Scope::Node& operand,
             Scriptable::Reference args
         );
 }; // end class TypeNameOperator
@@ -1019,7 +1013,7 @@ protected:
 
 
 //! VarKeyword creates new variables.
-class VarKeyword : public Node
+class VarKeyword : public Scope::Node
 {
 private:
     const Statements variables;

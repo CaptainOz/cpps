@@ -182,49 +182,7 @@ Node* Scope::_parseStatement(
     Node* start = NULL;
     for( ; it != end && (*it).getType() != Token::Semicolon; ++it )
     {
-        const Token& token = *it;
-        const Token::Type& type = token.getType();
-        Node* node = NULL:
-    
-        // Is this token a keyword?
-        if( type >= Token::Break && type <= Token::Var )
-            node = Node::getKeywordNode( *it );
-
-        // Or is this token a variable?
-        else if( type == Token::Variable )
-            node = Node::getVariableNode( *it );
-
-        // Or is this a typename?
-        else if( type == Token::TypeName )
-            node = Node::getTypeNameNode( *it );
-
-        // Or is this a string literal? For string literals we also concat
-        // multiple ones together if they are directly next to each other.
-        else if( type == Token::StringLiteral )
-        {
-            string value;
-            for( ; it[1].getType() == Token::StringLiteral; ++it )
-                value += (*it).getString();
-            value += (*it).getString();
-            node = Node::getStringLiteralNode( value );
-        }
-
-        // Or are we indexing?
-        else if( type == Token::OpenBracket )
-        {
-            nodeType::IndexOperator* indexer = new nodeType::IndexOperator();
-            Node* rightNode = _parseExpression( ++it, end, Token::CloseBracket );
-            indexer.setRightOperand( rightNode );
-            indexer.setLeftOperand( node );
-            node = (Node*)indexer;
-            ++it;
-        }
-        
-        // Possibly bit shifting?
-        else if( type == Token::LeftShift )
-        {
-            
-        }
+        Node::getNode( start, *this, it, end );
 
         // TODO: Figure out how to handle parentheticals.
         // TODO: Consider doing the token checks in a Node::getNode

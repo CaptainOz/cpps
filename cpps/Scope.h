@@ -16,7 +16,7 @@
 #include <vector>
 
 #include "Function.h"
-#include "ParseTree.h"
+#include "Nodes.h"
 #include "Scriptable.h"
 #include "Token.h"
 
@@ -25,6 +25,35 @@ namespace cpps
 
 class Scope : public Scriptable
 {
+public:
+    //! A syntax tree node for a single operation or value.
+    class Node
+    {
+    private:
+        enum Associativity
+        {
+            Left,
+            Right
+        };
+
+        // TODO: Resolve cyclical reference between Node and nodeTypes
+        nodeType::BinaryOperator* _getBinaryOperator(
+                const Token::Type&   type,
+                const Associativity& assoc
+            );
+
+        static void getNode(
+                      Node*& node,
+                      Scope& scope,
+                      Token::List::const_iterator& it,
+                const Token::List::const_iterator& end
+            );
+
+    public:
+        virtual Scriptable::Reference getValue( Scriptable::Reference args ) = 0;
+
+    }; // end class Node
+
 private:
     typedef std::vector< Node* > StatementList;
     StatementList mStatements;
@@ -35,7 +64,7 @@ private:
     typedef std::list< ExecutionStack > ExecutionStackList;
     ExecutionStackList mExecutionStacks;
 
-    ParseTree* _parse( const Token::List& tokens );
+    ExecutionStack* _parse( const Token::List& tokens );
     Node* _parse(
                   Token::List::const_iterator& it,
             const Token::List::const_iterator& end
@@ -58,6 +87,10 @@ private:
             const Token::List::const_iterator& end
         );
     Node* _parseStatement(
+                  Token::List::const_iterator& it,
+            const Token::List::const_iterator& end
+        );
+    Node* _parseExpression(
                   Token::List::const_iterator& it,
             const Token::List::const_iterator& end
         );
