@@ -71,7 +71,7 @@ void Scope::Node::getNode(
     }
 
     // Possibly a binary operator?
-    //     Operator                 Tokens  Associativity
+    //     Operators               Tokens  Associativity
     // Member accessing         ->              L
     // Multiplication           *               L
     // Division                 /               L
@@ -96,8 +96,8 @@ void Scope::Node::getNode(
             (type >= Token::Equality   && type <= Token::AssignRightShift) ||
             (type >= Token::RightShift && type <= Token::BitwiseOr) )
     {
-        // Is this a right or left associative operator?
         // TODO: Move this logic to BinaryOperator::getAssociativity
+        // Is this a right or left associative operator?
         Associativity assoc = Right;
         if( type == Token::LogicalOr  ||
             type == Token::LogicalAnd ||
