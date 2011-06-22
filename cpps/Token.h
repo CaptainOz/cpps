@@ -33,18 +33,18 @@ public:
      * When updating this enumeration, also update the @c TypeNames, _keywords,
      * and _operators arrays defined in Token.cpp.
      *
-     * @note
-     * The tokens are listed in an order to optimize parsing by grouping tokens
-     * by type and doing a single range comparision instead of many equality
-     * tests. When adding new tokens, or updating old ones, be sure to include
-     * it in the correct group.
-     *
      * These types are sorted by a combination of grouping and extraction order.
      * When adding or updating any token type make sure its regex match value
      * does not match the start of any of the types that follow it. For example,
      * LogicalOr (||) and AssignBitOr (|=) must both come before BitOr (|)
      * because BitOr starts both of them, however LogicalOr can come either
      * before or after AssignBitOr because neither is a substring of the other.
+     *
+     * @note
+     * The tokens are listed in an order to optimize parsing by grouping tokens
+     * by type and doing a single range comparision instead of many equality
+     * tests. When adding new tokens, or updating old ones, be sure to include
+     * it in the correct group.
      */
     enum Type
     {
