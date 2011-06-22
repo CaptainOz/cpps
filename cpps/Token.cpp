@@ -57,10 +57,12 @@ const char* Token::TypeNames[] = {
         "AssignBitOr",     // |=
         "AssignLeftShift", // <<=
         "AssignRightShift",// >>=
-        "RighShift",       // >>
-        "LeftShift",       // <<
         "Increment",       // \+\+
         "Decrement",       // --
+        "LogicalNot",      // !
+        "BitwiseNot",      // ~
+        "RighShift",       // >>
+        "LeftShift",       // <<
         "MemberAccess",    // ->
         "GreaterThan",     // >
         "LessThan",        // <
@@ -70,8 +72,6 @@ const char* Token::TypeNames[] = {
         "Divide",          // \/
         "Modulo",          // %
         "Concat",          // \.
-        "LogicalNot",      // !
-        "BitwiseNot",      // ~
         "BitwiseAnd",      // &
         "BitwiseXOr",      // \^
         "BitwiseOr",       // \|
@@ -142,8 +142,8 @@ const char* Token::_operators[] = {
         "::",  ";",   ":",  ",",  "||", "&&", "?",  "{",  "}",
         "(",   ")",   "[",  "]",  "==", "!=", ">=", "<=", "=",
         "+=",  "-=",  ".=", "*=", "/=", "%=", "&=", "^=", "|=",
-        "<<=", ">>=", ">>", "<<", "++", "--", "->", ">",  "<",
-        "+",   "-",   "*",  "/",  "%",  ".",  "!",  "~",  "&",
+        "<<=", ">>=", "++", "--", "!",  "~",  ">>", "<<", "->",
+        ">",   "<",   "+",  "-",  "*",  "/",  "%",  ".",  "&",
         "^",   "|",
 
         0 // End array

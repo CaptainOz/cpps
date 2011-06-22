@@ -63,8 +63,8 @@ void tokenTest_one( void )
 
 void tokenTest_two( void )
 {
-    string code = "::;:,||&&?{}()[]==!=>=<==+=-=.=*=/=%=&=^=|=<<=>>=>><<++--->"
-                  "><+-*/%.!~&^|";
+    string code = "::;:,||&&?{}()[]==!=>=<==+=-=.=*=/=%=&=^=|=<<=>>=++--!~"
+                  ">><<->><+-*/%.&^|";
     Token::List* tokenList = Token::tokenize( code );
 
     cout << "Token extraction order test: ";

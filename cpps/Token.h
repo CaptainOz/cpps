@@ -88,10 +88,12 @@ public:
         AssignBitOr,     // \|=                     DONE        DONE
         AssignLeftShift, // <<=                     DONE        DONE
         AssignRightShift,// >>=                     DONE        DONE
-        RighShift,       // >>                      DONE        DONE
-        LeftShift,       // <<                      DONE        DONE
         Increment,       // \+\+                    DONE        DONE
         Decrement,       // --                      DONE        DONE
+        LogicalNot,      // !                       DONE        DONE
+        BitwiseNot,      // ~                       DONE        DONE
+        RighShift,       // >>                      DONE        DONE
+        LeftShift,       // <<                      DONE        DONE
         MemberAccess,    // ->                      DONE        DONE
         GreaterThan,     // >                       DONE        DONE
         LessThan,        // <                       DONE        DONE
@@ -101,8 +103,6 @@ public:
         Divide,          // \/                      DONE        DONE
         Modulo,          // %                       DONE        DONE
         Concat,          // \.                      DONE        DONE
-        LogicalNot,      // !                       DONE        DONE
-        BitwiseNot,      // ~                       DONE        DONE
         BitwiseAnd,      // &                       DONE        DONE
         BitwiseXOr,      // \^                      DONE        DONE
         BitwiseOr,       // \|                      DONE        DONE
