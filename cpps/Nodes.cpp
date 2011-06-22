@@ -30,8 +30,8 @@ void Scope::Node::getNode(
     else if( type == Token::TypeName )
         node = Node::getTypeNameNode( *it );
 
-    // Or is this a string literal? For string literals we also concat
-    // multiple ones together if they are directly next to each other.
+    // Or is this a string literal? For string literals we also concat multiple
+    // strings together if they are directly next to each other.
     else if( type == Token::StringLiteral )
     {
         string value;
@@ -45,16 +45,21 @@ void Scope::Node::getNode(
         --it;
     }
 
-    // TODO: NumericLiteral goes here.
+    // TODO: This conditional is super fugly. Make it more readable.
+    // Or is this a numeric literal?
+    else if( type == Token::NumericLiteral ||
+            ((type == Token::Plus || type == Token::Minus) &&
+             it+1 != end && it[1].getType() == Token::NumericLiteral) )
+    {
+        // Calculate any sign negation and skip to the number.
+        const bool negative = (type == Token::Minus);
+        if( type != Token::NumericLieral )
+            ++it;
 
-    // TODO: Prefix increment/decrement goes here.
+        // Get the node
+        node = Node::getNumericLiteral( (*it)->getString(), negative );
+    }
 
-    // TODO: NewOperator goes here.
-    
-    // TODO: DeleteOperator goes here.
-    
-    // TODO: SizeOfOperator goes here.
-    
     // TODO: TypeCast goes here?
     
     // TODO: LogicalNot goes here.
@@ -68,6 +73,26 @@ void Scope::Node::getNode(
     // If one of the above statements got the node, return.
     if( nodeGot )
         return;
+
+    // Right-associative unary operators require that no nodes be in the
+    // expression yet.
+    if( node == NULL              &&
+       (type == Token::Increment  ||
+        type == Token::Decrement  ||
+        type == Token::New        ||
+        type == Token::SizeOf     ||
+        type == Token::Delete     ||
+        type == Token::BitwiseAnd || // Reference operator
+        type == Token::LogicalNot ||
+        type == Token::BitwiseNot) )
+    {
+        // Get the operator node.
+        nodeType::UnaryOperator* oprtr = Node::getUnaryOperator( type, Right );
+
+        // Get and set the operand.
+        Node* operand = scope._parseExpression( ++it, end, Right );
+        oprtr->setOperand( operand );
+    }
 
     // Everything below this point requires a token to have come before it.
     if( node == NULL )
@@ -110,7 +135,6 @@ void Scope::Node::getNode(
             (type >= Token::Equality   && type <= Token::AssignRightShift) ||
             (type >= Token::RightShift && type <= Token::BitwiseOr) )
     {
-        // TODO: Move this logic to BinaryOperator::getAssociativity
         // Is this a right or left associative operator?
         Associativity assoc = Right;
         if( type == Token::LogicalOr  ||
@@ -121,7 +145,7 @@ void Scope::Node::getNode(
 
         // Get the node for this operator and assign the left and right operands
         nodeType::BinaryOperator* oprtr = Node::_getBinaryOperator( type );
-        Node* rightNode = scope._parseExpression( ++it, end, oprtr->getAssociativity() );
+        Node* rightNode = scope._parseExpression( ++it, end, assoc );
         oprtr.setRightOperand( rightNode );
         oprtr.setLeftOperand( node );
         node = (Node*)oprtr;
