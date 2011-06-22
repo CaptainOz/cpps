@@ -48,7 +48,7 @@ public:
      */
     enum Type
     {
-    //  Token type          Regex to match          detection   extraction
+    //  Token type          Regex to match
 
         // *** Begin Miscelaneous Token Types *** //
         TypeName,        // [a-zA-Z_]\w*
@@ -67,7 +67,7 @@ public:
         Colon,           // :
         Comma,           // ,
 
-        LogicalOr,       // \|\|
+        LogicalOr,       // \|\|        Left associative binary operators
         LogicalAnd,      // &&
 
         TernaryIf,       // \?
@@ -81,12 +81,12 @@ public:
         OpenBracket,     // \[
         CloseBracket,    // \]
 
-        Equality,        // ==
+        Equality,        // ==          Left associative binary operators
         NotEquality,     // !=
         GreaterEqual,    // >=
         LessEqual,       // <=
 
-        Assign,          // =
+        Assign,          // =           Right associative binary operators
         AssignPlus,      // \+=
         AssignMinus,     // -=
         AssignConcat,    // .=
@@ -98,12 +98,14 @@ public:
         AssignBitOr,     // \|=
         AssignLeftShift, // <<=
         AssignRightShift,// >>=
-        Increment,       // \+\+
+
+        Increment,       // \+\+        Either associative unary operators
         Decrement,       // --
-        LogicalNot,      // !
+
+        LogicalNot,      // !           Right associative unary operators
         BitwiseNot,      // ~
 
-        RighShift,       // >>
+        RighShift,       // >>          Left associative binary operators
         LeftShift,       // <<
         MemberAccess,    // ->
         GreaterThan,     // >
