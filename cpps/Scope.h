@@ -26,38 +26,38 @@ namespace cpps
 class Scope : public Scriptable
 {
 private:
-    typedef std::vector< ParseTree::Node* > StatementList;
+    typedef std::vector< Node* > StatementList;
     StatementList mStatements;
     std::map< std::string, Object::Reference > mVariables;
     std::map< std::string, Function::Reference > mFunctions;
 
-    typedef std::stack< ParseTree::Node* > ExecutionStack;
+    typedef std::stack< Node* > ExecutionStack;
     typedef std::list< ExecutionStack > ExecutionStackList;
     ExecutionStackList mExecutionStacks;
 
     ParseTree* _parse( const Token::List& tokens );
-    ParseTree::Node* _parse(
+    Node* _parse(
                   Token::List::const_iterator& it,
             const Token::List::const_iterator& end
         );
 
-    ParseTree::Node* _parseLoop(
+    Node* _parseLoop(
                   Token::List::const_iterator& it,
             const Token::List::const_iterator& end
         );
-    ParseTree::Node* _parseBranch(
+    Node* _parseBranch(
                   Token::List::const_iterator& it,
             const Token::List::const_iterator& end
         );
-    ParseTree::Node* _parseTryCatch(
+    Node* _parseTryCatch(
                   Token::List::const_iterator& it,
             const Token::List::const_iterator& end
         );
-    ParseTree::Node* _parseBlock(
+    Node* _parseBlock(
                   Token::List::const_iterator& it,
             const Token::List::const_iterator& end
         );
-    ParseTree::Node* _parseStatement(
+    Node* _parseStatement(
                   Token::List::const_iterator& it,
             const Token::List::const_iterator& end
         );

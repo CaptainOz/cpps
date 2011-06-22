@@ -6,8 +6,8 @@
  * @author Nate Lillich
  */
 
-#ifndef __CPPS_PARSE_TREE_H_INCLUDED__
-#define __CPPS_PARSE_TREE_H_INCLUDED__
+#ifndef __CPPS_NODES_H_INCLUDED__
+#define __CPPS_NODES_H_INCLUDED__
 
 #include <string>
 #include <vector>
@@ -17,43 +17,29 @@
 namespace cpps
 {
 
-//! An abstract syntax tree model for holding compiled code statements.
-class ParseTree
+//! A syntax tree node for a single operation or value.
+class Node
 {
 public:
-    typedef std::vector< ParseTree::Node > StatementList;
+    virtual Scriptable::Reference getValue( Scriptable::Reference args ) = 0;
 
-    //! A syntax tree node for a single operation or value.
-    class Node
-    {
-    public:
-        virtual Scriptable::Reference getValue( Scriptable::Reference args ) = 0;
+    static Node* getNode( 
+                  Token::List::const_iterator& it,
+            const Token::List::const_iterator& end
+        );
 
-        static Node* getNode( 
-                      Token::List::const_iterator& it,
-                const Token::List::const_iterator& end
-            );
-
-    }; // end class ParseTree::Node
-
-private:
-    StatementList statements;
-
-public:
-    ParseTree( void );
-
-}; // end class ParseTree
+}; // end class Node
 
 
 /******************************************************************************/
 
 
-//! This namespace contains all the ParseTree::Node subclasses.
+//! This namespace contains all the Node subclasses.
 namespace nodeTypes
 {
 
 //! TypeName holds a reference to a class or function.
-class TypeName : public ParseTree::Node
+class TypeName : public Node
 {
 private:
     const std::string& typeNameStr;
@@ -67,7 +53,7 @@ public
 
 
 //! Variables holds a reference to a single variable.
-class Variable : public ParseTree::Node
+class Variable : public Node
 {
 private:
     const std::string& variableName;
@@ -82,7 +68,7 @@ public
 
 //! StringLiterals hold the value of a quoted string. They are like variables,
 //! but unvarying.
-class StringLiteral : public ParseTree::Node
+class StringLiteral : public Node
 {
 private:
     const std::string& value;
@@ -96,10 +82,10 @@ public:
 
 
 //! CodeBlocks contain other statements to be executed.
-class CodeBlock : public ParseTree::Node
+class CodeBlock : public Node
 {
 private:
-    const ParseTree::StatementList& statements;
+    const StatementList& statements;
 
 public:
     virtual Scriptable::Reference getValue( Scriptable::Reference args );
@@ -110,14 +96,14 @@ public:
 
 
 //! UnaryOperators are any operator which take only one operand.
-class UnaryOperator : public ParseTree::Node
+class UnaryOperator : public Node
 {
 private:
-    const ParseTree::Node& operand;
+    const Node& operand;
 
 protected:
     virtual Scriptable::Reference operate(
-            const ParseTree::Node& operand,
+            const Node& operand,
             Scriptable::Reference args
         ) = 0;
 
@@ -130,16 +116,16 @@ public:
 
 
 //! BinaryOperators are any operators which take two operands.
-class BinaryOperator : public ParseTree::Node
+class BinaryOperator : public Node
 {
 private:
-    const ParseTree::Node& leftOperand;
-    const ParseTree::Node& rightOperand;
+    const Node& leftOperand;
+    const Node& rightOperand;
 
 protected:
     virtual Scriptable::Reference operate(
-            const ParseTree::Node& leftOperand,
-            const ParseTree::Node& rightOperand,
+            const Node& leftOperand,
+            const Node& rightOperand,
             Scriptable::Reference args
         ) = 0;
 
@@ -152,18 +138,18 @@ public:
 
 
 //! TernaryOperators are any operators which take three operands.
-class TernaryOperator : public ParseTree::Node
+class TernaryOperator : public Node
 {
 private:
-    const ParseTree::Node& leftOperand;
-    const ParseTree::Node& middleOperand;
-    const ParseTree::Node& rightOperand;
+    const Node& leftOperand;
+    const Node& middleOperand;
+    const Node& rightOperand;
 
 protected:
     virtual Scriptable::Reference operate(
-            const ParseTree::Node& leftOperand,
-            const ParseTree::Node& middleOperand,
-            const ParseTree::Node& rightOperand,
+            const Node& leftOperand,
+            const Node& middleOperand,
+            const Node& rightOperand,
             Scriptable::Reference args
         ) = 0;
 
@@ -180,8 +166,8 @@ class ScopeOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const ParseTree::Node& leftOperand,
-            const ParseTree::Node& rightOperand,
+            const Node& leftOperand,
+            const Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class ScopeOperator
@@ -195,8 +181,8 @@ class LogicalOrOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const ParseTree::Node& leftOperand,
-            const ParseTree::Node& rightOperand,
+            const Node& leftOperand,
+            const Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class LogicalOrOperator
@@ -210,8 +196,8 @@ class LogicalAndOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const ParseTree::Node& leftOperand,
-            const ParseTree::Node& rightOperand,
+            const Node& leftOperand,
+            const Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class LogicalAndOperator
@@ -225,9 +211,9 @@ class InlineIfOperator : public TernaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const ParseTree::Node& leftOperand,
-            const ParseTree::Node& middleOperand,
-            const ParseTree::Node& rightOperand,
+            const Node& leftOperand,
+            const Node& middleOperand,
+            const Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class InlineIfOperator
@@ -241,7 +227,7 @@ class FunctionOperator : public UnaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const ParseTree::Node& operand,
+            const Node& operand,
             Scriptable::Reference args
         );
 }; // end class FunctionOperator
@@ -255,8 +241,8 @@ class TypecastOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const ParseTree::Node& leftOperand,
-            const ParseTree::Node& rightOperand,
+            const Node& leftOperand,
+            const Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class TypecastOperator
@@ -270,8 +256,8 @@ class IndexOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const ParseTree::Node& leftOperand,
-            const ParseTree::Node& rightOperand,
+            const Node& leftOperand,
+            const Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class IndexOperator
@@ -285,8 +271,8 @@ class EqualityOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const ParseTree::Node& leftOperand,
-            const ParseTree::Node& rightOperand,
+            const Node& leftOperand,
+            const Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class EqualityOperator
@@ -300,8 +286,8 @@ class NotEqualityOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const ParseTree::Node& leftOperand,
-            const ParseTree::Node& rightOperand,
+            const Node& leftOperand,
+            const Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class NotEqualityOperator
@@ -316,8 +302,8 @@ class GreaterEqualOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const ParseTree::Node& leftOperand,
-            const ParseTree::Node& rightOperand,
+            const Node& leftOperand,
+            const Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class GreaterEqualOperator
@@ -332,8 +318,8 @@ class LessEqualOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const ParseTree::Node& leftOperand,
-            const ParseTree::Node& rightOperand,
+            const Node& leftOperand,
+            const Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class LessEqualOperator
@@ -347,8 +333,8 @@ class AssignOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const ParseTree::Node& leftOperand,
-            const ParseTree::Node& rightOperand,
+            const Node& leftOperand,
+            const Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class AssignOperator
@@ -363,8 +349,8 @@ class AssignPlusOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const ParseTree::Node& leftOperand,
-            const ParseTree::Node& rightOperand,
+            const Node& leftOperand,
+            const Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class AssignPlusOperator
@@ -379,8 +365,8 @@ class AssignMinusOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const ParseTree::Node& leftOperand,
-            const ParseTree::Node& rightOperand,
+            const Node& leftOperand,
+            const Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class AssignMinusOperator
@@ -395,8 +381,8 @@ class AssignConcatOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const ParseTree::Node& leftOperand,
-            const ParseTree::Node& rightOperand,
+            const Node& leftOperand,
+            const Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class AssignConcatOperator
@@ -411,8 +397,8 @@ class AssignMultiplyOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const ParseTree::Node& leftOperand,
-            const ParseTree::Node& rightOperand,
+            const Node& leftOperand,
+            const Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class AssignMultiplyOperator
@@ -427,8 +413,8 @@ class AssignDivideOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const ParseTree::Node& leftOperand,
-            const ParseTree::Node& rightOperand,
+            const Node& leftOperand,
+            const Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class AssignDivideOperator
@@ -443,8 +429,8 @@ class AssignModuloOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const ParseTree::Node& leftOperand,
-            const ParseTree::Node& rightOperand,
+            const Node& leftOperand,
+            const Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class AssignModuloOperator
@@ -459,8 +445,8 @@ class AssignBitAndOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const ParseTree::Node& leftOperand,
-            const ParseTree::Node& rightOperand,
+            const Node& leftOperand,
+            const Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class AssignBitAndOperator
@@ -475,8 +461,8 @@ class AssignBitXOrOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const ParseTree::Node& leftOperand,
-            const ParseTree::Node& rightOperand,
+            const Node& leftOperand,
+            const Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class AssignBitXOrOperator
@@ -490,8 +476,8 @@ class AssignBitOrOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const ParseTree::Node& leftOperand,
-            const ParseTree::Node& rightOperand,
+            const Node& leftOperand,
+            const Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class AssignBitOrOperator
@@ -506,8 +492,8 @@ class AssignLeftShiftOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const ParseTree::Node& leftOperand,
-            const ParseTree::Node& rightOperand,
+            const Node& leftOperand,
+            const Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class AssignLeftShiftOperator
@@ -522,8 +508,8 @@ class AssignRightShiftOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const ParseTree::Node& leftOperand,
-            const ParseTree::Node& rightOperand,
+            const Node& leftOperand,
+            const Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class AssignRightShiftOperator
@@ -538,8 +524,8 @@ class RightShiftOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const ParseTree::Node& leftOperand,
-            const ParseTree::Node& rightOperand,
+            const Node& leftOperand,
+            const Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class RightShiftOperator
@@ -554,8 +540,8 @@ class LeftShiftOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const ParseTree::Node& leftOperand,
-            const ParseTree::Node& rightOperand,
+            const Node& leftOperand,
+            const Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class LeftShiftOperator
@@ -569,7 +555,7 @@ class PreIncrementOperator : public UnaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const ParseTree::Node& operand,
+            const Node& operand,
             Scriptable::Reference args
         );
 }; // end class PreIncrementOperator
@@ -584,7 +570,7 @@ class PostIncrementOperator : public UnaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const ParseTree::Node& operand,
+            const Node& operand,
             Scriptable::Reference args
         );
 }; // end class PostIncrementOperator
@@ -598,7 +584,7 @@ class PreDecrementOperator : public UnaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const ParseTree::Node& operand,
+            const Node& operand,
             Scriptable::Reference args
         );
 }; // end class PreDecrementOperator
@@ -613,7 +599,7 @@ class PostDecrementOperator : public UnaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const ParseTree::Node& operand,
+            const Node& operand,
             Scriptable::Reference args
         );
 }; // end class PostDecrementOperator
@@ -628,8 +614,8 @@ class MemberAccessOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const ParseTree::Node& leftOperand,
-            const ParseTree::Node& rightOperand,
+            const Node& leftOperand,
+            const Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class MemberAccessOperator
@@ -643,8 +629,8 @@ class GreaterThanOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const ParseTree::Node& leftOperand,
-            const ParseTree::Node& rightOperand,
+            const Node& leftOperand,
+            const Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class GreaterThanOperator
@@ -658,8 +644,8 @@ class LessThanOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const ParseTree::Node& leftOperand,
-            const ParseTree::Node& rightOperand,
+            const Node& leftOperand,
+            const Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class LessThanOperator
@@ -673,8 +659,8 @@ class PlusOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const ParseTree::Node& leftOperand,
-            const ParseTree::Node& rightOperand,
+            const Node& leftOperand,
+            const Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class PlusOperator
@@ -688,8 +674,8 @@ class MinusOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const ParseTree::Node& leftOperand,
-            const ParseTree::Node& rightOperand,
+            const Node& leftOperand,
+            const Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class MinusOperator
@@ -703,7 +689,7 @@ class NegativeOperator : public UnaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const ParseTree::Node& operand,
+            const Node& operand,
             Scriptable::Reference args
         );
 }; // end class NegativeOperator
@@ -717,8 +703,8 @@ class MultiplyOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const ParseTree::Node& leftOperand,
-            const ParseTree::Node& rightOperand,
+            const Node& leftOperand,
+            const Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class MultiplyOperator
@@ -732,8 +718,8 @@ class DivideOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const ParseTree::Node& leftOperand,
-            const ParseTree::Node& rightOperand,
+            const Node& leftOperand,
+            const Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class DivideOperator
@@ -748,8 +734,8 @@ class ModuloOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const ParseTree::Node& leftOperand,
-            const ParseTree::Node& rightOperand,
+            const Node& leftOperand,
+            const Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class ModuloOperator
@@ -763,8 +749,8 @@ class ConcatOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const ParseTree::Node& leftOperand,
-            const ParseTree::Node& rightOperand,
+            const Node& leftOperand,
+            const Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class ConcatOperator
@@ -778,7 +764,7 @@ class LogicalNotOperator : public UnaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const ParseTree::Node& operand,
+            const Node& operand,
             Scriptable::Reference args
         );
 }; // end class LogicalNotOperator
@@ -792,7 +778,7 @@ class BitwiseNotOperator : public UnaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const ParseTree::Node& operand,
+            const Node& operand,
             Scriptable::Reference args
         );
 }; // end class BitwiseNotOperator
@@ -806,8 +792,8 @@ class BitwiseAndOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const ParseTree::Node& leftOperand,
-            const ParseTree::Node& rightOperand,
+            const Node& leftOperand,
+            const Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class BitwiseAndOperator
@@ -821,7 +807,7 @@ class ReferenceOperator : public UnaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const ParseTree::Node& operand,
+            const Node& operand,
             Scriptable::Reference args
         );
 }; // end class ReferenceOperator
@@ -835,8 +821,8 @@ class BitwiseXOrOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const ParseTree::Node& leftOperand,
-            const ParseTree::Node& rightOperand,
+            const Node& leftOperand,
+            const Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class BitwiseXOrOperator
@@ -850,8 +836,8 @@ class BitwiseOrOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const ParseTree::Node& leftOperand,
-            const ParseTree::Node& rightOperand,
+            const Node& leftOperand,
+            const Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class BitwiseOrOperator
@@ -861,7 +847,7 @@ protected:
 
 
 //! BreakKeyword stops a loop or breaks out of a block of code.
-class BreakKeyword : public ParseTree::Node
+class BreakKeyword : public Node
 {
 private:
     const std::string& value;
@@ -875,7 +861,7 @@ public:
 
 
 //! ConstKeyword is used by TypeCast to make a variable reference constant.
-class ConstKeyword : public ParseTree::Node
+class ConstKeyword : public Node
 {
 private:
     const std::string& value;
@@ -890,7 +876,7 @@ public:
 
 //! ContinueKeyword stops the current iteration of a loop but doesn't stop the
 //! loop from continuing.
-class ContinueKeyword : public ParseTree::Node
+class ContinueKeyword : public Node
 {
 private:
     const std::string& value;
@@ -908,7 +894,7 @@ class DeleteOperator : public UnaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const ParseTree::Node& operand,
+            const Node& operand,
             Scriptable::Reference args
         );
 }; // end class DeleteOperator
@@ -922,7 +908,7 @@ class IncludeOperator : public UnaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const ParseTree::Node& operand,
+            const Node& operand,
             Scriptable::Reference args
         );
 }; // end class IncludeOperator
@@ -936,8 +922,8 @@ class InstanceOfOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const ParseTree::Node& leftOperand,
-            const ParseTree::Node& rightOperand,
+            const Node& leftOperand,
+            const Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class InstanceOfOperator
@@ -951,7 +937,7 @@ class NewOperator : public UnaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const ParseTree::Node& operand,
+            const Node& operand,
             Scriptable::Reference args
         );
 }; // end class NewOperator
@@ -965,7 +951,7 @@ class ReturnOperator : public UnaryOperator;
 {
 protected:
     virtual Scriptable::Reference operate(
-            const ParseTree::Node& operand,
+            const Node& operand,
             Scriptable::Reference args
         );
 }; // end class ReturnOperator
@@ -979,7 +965,7 @@ class SizeOfOperator : public UnaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const ParseTree::Node& operand,
+            const Node& operand,
             Scriptable::Reference args
         );
 }; // end class SizeOfOperator
@@ -993,7 +979,7 @@ class ThrowOperator : public UnaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const ParseTree::Node& operand,
+            const Node& operand,
             Scriptable::Reference args
         );
 }; // end class ThrowOperator
@@ -1008,8 +994,8 @@ class TypeDefOperator : public BinaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const ParseTree::Node& leftOperand,
-            const ParseTree::Node& rightOperand,
+            const Node& leftOperand,
+            const Node& rightOperand,
             Scriptable::Reference args
         );
 }; // end class TypeDefOperator
@@ -1023,7 +1009,7 @@ class TypeNameOperator : public UnaryOperator
 {
 protected:
     virtual Scriptable::Reference operate(
-            const ParseTree::Node& operand,
+            const Node& operand,
             Scriptable::Reference args
         );
 }; // end class TypeNameOperator
@@ -1033,10 +1019,10 @@ protected:
 
 
 //! VarKeyword creates new variables.
-class VarKeyword : public ParseTree::Node
+class VarKeyword : public Node
 {
 private:
-    const ParseTree::Statements variables;
+    const Statements variables;
 
 public:
     virtual Scriptable::Reference getValue( Scriptable::Reference args );
@@ -1048,5 +1034,5 @@ public:
 
 } // emd namespace cpps
 
-#endif // __CPPS_PARSE_TREE_H_INCLUDED__
+#endif // __CPPS_NODES_H_INCLUDED__
 
