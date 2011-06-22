@@ -206,6 +206,18 @@ ParseTree::Node* Scope::_parseStatement(
             for( ; it[1].getType() == Token::StringLiteral; ++it )
                 value += (*it).getString();
             value += (*it).getString();
+            node = ParseTree::Node::getStringLiteralNode( value );
+        }
+
+        // Or are we indexing?
+        else if( type == Token::OpenBracket )
+        {
+            nodeType::IndexOperator* indexer = new nodeType::IndexOperator();
+            ParseTree::Node* rightNode = _parseExpression( ++it, end, Token::CloseBracket );
+            indexer.setRightOperand( rightNode );
+            indexer.setLeftOperand( node );
+            node = (ParseTree::Node*)indexer;
+            ++it;
         }
 
         // TODO: Figure out how to handle parentheticals.
