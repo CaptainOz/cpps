@@ -29,6 +29,11 @@ public:
     public:
         virtual Scriptable::Reference getValue( Scriptable::Reference args ) = 0;
 
+        static Node* getNode( 
+                      Token::List::const_iterator& it,
+                const Token::List::const_iterator& end
+            );
+
     }; // end class ParseTree::Node
 
 private:
@@ -44,7 +49,7 @@ public:
 
 
 //! This namespace contains all the ParseTree::Node subclasses.
-namespace node
+namespace nodeTypes
 {
 
 //! TypeName holds a reference to a class or function.
@@ -1038,7 +1043,7 @@ public:
 }; // end class VarKeyword
 
 
-} // end namespace node
+} // end namespace nodeTypes
 
 
 } // emd namespace cpps
