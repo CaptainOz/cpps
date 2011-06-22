@@ -33,6 +33,12 @@ public:
      * When updating this enumeration, also update the @c TypeNames, _keywords,
      * and _operators arrays defined in Token.cpp.
      *
+     * @note
+     * The tokens are listed in an order to optimize parsing by grouping tokens
+     * by type and doing a single range comparision instead of many equality
+     * tests. When adding new tokens, or updating old ones, be sure to include
+     * it in the correct group.
+     *
      * These types are sorted by a combination of grouping and extraction order.
      * When adding or updating any token type make sure its regex match value
      * does not match the start of any of the types that follow it. For example,
@@ -45,111 +51,116 @@ public:
     //  Token type          Regex to match          detection   extraction
 
         // *** Begin Miscelaneous Token Types *** //
-        TypeName,        // [a-zA-Z_]\w*            DONE        DONE
-        Variable,        // \$[a-zA-Z_]\w*          DONE        DONE
-        StringLiteral,   // (['"]).*?(?<!\\)\1      DONE        DONE
+        TypeName,        // [a-zA-Z_]\w*
+        Variable,        // \$[a-zA-Z_]\w*
+        StringLiteral,   // (['"]).*?(?<!\\)\1
         NumericLiteral,  // (?i:[1-9]\d*|\d+\.\d*|0[0-7]*|0x[\da-f]+|0b[01]+)
-                         //                         DONE        DONE
-        CommentLine,     // \/\/[^\n]*              DONE        DONE
-        CommentBlock,    // \/\*.*?\*\/             DONE        DONE
+                         //
+        CommentLine,     // \/\/[^\n]*
+        CommentBlock,    // \/\*.*?\*\/
         RegexMatch,      // \/.*(?<!\\)\/
         // *** End Miscelaneous Token Types *** //
 
         // *** Begin Non-Overloadable Operators *** //
-        Scope,           // ::                      DONE        DONE
-        Semicolon,       // ;                       DONE        DONE
-        Colon,           // :                       DONE        DONE
-        Comma,           // ,                       DONE        DONE
-        LogicalOr,       // \|\|                    DONE        DONE
-        LogicalAnd,      // &&                      DONE        DONE
-        TernaryIf,       // \?                      DONE        DONE
-        OpenBrace,       // \{                      DONE        DONE
-        CloseBrace,      // \}                      DONE        DONE
+        Scope,           // ::
+        Semicolon,       // ;
+        Colon,           // :
+        Comma,           // ,
+
+        LogicalOr,       // \|\|
+        LogicalAnd,      // &&
+
+        TernaryIf,       // \?
+        OpenBrace,       // \{
+        CloseBrace,      // \}
         // *** End Non-Overloadable Operators *** //
 
         // *** Begin Overloadable Operators *** //
-        OpenParen,       // \(                      DONE        DONE
-        CloseParen,      // \)                      DONE        DONE
-        OpenBracket,     // \[                      DONE        DONE
-        CloseBracket,    // \]                      DONE        DONE
-        Equality,        // ==                      DONE        DONE
-        NotEquality,     // !=                      DONE        DONE
-        GreaterEqual,    // >=                      DONE        DONE
-        LessEqual,       // <=                      DONE        DONE
-        Assign,          // =                       DONE        DONE
-        AssignPlus,      // \+=                     DONE        DONE
-        AssignMinus,     // -=                      DONE        DONE
-        AssignConcat,    // .=                      DONE        DONE
-        AssignMultiply,  // \*=                     DONE        DONE
-        AssignDivide,    // \/=                     DONE        DONE
-        AssignModulo,    // %=                      DONE        DONE
-        AssignBitAnd,    // &=                      DONE        DONE
-        AssignBitXOr,    // \^=                     DONE        DONE
-        AssignBitOr,     // \|=                     DONE        DONE
-        AssignLeftShift, // <<=                     DONE        DONE
-        AssignRightShift,// >>=                     DONE        DONE
-        Increment,       // \+\+                    DONE        DONE
-        Decrement,       // --                      DONE        DONE
-        LogicalNot,      // !                       DONE        DONE
-        BitwiseNot,      // ~                       DONE        DONE
-        RighShift,       // >>                      DONE        DONE
-        LeftShift,       // <<                      DONE        DONE
-        MemberAccess,    // ->                      DONE        DONE
-        GreaterThan,     // >                       DONE        DONE
-        LessThan,        // <                       DONE        DONE
-        Plus,            // \+                      DONE        DONE
-        Minus,           // -                       DONE        DONE
-        Multiply,        // \*                      DONE        DONE
-        Divide,          // \/                      DONE        DONE
-        Modulo,          // %                       DONE        DONE
-        Concat,          // \.                      DONE        DONE
-        BitwiseAnd,      // &                       DONE        DONE
-        BitwiseXOr,      // \^                      DONE        DONE
-        BitwiseOr,       // \|                      DONE        DONE
+        OpenParen,       // \(
+        CloseParen,      // \)
+        OpenBracket,     // \[
+        CloseBracket,    // \]
+
+        Equality,        // ==
+        NotEquality,     // !=
+        GreaterEqual,    // >=
+        LessEqual,       // <=
+
+        Assign,          // =
+        AssignPlus,      // \+=
+        AssignMinus,     // -=
+        AssignConcat,    // .=
+        AssignMultiply,  // \*=
+        AssignDivide,    // \/=
+        AssignModulo,    // %=
+        AssignBitAnd,    // &=
+        AssignBitXOr,    // \^=
+        AssignBitOr,     // \|=
+        AssignLeftShift, // <<=
+        AssignRightShift,// >>=
+        Increment,       // \+\+
+        Decrement,       // --
+        LogicalNot,      // !
+        BitwiseNot,      // ~
+
+        RighShift,       // >>
+        LeftShift,       // <<
+        MemberAccess,    // ->
+        GreaterThan,     // >
+        LessThan,        // <
+        Plus,            // \+
+        Minus,           // -
+        Multiply,        // \*
+        Divide,          // \/
+        Modulo,          // %
+        Concat,          // \.
+        BitwiseAnd,      // &
+        BitwiseXOr,      // \^
+        BitwiseOr,       // \|
         // *** End Overloadable Operators *** //
 
         // *** Begin Keywords *** //
-        Break,           // break                   DONE        DONE
-        Case,            // case                    DONE        DONE
-        Catch,           // catch                   DONE        DONE
-        Class,           // class                   DONE        DONE
-        Const,           // const                   DONE        DONE
-        Continue,        // continue                DONE        DONE
-        Default,         // default                 DONE        DONE
-        Delete,          // delete                  DONE        DONE
-        Do,              // do                      DONE        DONE
-        Else,            // else                    DONE        DONE
-        Enum,            // enum                    DONE        DONE
-        False,           // false                   DONE        DONE
-        For,             // for                     DONE        DONE
-        Foreach,         // foreach                 DONE        DONE
-        Friend,          // friend                  DONE        DONE
-        Function,        // function                DONE        DONE
-        If,              // if                      DONE        DONE
-        Include,         // include                 DONE        DONE
-        InstanceOf,      // instanceof              DONE        DONE
-        Namespace,       // namespace               DONE        DONE
-        New,             // new                     DONE        DONE
-        Null,            // null                    DONE        DONE
-        Operator,        // operator                DONE        DONE
-        Private,         // private                 DONE        DONE
-        Protected,       // protected               DONE        DONE
-        Public,          // public                  DONE        DONE
-        Return,          // return                  DONE        DONE
-        SizeOf,          // sizeof                  DONE        DONE
-        Static,          // static                  DONE        DONE
-        Struct,          // struct                  DONE        DONE
-        Switch,          // switch                  DONE        DONE
-        This,            // this                    DONE        DONE
-        Throw,           // throw                   DONE        DONE
-        True,            // true                    DONE        DONE
-        Try,             // try                     DONE        DONE
-        TypeDef,         // typedef                 DONE        DONE
-        TypeNameOperator,// typename                DONE        DONE
-        Union,           // union                   DONE        DONE
-        Using,           // using                   DONE        DONE
-        While,           // while                   DONE        DONE
-        Var,             // var                     DONE        DONE
+        Break,           // break
+        Case,            // case
+        Catch,           // catch
+        Class,           // class
+        Const,           // const
+        Continue,        // continue
+        Default,         // default
+        Delete,          // delete
+        Do,              // do
+        Else,            // else
+        Enum,            // enum
+        False,           // false
+        For,             // for
+        Foreach,         // foreach
+        Friend,          // friend
+        Function,        // function
+        If,              // if
+        Include,         // include
+        InstanceOf,      // instanceof
+        Namespace,       // namespace
+        New,             // new
+        Null,            // null
+        Operator,        // operator
+        Private,         // private
+        Protected,       // protected
+        Public,          // public
+        Return,          // return
+        SizeOf,          // sizeof
+        Static,          // static
+        Struct,          // struct
+        Switch,          // switch
+        This,            // this
+        Throw,           // throw
+        True,            // true
+        Try,             // try
+        TypeDef,         // typedef
+        TypeNameOperator,// typename
+        Union,           // union
+        Using,           // using
+        While,           // while
+        Var,             // var
         // *** End Keywords *** //
 
         TokenTypeCount
