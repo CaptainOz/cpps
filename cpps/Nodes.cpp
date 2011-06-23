@@ -17,6 +17,9 @@ void Scope::Node::getNode(
     const Token& token = *it;
     const Token::Type& type = token.getType();
 
+    // TODO: Figure out how to handle typecasting and parentheticals
+    // TODO: Add ternary operator support.
+
     // Is this token a keyword?
     bool nodeGot = true;
     if( type >= Token::Break && type <= Token::Var )
@@ -45,26 +48,9 @@ void Scope::Node::getNode(
         --it;
     }
 
-    // TODO: This conditional is super fugly. Make it more readable.
     // Or is this a numeric literal?
-    else if( type == Token::NumericLiteral ||
-            ((type == Token::Plus || type == Token::Minus) &&
-             it+1 != end && it[1].getType() == Token::NumericLiteral) )
-    {
-        // Calculate any sign negation and skip to the number.
-        const bool negative = (type == Token::Minus);
-        if( type != Token::NumericLieral )
-            ++it;
-
-        // Get the node
-        node = Node::getNumericLiteral( (*it)->getString(), negative );
-    }
-
-    // TODO: TypeCast goes here?
-    
-    // TODO: LogicalNot goes here.
-    
-    // TODO: BitwiseNot goes here.
+    else if( type == Token::NumericLiteral )
+        node = Node::getNumericLiteral( token->getString(), negative );
 
     // Anything else means we didn't get a node.
     else
@@ -84,7 +70,9 @@ void Scope::Node::getNode(
         type == Token::Delete     ||
         type == Token::BitwiseAnd || // Reference operator
         type == Token::LogicalNot ||
-        type == Token::BitwiseNot) )
+        type == Token::BitwiseNot ||
+        type == Token::Plus       || // Sign negation
+        type == Token::Minus)      )
     {
         // Get the operator node.
         nodeType::UnaryOperator* oprtr = Node::getUnaryOperator( type, Right );
@@ -92,6 +80,8 @@ void Scope::Node::getNode(
         // Get and set the operand.
         Node* operand = scope._parseExpression( ++it, end, Right );
         oprtr->setOperand( operand );
+        node = oprtr;
+        return;
     }
 
     // Everything below this point requires a token to have come before it.
