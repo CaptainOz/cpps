@@ -42,12 +42,22 @@ public:
                 const Associativity& assoc
             );
 
-        static void getNode(
+        static void _getNode(
                       Node*& node,
                       Scope& scope,
                       Token::List::const_iterator& it,
                 const Token::List::const_iterator& end
             );
+
+        // TODO: Update these methods to return a more specific nodeType class.
+        static Node* _getKeywordNode( const Token& keyword );
+        static Node* _getVariableNode( const Token& varName );
+        static Node* _getTypeNameNode( const Token& typeName );
+        static Node* _getStringLiteralNode( const std::string& strValue );
+        static Node* _getNumericLiteralNode( const std::string& numValue );
+        static Node* _getUnaryOperatorNode( const Token::Type& type, const Node::Associativity& assoc );
+        static Node* _getIndexOperatorNode( void );
+        static Node* _getBinaryOperatorNode( const Token::Type& type );
 
     public:
         virtual Scriptable::Reference getValue( Scriptable::Reference args ) = 0;

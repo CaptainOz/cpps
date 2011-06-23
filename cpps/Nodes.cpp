@@ -7,7 +7,7 @@
 namespace cpps
 {
 
-void Scope::Node::getNode(
+void Scope::Node::_getNode(
               Node*& node,
               Scope& scope,
               Token::List::const_iterator& it,
@@ -23,15 +23,15 @@ void Scope::Node::getNode(
     // Is this token a keyword?
     bool nodeGot = true;
     if( type >= Token::Break && type <= Token::Var )
-        node = Node::getKeywordNode( *it );
+        node = Node::_getKeywordNode( *it );
 
     // Or is this token a variable?
     else if( type == Token::Variable )
-        node = Node::getVariableNode( *it );
+        node = Node::_getVariableNode( *it );
 
     // Or is this a typename?
     else if( type == Token::TypeName )
-        node = Node::getTypeNameNode( *it );
+        node = Node::_getTypeNameNode( *it );
 
     // Or is this a string literal? For string literals we also concat multiple
     // strings together if they are directly next to each other.
@@ -42,7 +42,7 @@ void Scope::Node::getNode(
         {
             value += (*it).getString();
         } while( ++it != end && (*it).getType() == Token::StringLiteral );
-        node = Node::getStringLiteralNode( value );
+        node = Node::_getStringLiteralNode( value );
 
         // Back the iterator up one spot so we end on the last StringLiteral.
         --it;
@@ -50,7 +50,7 @@ void Scope::Node::getNode(
 
     // Or is this a numeric literal?
     else if( type == Token::NumericLiteral )
-        node = Node::getNumericLiteral( token->getString(), negative );
+        node = Node::_getNumericLiteralNode( token->getString(), negative );
 
     // Anything else means we didn't get a node.
     else
@@ -75,7 +75,7 @@ void Scope::Node::getNode(
         type == Token::Minus)      )
     {
         // Get the operator node.
-        nodeType::UnaryOperator* oprtr = Node::getUnaryOperator( type, Right );
+        nodeType::UnaryOperator* oprtr = Node::_getUnaryOperatorNode( type, Right );
 
         // Get and set the operand.
         Node* operand = scope._parseExpression( ++it, end, Right );
@@ -88,10 +88,12 @@ void Scope::Node::getNode(
     if( node == NULL )
         throw ParseException(); // TODO: Fill out this parse exception.
 
+    // TODO: Add post(in|de)crement operators here-ish.
+
     // Are we indexing?
     if( type == Token::OpenBracket )
     {
-        nodeType::IndexOperator* indexer = new nodeType::IndexOperator();
+        nodeType::BinaryOperator* indexer = Node::_getIndexOperatorNode();
         Node* rightNode = scope._parseExpression( ++it, end, Token::CloseBracket );
         indexer.setRightOperand( rightNode );
         indexer.setLeftOperand( node );
@@ -126,7 +128,7 @@ void Scope::Node::getNode(
             (type >= Token::RightShift && type <= Token::BitwiseOr) )
     {
         // Is this a right or left associative operator?
-        Associativity assoc = Right;
+        Node::Associativity assoc = Right;
         if( type == Token::LogicalOr  ||
             type == Token::LogicalAnd ||
            (type >= Token::Equality   && type <= Token::LessEqual) ||
@@ -134,7 +136,7 @@ void Scope::Node::getNode(
             assoc = Left;
 
         // Get the node for this operator and assign the left and right operands
-        nodeType::BinaryOperator* oprtr = Node::_getBinaryOperator( type );
+        nodeType::BinaryOperator* oprtr = Node::_getBinaryOperatorNode( type );
         Node* rightNode = scope._parseExpression( ++it, end, assoc );
         oprtr.setRightOperand( rightNode );
         oprtr.setLeftOperand( node );
