@@ -23,15 +23,15 @@ void Scope::Node::_getNode(
     // Is this token a keyword?
     bool nodeGot = true;
     if( type >= Token::Break && type <= Token::Var )
-        node = Node::_getKeywordNode( *it );
+        node = Node::_getKeywordNode( token );
 
     // Or is this token a variable?
     else if( type == Token::Variable )
-        node = Node::_getVariableNode( *it );
+        node = Node::_getVariableNode( token );
 
     // Or is this a typename?
     else if( type == Token::TypeName )
-        node = Node::_getTypeNameNode( *it );
+        node = Node::_getTypeNameNode( token );
 
     // Or is this a string literal? For string literals we also concat multiple
     // strings together if they are directly next to each other.
@@ -88,17 +88,23 @@ void Scope::Node::_getNode(
     if( node == NULL )
         throw ParseException(); // TODO: Fill out this parse exception.
 
-    // TODO: Add post(in|de)crement operators here-ish.
-
     // Are we indexing?
     if( type == Token::OpenBracket )
     {
         nodeType::BinaryOperator* indexer = Node::_getIndexOperatorNode();
         Node* rightNode = scope._parseExpression( ++it, end, Token::CloseBracket );
-        indexer.setRightOperand( rightNode );
-        indexer.setLeftOperand( node );
+        indexer->setRightOperand( rightNode );
+        indexer->setLeftOperand( node );
         node = (Node*)indexer;
         ++it;
+    }
+
+    // Or is is a left-associative unary operator?
+    else if( type == Token::Increment || type == Token::Decrement )
+    {
+        nodeType::UnaryOperator* oprtr = Node::_getUnaryOperatorNode( type, Left );
+        oprtr->setOperand( node );
+        node = oprtr;
     }
 
     // Possibly a binary operator?
@@ -138,8 +144,8 @@ void Scope::Node::_getNode(
         // Get the node for this operator and assign the left and right operands
         nodeType::BinaryOperator* oprtr = Node::_getBinaryOperatorNode( type );
         Node* rightNode = scope._parseExpression( ++it, end, assoc );
-        oprtr.setRightOperand( rightNode );
-        oprtr.setLeftOperand( node );
+        oprtr->setRightOperand( rightNode );
+        oprtr->setLeftOperand( node );
         node = (Node*)oprtr;
     }
 }
