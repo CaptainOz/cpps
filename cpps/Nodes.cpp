@@ -50,7 +50,7 @@ void Scope::Node::_getNode(
 
     // Or is this a numeric literal?
     else if( type == Token::NumericLiteral )
-        node = Node::_getNumericLiteralNode( token->getString(), negative );
+        node = Node::_getNumericLiteralNode( token.getString(), negative );
 
     // Anything else means we didn't get a node.
     else
@@ -148,6 +148,22 @@ void Scope::Node::_getNode(
         oprtr->setLeftOperand( node );
         node = (Node*)oprtr;
     }
+
+    // Or is it a ternary if?
+    else if( type == Token::TernaryIf )
+    {
+        Node::TernaryOperator* oprtr = Node::_getTernaryOperatorNode( type );
+        Node* trueOprnd = scope._parseExpression( ++it, end, Token::Colon );
+        Node* falseOprnd = scope.parseExpression( ++it, end, Right );
+        oprtr->setLeftOperand( node );
+        oprtr->setMiddleOperand( trueOprnd );
+        oprtr->setRightOperand( falseOprnd );
+        node = (Node*)oprtr;
+    }
+
+    // Otherwise we don't know what this is and that's an error!
+    else
+        throw ParseException(); // TODO: Fill out this parse exception.
 }
 
 } // end namespace cpps
