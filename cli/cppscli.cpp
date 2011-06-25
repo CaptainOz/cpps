@@ -22,25 +22,32 @@ int main( int argc, const char* argv[] )
     cout << "cpps > ";
     while( getline( cin, line ).good() )
     {
-        int semicolonPos = line.find( ';' );
-
-        // No semi-colon yet? Tack the line on and keep pulling.
-        if( semicolonPos == string::npos )
+        bool lineDone = false;
+        for( int semicolonPos = line.find( ';' );
+             semicolonPos != string::npos;
+             semicolonPos = line.find( ';' ) )
         {
-            code += '\n' + line;
-            cout << "     > ";
-        }
-        else
-        {
+            lineDone = true;
             // We have a semicolon! Execute the code.
             code += line.substr( 0, semicolonPos + 1 );
             parser.exec( code );
 
-            // Clear the code and reset the line.
+            // Grab any code off the end of line
             code.clear();
-            line = line.substr( semicolonPos );
-            cout << "cpps > ";
+            line = line.substr( semicolonPos + 1 );
         }
+
+        // Line completed?
+        if( lineDone )
+            cout << "cpps > ";
+
+        // No semi-colon yet? Tack the line on and keep pulling.
+        else
+        {
+            code += '\n' + line;
+            cout << "     > ";
+        }
+
     }
     cout << endl;
     return 0;
