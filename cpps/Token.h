@@ -55,7 +55,6 @@ public:
         Variable,        // \$[a-zA-Z_]\w*
         StringLiteral,   // (['"]).*?(?<!\\)\1
         NumericLiteral,  // (?i:[1-9]\d*|\d+\.\d*|0[0-7]*|0x[\da-f]+|0b[01]+)
-                         //
         CommentLine,     // \/\/[^\n]*
         CommentBlock,    // \/\*.*?\*\/
         RegexMatch,      // \/.*(?<!\\)\/
@@ -208,6 +207,12 @@ public:
      *  @return The line number the token was extracted from.
      */
     const unsigned int& getLineNumber( void ) const;
+
+    //! Returns true if this token is for an operator.
+    bool isOperator( void ) const;
+
+    //! Returns true if this token is for a keyword.
+    bool isKeyword( void ) const;
 
     //! Returns the name of the token type.
     /**
@@ -421,9 +426,9 @@ inline const std::string Token::getTypeString( const Token::Type& type )
 inline const std::string Token::getString( void ) const
 {
     const Token::Type& type = getType();
-    return type >= Token::Scope && type <= Token::BitwiseOr ? Token::_operators[ type ] :
-           type >= Token::Break && type <= Token::Var       ? Token::_keywords[ type ]  :
-                                                              mTokenStr                 ;
+    return isOperator() ? Token::_operators[ ((int)type) - Token::Scope ] :
+           isKeyword()  ? Token::_keywords[  ((int)type) - Token::Break ]  :
+                          mTokenStr                 ;
 }
 
 
@@ -433,6 +438,26 @@ inline const std::string Token::getString( void ) const
 inline const unsigned int& Token::getLineNumber( void ) const
 {
     return mLineNumber;
+}
+
+
+/******************************************************************************/
+
+
+inline bool Token::isOperator( void ) const
+{
+    const Token::Type& type = getType();
+    return type >= Token::Scope && type <= Token::BitwiseOr;
+}
+
+
+/******************************************************************************/
+
+
+inline bool Token::isKeyword( void ) const
+{
+    const Token::Type& type = getType();
+    return type >= Token::Break && type <= Token::Var;
 }
 
 
