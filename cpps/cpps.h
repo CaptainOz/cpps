@@ -10,6 +10,7 @@
 #define __CPPS_H_INCLUDED__
 
 #include "Exceptions.h"
+#include "Parser.h"
 #include "SmartPointer.h"
 #include "Token.h"
 
