@@ -31,6 +31,8 @@ all: cpps cli
 cppsObjs 	= \
 			Exceptions.o \
 			Token.o \
+			parser.o \
+			parse.o \
 
 cppsBuildObjs = $(patsubst %,$(CPPS)/%,$(cppsObjs))
 cppsDirObjs   = $(patsubst %,$(BUILD)/%,$(cppsBuildObjs))
