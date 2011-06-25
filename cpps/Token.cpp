@@ -396,6 +396,7 @@ Token* Token::_extractNumber(
     }
 
     // Create and return a new token.
+    --pos;
     return new Token( Token::NumericLiteral, lineNumber, tokenStr );
 }
 
