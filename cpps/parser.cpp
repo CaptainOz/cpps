@@ -19,14 +19,14 @@ int Parser::lex( void )
     const Token* token = tokens->at(mvr++);
     const Token::Type& type = token->getType();
 
-    if( type == Token::Semicolon )
-        return ';';
-
-    if( type == Token::Plus )
-        return '+';
+    if( token->isOperator() )
+        return token->getString().at(0);
 
     if( type == Token::NumericLiteral )
+    {
         d_val__ = strtod( token->getString().c_str(), NULL );
+        return Parser::NUM;
+    }
 
     return type;
 }
