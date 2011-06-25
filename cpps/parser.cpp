@@ -11,12 +11,10 @@ using namespace cpps;
 
 int Parser::lex( void )
 {
-    static int mvr = 0;
-
-    if( mvr >= tokens.size() )
+    if( it == tokens.end() )
         return 0;
 
-    const Token& token = tokens.at(mvr++);
+    const Token& token = *(it++);
     const Token::Type& type = token.getType();
 
     if( token.isOperator() )
