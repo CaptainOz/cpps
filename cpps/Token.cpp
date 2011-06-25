@@ -153,16 +153,15 @@ const char* Token::_operators[] = {
 /******************************************************************************/
 
 
-Token::List* Token::tokenize( const string& code ) throw( ParseException )
+void Token::tokenize( const string& code, Token::List& tokenList ) throw( ParseException )
 {
     unsigned int lineCounter = 0;
     int codeLength = code.size();
-    Token::List* tokenList = new Token::List;
+    tokenList.clear();
 
     for( int pos = 0; pos < codeLength; ++pos )
     {
         const char& thisC = code[pos];
-        Token* token = NULL;
 
         // Skip whitespace.
         if( isspace( thisC ) )
@@ -174,18 +173,19 @@ Token::List* Token::tokenize( const string& code ) throw( ParseException )
 
         // Set up the additional variables we'll need.
         const char& nextC = pos+1 < codeLength ? code[pos+1] : 0;
+        bool tokenized = true;
 
         // Are we starting a string literal? (StringLiteral)
         if( thisC == '\'' || thisC == '"' )
-            token = Token::_extractString( code, pos, lineCounter );
+            tokenList.push_back( Token::_extractString( code, pos, lineCounter ) );
 
         // Or is this a numeric literal? (NumericLiteral)
         else if( isdigit( thisC ) )
-            token = Token::_extractNumber( code, pos, lineCounter );
+            tokenList.push_back( Token::_extractNumber( code, pos, lineCounter ) );
 
         // Or is this a variable identifier? (Identifier)
         else if( thisC == '$' )
-            token = Token::_extractIdentifier( code, pos, lineCounter );
+            tokenList.push_back( Token::_extractIdentifier( code, pos, lineCounter ) );
 
         // Or is this a one-line comment? (CommentLine)
         else if( thisC == '/' && nextC == '/' )
@@ -200,34 +200,45 @@ Token::List* Token::tokenize( const string& code ) throw( ParseException )
             Token::_extractCommentBlock( code, pos, lineCounter );
             continue;
         }
+        else
+            tokenized = false;
 
         // Next lets check for a keyword
-        for( const char** mvr = Token::_keywords; token == NULL && *mvr; ++mvr )
+        for( const char** mvr = Token::_keywords; !tokenized && *mvr; ++mvr )
             if( Token::_matchKeyword( code, pos, *mvr ) )
-                token = Token::_extractKeyword(
+            {
+                tokenList.push_back( Token::_extractKeyword(
                         code,
                         pos,
                         mvr - Token::_keywords,
                         lineCounter
-                    );
+                    ) );
+                tokenized = true;
+            }
 
         // Next lets check for an operator.
-        for( const char** mvr = Token::_operators; token == NULL && *mvr; ++mvr )
+        for( const char** mvr = Token::_operators; !tokenized && *mvr; ++mvr )
             if( Token::_matchToken( code, pos, *mvr ) )
-                token = Token::_extractOperator(
+            {
+                tokenList.push_back( Token::_extractOperator(
                         code,
                         pos,
                         mvr - Token::_operators,
                         lineCounter
-                    );
+                    ) );
+                tokenized = true;
+            }
 
         // If we still haven't tokenized the string yet, lets see if its a
         // typename (i.e. class name, function name, etc).
-        if( token == NULL && isalpha( thisC ) || thisC == '_' )
-            token = Token::_extractIdentifier( code, pos, lineCounter );
+        if( !tokenized && isalpha( thisC ) || thisC == '_' )
+        {
+            tokenList.push_back( Token::_extractIdentifier( code, pos, lineCounter ) );
+            tokenized = true;
+        }
 
         // Still haven't tokenized it!? Must be an error.
-        if( token == NULL )
+        if( !tokenized )
             throw ParseException(
                     ParseException::UnknownToken,   // Exception type
                     code,                           // Erroneous code string
@@ -235,11 +246,7 @@ Token::List* Token::tokenize( const string& code ) throw( ParseException )
                     lineCounter,                    // Line number of error
                     "Unrecognized token."
                 );
-
-        tokenList->push_back( token );
     }
-
-    return tokenList;
 }
 
 
@@ -286,7 +293,7 @@ bool Token::_matchToken( const string& code, const int& pos, const char* token )
 /******************************************************************************/
 
 
-Token* Token::_extractString(
+Token Token::_extractString(
         const string&       code,
               int&          pos,
         const unsigned int& lineNumber
@@ -321,14 +328,14 @@ Token* Token::_extractString(
     }
 
     // Create and return a new token.
-    return new Token( Token::StringLiteral, lineNumber, tokenStr );
+    return Token( Token::StringLiteral, lineNumber, tokenStr );
 }
 
 
 /******************************************************************************/
 
 
-Token* Token::_extractNumber(
+Token Token::_extractNumber(
         const string&       code,
               int&          pos,
         const unsigned int& lineNumber
@@ -397,14 +404,14 @@ Token* Token::_extractNumber(
 
     // Create and return a new token.
     --pos;
-    return new Token( Token::NumericLiteral, lineNumber, tokenStr );
+    return Token( Token::NumericLiteral, lineNumber, tokenStr );
 }
 
 
 /******************************************************************************/
 
 
-Token* Token::_extractIdentifier(
+Token Token::_extractIdentifier(
         const std::string&  code,
               int&          pos,
         const unsigned int& lineNumber
@@ -439,7 +446,7 @@ Token* Token::_extractIdentifier(
         tokenStr += c;
 
     // Create and return a new token.
-    return new Token( tokenType, lineNumber, tokenStr );
+    return Token( tokenType, lineNumber, tokenStr );
 }
 
 
@@ -493,7 +500,7 @@ void Token::_extractCommentBlock(
 /******************************************************************************/
 
 
-Token* Token::_extractKeyword(
+Token Token::_extractKeyword(
         const std::string&  code,
               int&          pos,
         const int&          keywordIndex,
@@ -503,14 +510,14 @@ Token* Token::_extractKeyword(
     // Calculate the token type and move the position up
     const Token::Type tokenType = (Token::Type)((int)Token::Break + keywordIndex);
     pos += strlen( Token::_keywords[ keywordIndex ] ) - 1;
-    return new Token( tokenType, lineNumber );
+    return Token( tokenType, lineNumber );
 }
 
 
 /******************************************************************************/
 
 
-Token* Token::_extractOperator(
+Token Token::_extractOperator(
         const std::string&  code,
               int&          pos,
         const int&          operatorIndex,
@@ -520,7 +527,7 @@ Token* Token::_extractOperator(
     // Calculate the token type and move the position up
     const Token::Type tokenType = (Token::Type)((int)Token::Scope + operatorIndex);
     pos += strlen( Token::_operators[ operatorIndex ] ) - 1;
-    return new Token( tokenType, lineNumber );
+    return Token( tokenType, lineNumber );
 }
 
 
@@ -535,6 +542,14 @@ Token::Token(
     : mType( type ),
       mLineNumber( lineNumber ),
       mTokenStr( tokenStr )
+{
+}
+
+
+Token::Token( const Token& other ) throw()
+    : mType( other.mType ),
+      mLineNumber( other.mLineNumber ),
+      mTokenStr( other.mTokenStr )
 {
 }
 

@@ -12,7 +12,7 @@
 #undef Parser
 class Parser: public ParserBase
 {
-    cpps::Token::List* tokens;
+    cpps::Token::List tokens;
     cpps::Token::List::iterator it;
 
         
