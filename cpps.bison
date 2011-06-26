@@ -1,7 +1,10 @@
 %baseclass-preinclude cmath
+%stype double
 
 %token NUM
-%stype double
+%left  '-' '+'
+%left  '*' '/'
+%right '^'
 
 %%
 
@@ -23,33 +26,33 @@ line:
 exp:
     NUM
 |
-    exp exp '+'
+    exp '+' exp
     {
-        $$ = $1 + $2;
+        $$ = $1 + $3;
     }
 |
-    exp exp '-'
+    exp '-' exp
     {
-        $$ = $1 - $2;
+        $$ = $1 - $3;
     }
 |
-    exp exp '*'
+    exp '*' exp
     {
-        $$ = $1 * $2;
+        $$ = $1 * $3;
     }
 |
-    exp exp '/'
+    exp '/' exp
     {
-        $$ = $1 / $2;
+        $$ = $1 / $3;
     }
 |
-    exp exp '^'
+    exp '^' exp
     {
-        $$ = std::pow( $1, $2 );
+        $$ = std::pow( $1, $3 );
     }
 |
-    exp 'n'
+    '-' exp
     {
-        $$ = -$1;
+        $$ = -$2;
     }
 ;
