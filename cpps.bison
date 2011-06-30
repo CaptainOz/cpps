@@ -1,5 +1,6 @@
-%baseclass-preinclude cmath
-%stype double
+%baseclass-preinclude "Scriptable.h"
+%namespace cpps
+%stype Scriptable::Reference
 
 %token NUM
 %left  '-' '+'
@@ -56,3 +57,4 @@ exp:
         $$ = -$2;
     }
 ;
+
