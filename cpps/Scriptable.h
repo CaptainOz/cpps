@@ -44,7 +44,7 @@ protected:
     virtual Reference oprtrAssignMultiply( const Reference& rhs );
     virtual Reference oprtrAssignPlus( const Reference& rhs );
     virtual Reference oprtrAssignRightShift( const Reference& rhs );
-    virtual Refernece oprtrBitAnd( const Reference& rhs ) const;
+    virtual Reference oprtrBitAnd( const Reference& rhs ) const;
     virtual Reference oprtrBitNot( const Reference& rhs ) const;
     virtual Reference oprtrBitOr( const Reference& rhs ) const;
     virtual Reference oprtrBitXOr( const Reference& rhs ) const;
@@ -71,6 +71,7 @@ protected:
     virtual Reference oprtrPreDecrement( void );
     virtual Reference oprtrPreIncrement( void );
     virtual Reference oprtrRightShift( const Reference& rhs ) const;
+    virtual Reference oprtrTypeName( void ) const;
 
 }; // end class Scriptable
 
