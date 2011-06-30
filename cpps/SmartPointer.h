@@ -34,6 +34,9 @@ private:
     CounterType* mRefCount;
     DataType* mDataPtr;
 
+    //! Copy constructor used by SmartPointer::cast.
+    SmartPointer( DataType* dataPtr, CounterType* counter ) throw();
+
     //! Decrements our reference counter and frees the data if we have dropped
     //! to zero references.
     void _decrement( void ) throw();
@@ -90,6 +93,10 @@ public:
      */
     ThisType clone( void ) const throw();
 
+    //! Casts this smart pointer to a pointer of another type.
+    template< typename CastType >
+    SmartPointer< CastType, CounterType > castTo( void ) throw();
+
     //! Copy operator
     /**
      * @param other The other SmartPointer to copy.
@@ -145,6 +152,14 @@ template< typename D, typename C >
 SmartPointer<D,C>::SmartPointer( const D& data ) throw()
     : mRefCount( new C(0) ),
       mDataPtr( new D(data) )
+{
+    _increment();
+}
+
+template< typename D, typename C >
+SmartPointer<D,C>::SmartPointer( D* dataPtr, C* counter ) throw()
+    : mRefCount( counter ),
+      mDataPtr( dataPtr )
 {
     _increment();
 }
@@ -216,6 +231,18 @@ template< typename D, typename C >
 inline SmartPointer<D,C> SmartPointer<D,C>::clone( void ) const throw()
 {
     return ThisType( *mDataPtr );
+}
+
+
+/******************************************************************************/
+
+
+template< typename D, typename C >
+template< typename CastType >
+inline SmartPointer< CastType, C > SmartPointer<D,C>::castTo( void ) throw()
+{
+    CastType* newDataPtr = dynamic_cast<CastType*>(mDataPtr);
+    return SmartPointer< CastType, C >( newDataPtr, mRefCount );
 }
 
 
