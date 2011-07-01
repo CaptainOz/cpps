@@ -11,6 +11,8 @@
 
 #include "Exceptions.h"
 #include "Parser.h"
+#include "Scriptable.h"
+#include "ScriptableReference.h"
 #include "SmartPointer.h"
 #include "Token.h"
 
