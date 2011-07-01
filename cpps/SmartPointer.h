@@ -1,7 +1,7 @@
 /**
  * @file
  *
- * @brief Describes the SmartPointer class.
+ * @brief Describes the SmartPointer and its data container class.
  *
  * @author Nate Lillich
  */
@@ -14,21 +14,54 @@
 namespace cpps
 {
 
+//! Interface to SmartPointer's data container.
+/**
+ * Any classes that will be used for controlling the SmartPointer's data
+ * container class must implement these 4 methods as well as the following
+ * constructors:
+ * @li <type>( void )
+ * @li <type>( const <type>& other )
+ * @li <type>( const <data type>& data )
+ * @li <type>( <data type>* dataPtr )
+ *
+ * @tparam DataType       The type of data that the SmartPointer will point to.
+ * @tparam RefCounterType The type to use to keep count of the number of
+ *                        references to the SmartPointer. This type must support
+ *                        the pre-increment, pre-decrement, bool conversion, and
+ *                        unsigned int conversion operators.
+ */
 template< typename DataType, typename RefCounterType = unsigned int >
 class SmartPointerData_base
 {
 public:
+    //! Empty default constructor.
     SmartPointerData_base( void ) {};
+
+    //! Empty destructor.
     virtual ~SmartPointerData_base( void ) {};
 
+    //! Returns a reference to the data object being controlled.
     virtual const DataType& getData( void ) const = 0;
     virtual DataType& getData( void ) = 0;
-    
+
+    //! Returns a reference to the reference counter.
     virtual const RefCounterType& getCounter( void ) const = 0;
     virtual RefCounterType& getCounter( void ) = 0;
 }; // end class SmartPointerData_base
 
 
+//! Default SmartPointer data container.
+/**
+ * This class is used as the default data container type for SmartPointers. It
+ * is a simple type with its own reference counter and a pointer to the data
+ * type.
+ *
+ * @tparam DataType       The type of data that the SmartPointer will point to.
+ * @tparam RefCounterType The type to use to keep count of the number of
+ *                        references to the SmartPointer. This type must support
+ *                        the pre-increment, pre-decrement, bool conversion, and
+ *                        unsigned int conversion operators.
+ */
 template< typename DataType, typename RefCounterType = unsigned int >
 class SmartPointerData : public SmartPointerData_base< DataType, RefCounterType >
 {
