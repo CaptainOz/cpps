@@ -22,7 +22,7 @@ namespace cpps
  * This abstract class is used by anything that wants to be inserted into a CPPS
  * script.
  */
-class Scriptable
+class Scriptable : public SmartPointerData_base< Scriptable >
 {
 public:
     typedef SmartPointer< Scriptable, unsigned int > Reference;
@@ -39,6 +39,12 @@ public:
 
     //! Converts this object to true or false.
     virtual bool toBool( void ) const;
+
+    const Scriptable& getData( void ) const;
+    Scriptable& getData( void );
+    
+    const unsigned int& getCounter( void ) const;
+    unsigned int& getCounter( void );
 
 protected:
     virtual Reference oprtrAssign( const Reference& rhs );
@@ -108,6 +114,34 @@ inline Scriptable::Scriptable( void )
 
 inline Scriptable::~Scriptable( void )
 {
+}
+
+
+/******************************************************************************/
+
+
+inline const Scriptable& Scriptable::getData( void ) const
+{
+    return *this;
+}
+
+inline Scriptable& Scriptable::getData( void )
+{
+    return *this;
+}
+
+
+/******************************************************************************/
+
+
+inline const unsigned int& Scriptable::getCounter( void ) const
+{
+    return m_referenceCounter;
+}
+
+inline unsigned int& Scriptable::getCounter( void )
+{
+    return m_referenceCounter;
 }
 
 
