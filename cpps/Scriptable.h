@@ -10,8 +10,9 @@
 #define __CPPS_SCRIPTABLE_H_INCLUDED__
 
 #include <iostream>
+#include <string>
 
-#include "SmartPointer.h"
+#include "ScriptableReference.h"
 
 namespace cpps
 {
@@ -24,11 +25,20 @@ namespace cpps
 class Scriptable
 {
 public:
-    typedef SmartPointer< Scriptable > Reference;
+    typedef SmartPointer< Scriptable, unsigned int > Reference;
 
     //! Constructor and destructor do nothing.
     Scriptable( void );
     virtual ~Scriptable( void );
+
+    //! Converts this object to a printable string.
+    virtual std::string toString( void ) const;
+
+    //! Converts this object to a number.
+    virtual double toNumber( void ) const;
+
+    //! Converts this object to true or false.
+    virtual bool toBool( void ) const;
 
 protected:
     virtual Reference oprtrAssign( const Reference& rhs );
@@ -73,12 +83,16 @@ protected:
     virtual Reference oprtrRightShift( const Reference& rhs ) const;
     virtual Reference oprtrTypeName( void ) const;
 
+private:
+    unsigned int m_referenceCounter;
+    friend class Reference;
+
 }; // end class Scriptable
 
 
 inline std::ostream operator<<( std::ostream& out, const Scriptable& obj )
 {
-    return out << obj.stringify();
+    return out << obj.toString();
 }
 
 

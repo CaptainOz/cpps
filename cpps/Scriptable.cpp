@@ -4,6 +4,8 @@
 
 #include "Scriptable.h"
 
+using namespace std;
+
 namespace cpps
 {
 
@@ -371,6 +373,33 @@ Scriptable::Reference Scriptable::oprtrRightShift( const Reference& rhs ) const
 Scriptable::Reference Scriptable::oprtrTypeName( void ) const
 {
     throw RuntimeException::undefinedOperator( "TypeName" );
+}
+
+
+/******************************************************************************/
+
+
+string Scriptable::toString( void ) const
+{
+    throw RuntimeException::undefinedMethod( "toString" );
+}
+
+
+/******************************************************************************/
+
+
+double Scriptable::toNumber( void ) const
+{
+    throw RuntimeException::undefinedMethod( "toNumber" );
+}
+
+
+/******************************************************************************/
+
+
+bool Scriptable::toBool( void ) const
+{
+    throw RuntimeException::undefinedMethod( "toBool" );
 }
 
 
