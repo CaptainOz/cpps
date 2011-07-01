@@ -31,8 +31,8 @@ class SmartPointer
 {
 private:
     typedef SmartPointer< DataType, CounterType > ThisType;
-    CounterType* mRefCount;
-    DataType* mDataPtr;
+    CounterType* m_refCount;
+    DataType* m_dataPtr;
 
     //! Copy constructor used by SmartPointer::cast.
     SmartPointer( DataType* dataPtr, CounterType* counter ) throw();
@@ -52,6 +52,16 @@ private:
      * @param other The other SmartPointer to copy.
      */
     void _copy( const ThisType& other ) throw();
+
+    //! Returns a reference to the reference counter pointer.
+    CounterType* const& _getCounter( void ) const throw();
+    CounterType*& _getCounter( void ) throw();
+
+    //! Returns a reference to the data pointer.
+    DataType* const& _getDataPtr( void ) const throw();
+    DataType*& _getDataPtr( void ) throw();
+
+    void _destroy( void ) throw();
 
 public:
     //! Empty constructor
@@ -126,15 +136,15 @@ public:
 
 template< typename D, typename C >
 inline SmartPointer<D,C>::SmartPointer( void ) throw()
-    : mRefCount( NULL ),
-      mDataPtr( NULL )
+    : m_refCount( NULL ),
+      m_dataPtr( NULL )
 {
 }
 
 template< typename D, typename C >
 SmartPointer<D,C>::SmartPointer( const ThisType& other ) throw()
-    : mRefCount( NULL ),
-      mDataPtr( NULL )
+    : m_refCount( NULL ),
+      m_dataPtr( NULL )
 {
     _copy( other );
     _increment();
@@ -142,24 +152,24 @@ SmartPointer<D,C>::SmartPointer( const ThisType& other ) throw()
 
 template< typename D, typename C >
 SmartPointer<D,C>::SmartPointer( D* dataPtr ) throw()
-    : mRefCount( new C(0) ),
-      mDataPtr( dataPtr )
+    : m_refCount( new C(0) ),
+      m_dataPtr( dataPtr )
 {
     _increment();
 }
 
 template< typename D, typename C >
 SmartPointer<D,C>::SmartPointer( const D& data ) throw()
-    : mRefCount( new C(0) ),
-      mDataPtr( new D(data) )
+    : m_refCount( new C(0) ),
+      m_dataPtr( new D(data) )
 {
     _increment();
 }
 
 template< typename D, typename C >
 SmartPointer<D,C>::SmartPointer( D* dataPtr, C* counter ) throw()
-    : mRefCount( counter ),
-      mDataPtr( dataPtr )
+    : m_refCount( counter ),
+      m_dataPtr( dataPtr )
 {
     _increment();
 }
@@ -181,13 +191,9 @@ inline SmartPointer<D,C>::~SmartPointer( void ) throw()
 template< typename D, typename C >
 void SmartPointer<D,C>::_decrement( void ) throw()
 {
-    if( mRefCount != NULL && --(*mRefCount) <= 0 )
-    {
-        delete mRefCount;
-        delete mDataPtr;
-        mRefCount = NULL;
-        mDataPtr = NULL;
-    }
+    C*& refCount = _getCounter();
+    if( refCount != NULL && --(*refCount) <= 0 )
+        _destroy();
 }
 
 
@@ -197,8 +203,9 @@ void SmartPointer<D,C>::_decrement( void ) throw()
 template< typename D, typename C >
 inline void SmartPointer<D,C>::_increment( void ) throw()
 {
-    if( mRefCount != NULL )
-        ++(*mRefCount);
+    C*& refCount = _getCounter();
+    if( refCount != NULL )
+        ++(*refCount);
 }
 
 
@@ -209,8 +216,53 @@ template< typename D, typename C >
 void SmartPointer<D,C>::_copy( const ThisType& other ) throw()
 {
     ThisType* otherPtr = const_cast<ThisType*>( &other );
-    mRefCount = otherPtr->mRefCount;
-    mDataPtr  = otherPtr->mDataPtr;
+    _getCounter() = otherPtr->_getCounter();
+    _getDataPtr() = otherPtr->_getDataPtr();
+}
+
+
+/******************************************************************************/
+
+
+template< typename D, typename C >
+inline C* const& SmartPointer<D,C>::_getCounter( void ) const throw()
+{
+    return m_refCount;
+}
+
+template< typename D, typename C >
+inline C*& SmartPointer<D,C>::_getCounter( void ) throw()
+{
+    return m_refCount;
+}
+
+
+/******************************************************************************/
+
+
+template< typename D, typename C >
+inline D* const& SmartPointer<D,C>::_getDataPtr( void ) const throw()
+{
+    return m_dataPtr;
+}
+
+template< typename D, typename C >
+inline D*& SmartPointer<D,C>::_getDataPtr( void ) throw()
+{
+    return m_dataPtr;
+}
+
+
+/******************************************************************************/
+
+
+template< typename D, typename C >
+void SmartPointer<D,C>::_destroy( void ) throw()
+{
+    delete m_refCount;
+    delete m_dataPtr;
+    m_refCount = NULL;
+    m_dataPtr = NULL;
 }
 
 
@@ -220,7 +272,8 @@ void SmartPointer<D,C>::_copy( const ThisType& other ) throw()
 template< typename D, typename C >
 inline unsigned int SmartPointer<D,C>::getReferenceCount( void ) const throw()
 {
-    return mRefCount != NULL ? *mRefCount : 0;
+    C* const& refCount = _getCounter();
+    return refCount != NULL ? *refCount : 0;
 }
 
 
@@ -230,7 +283,7 @@ inline unsigned int SmartPointer<D,C>::getReferenceCount( void ) const throw()
 template< typename D, typename C >
 inline SmartPointer<D,C> SmartPointer<D,C>::clone( void ) const throw()
 {
-    return ThisType( *mDataPtr );
+    return ThisType( *_getDataPtr() );
 }
 
 
@@ -241,8 +294,8 @@ template< typename D, typename C >
 template< typename CastType >
 inline SmartPointer< CastType, C > SmartPointer<D,C>::castTo( void ) throw()
 {
-    CastType* newDataPtr = dynamic_cast<CastType*>(mDataPtr);
-    return SmartPointer< CastType, C >( newDataPtr, mRefCount );
+    CastType* newDataPtr = dynamic_cast<CastType*>(_getDataPtr());
+    return SmartPointer< CastType, C >( newDataPtr, _getCounter() );
 }
 
 
@@ -265,13 +318,13 @@ SmartPointer<D,C>& SmartPointer<D,C>::operator=( const ThisType& other ) throw()
 template< typename D, typename C >
 inline const D& SmartPointer<D,C>::operator*( void ) const throw()
 {
-    return *mDataPtr;
+    return *_getDataPtr();
 }
 
 template< typename D, typename C >
 inline D& SmartPointer<D,C>::operator*( void ) throw()
 {
-    return *mDataPtr;
+    return *_getDataPtr();
 }
 
 
@@ -281,13 +334,13 @@ inline D& SmartPointer<D,C>::operator*( void ) throw()
 template< typename D, typename C >
 inline const D* SmartPointer<D,C>::operator->( void ) const throw()
 {
-    return mDataPtr;
+    return _getDataPtr();
 }
 
 template< typename D, typename C >
 inline D* SmartPointer<D,C>::operator->( void ) throw()
 {
-    return mDataPtr;
+    return _getDataPtr();
 }
 
 
