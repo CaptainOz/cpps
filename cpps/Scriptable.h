@@ -25,7 +25,7 @@ namespace cpps
 class Scriptable : public SmartPointerData_base< Scriptable >
 {
 public:
-    typedef SmartPointer< Scriptable, unsigned int > Reference;
+    typedef SmartPointer< Scriptable, unsigned int, Scriptable > Reference;
 
     //! Constructor and destructor do nothing.
     Scriptable( void );
