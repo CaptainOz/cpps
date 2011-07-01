@@ -40,6 +40,39 @@ private:
 
 }; // end class ParseException
 
+
+/******************************************************************************/
+
+
+class RuntimeException : public std::exception
+{
+public:
+    enum Type
+    {
+        UndefinedOperator,
+        UndefinedMethod,
+        Scripted
+    }; // end RuntimeException::Type
+
+    RuntimeException(
+            const RuntimeException::Type& exceptionType,
+            const unsigned int& lineNumber,
+            const std::string&  message
+        ) throw();
+
+    virtual ~RuntimeException( void ) throw() {}
+
+    static RuntimeException* undefinedOperator( const std::string& oprtr )
+            throw();
+    static RuntimeException* undefinedMethod( const std::string& method )
+            throw();
+
+private:
+    const RuntimeException::Type& m_type;
+    const std::string  m_message;
+    const unsigned int m_lineNumber;
+}; // end class RuntimeException
+
 } // end namespace cpps
 
 #endif // __CPPS_EXCEPTIONS_H_INCLUDED__

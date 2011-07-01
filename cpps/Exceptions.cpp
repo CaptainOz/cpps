@@ -36,5 +36,41 @@ ParseException::ParseException(
     mOffset = offset - start;
 }
 
+
+/******************************************************************************/
+
+
+RuntimeException::RuntimeException(
+        const RuntimeException::Type& exceptionType,
+        const unsigned int& lineNumber,
+        const std::string&  message
+    ) throw()
+    : m_type( exceptionType ),
+      m_message( message ),
+      m_lineNumber( lineNumber )
+{
+}
+
+
+/******************************************************************************/
+
+
+RuntimeException* RuntimeException::undefinedOperator( const std::string& oprtr )
+    throw()
+{
+    return new RuntimeException( UndefinedOperator, 0, oprtr );
+}
+
+
+/******************************************************************************/
+
+
+RuntimeException* RuntimeException::undefinedMethod( const std::string& method )
+    throw()
+{
+    return new RuntimeException( UndefinedMethod, 0, method );
+}
+
+
 } // end namespace cpps
 
