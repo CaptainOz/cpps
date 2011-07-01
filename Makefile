@@ -30,6 +30,7 @@ all: cpps cli
 # CPPS Core
 cppsObjs 	= \
 			Exceptions.o \
+			Scriptable.o \
 			Token.o \
 			parser.o \
 			parse.o \
@@ -58,6 +59,6 @@ test-tokenizer: cpps $(testTokenizerBuildObjs)
 
 testSmartPointerBuildObjs = $(patsubst %,$(TEST)/%,test_smartpointer.o)
 testSmartPointerDirObjs   = $(patsubst %,$(BUILD)/%,$(testSmartPointerBuildObjs))
-test-smartpointer: $(testSmartPointerBuildObjs)
+test-smartpointer: cpps $(testSmartPointerBuildObjs)
 	$(CC_FLAGS) $(LFLAGS) -o $(BIN)/test_smartpointer $(testSmartPointerDirObjs)
 
