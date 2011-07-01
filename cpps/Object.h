@@ -14,19 +14,35 @@
 namespace cpps
 {
 
-class Object
+class Object : public Scriptable
 {
 private:
-    int mTypeID;
-
-protected:
-    Object( const int& typeID );
+    int m_typeID;
 
 public:
-    std::string getType( void );
-    std::string toString( void );
+    Object( void );
+    virtual ~Object( void );
+
+    // TODO: Add operator actions.
 
 }; // end class Object
+
+
+/******************************************************************************/
+
+
+inline Object::Object( void )
+{
+}
+
+
+/******************************************************************************/
+
+
+inline Object::~Object( void )
+{
+}
+
 
 } // end namespace cpps
 
