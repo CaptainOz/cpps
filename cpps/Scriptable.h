@@ -12,7 +12,7 @@
 #include <iostream>
 #include <string>
 
-#include "ScriptableReference.h"
+#include "SmartPointer.h"
 
 namespace cpps
 {
@@ -85,14 +85,13 @@ protected:
 
 private:
     unsigned int m_referenceCounter;
-    friend class Reference;
 
 }; // end class Scriptable
 
 
-inline std::ostream operator<<( std::ostream& out, const Scriptable& obj )
+inline std::ostream& operator<<( std::ostream& out, const Scriptable& obj )
 {
-    return out << obj.toString();
+    return out << obj.toString().c_str();
 }
 
 

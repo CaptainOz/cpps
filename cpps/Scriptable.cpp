@@ -2,6 +2,7 @@
  *
  */
 
+#include "Exceptions.h"
 #include "Scriptable.h"
 
 using namespace std;
