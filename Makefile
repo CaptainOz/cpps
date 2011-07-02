@@ -25,7 +25,7 @@ CC_FLAGS = $(CC_BIN) $(CCFLAGS)
 #cli.%.o : $(CLI)/%.cpp
 #	$(CC_FLAGS) -I$(CWD) -c -o $(BUILD)/$@ $<
 
-all: cpps cli
+all: cpps cli bison
 
 # CPPS Core
 cppsObjs 	= \
@@ -48,6 +48,10 @@ cliDirObjs	 = $(patsubst %,$(BUILD)/%,$(cliBuildObjs)) $(cppsDirObjs)
 cli: cpps $(cliBuildObjs)
 	$(CC_FLAGS) $(LFLAGS) -o $(BIN)/cpps $(cliDirObjs)
 
+bison:
+	bisonc++ cpps.gr
+	mv Parser* cpps/
+	mv parse.cc cpps/parse.cpp
 
 # Test Targets
 test-all: test-tokenizer test-smartpointer

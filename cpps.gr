@@ -1,5 +1,6 @@
-%baseclass-preinclude "Scriptable.h"
-%stype double
+%baseclass-preinclude "Types.h"
+%namespace cpps
+%stype Number
 
 %token NUM
 %left  '-' '+'
@@ -48,7 +49,7 @@ exp:
 |
     exp '^' exp
     {
-        $$ = std::pow( $1, $3 );
+        $$ = std::pow( $1.toNumber(), $3.toNumber() );
     }
 |
     '-' exp
