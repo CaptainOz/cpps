@@ -7,7 +7,9 @@
 #include "Parser.ih"
 
 using namespace std;
-using namespace cpps;
+
+namespace cpps
+{
 
 int Parser::lex( void )
 {
@@ -35,4 +37,6 @@ int Parser::exec( const string& code )
     it = tokens.begin();
     return parse();
 }
+
+} // end namespace cpps
 
