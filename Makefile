@@ -25,6 +25,9 @@ CC_FLAGS = $(CC_BIN) $(CCFLAGS)
 #cli.%.o : $(CLI)/%.cpp
 #	$(CC_FLAGS) -I$(CWD) -c -o $(BUILD)/$@ $<
 
+clean:
+	find build -name *.o -delete
+
 all: cpps cli bison
 
 # CPPS Core
