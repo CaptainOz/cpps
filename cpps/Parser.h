@@ -5,6 +5,7 @@
 
 // $insert baseclass
 #include "Parserbase.h"
+#include "Token.h"
 
 // $insert namespace-open
 namespace cpps
@@ -13,7 +14,9 @@ namespace cpps
 #undef Parser
 class Parser: public ParserBase
 {
-        
+    Token::List tokens;
+    Token::List::iterator it;
+
     public:
         int parse();
 
@@ -22,6 +25,7 @@ class Parser: public ParserBase
         int lex();                      // returns the next token from the
                                         // lexical scanner. 
         void print();                   // use, e.g., d_token, d_loc
+        void exec( const std::string& code );
 
     // support functions for parse():
         void executeAction(int ruleNr);
