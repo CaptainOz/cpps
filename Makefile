@@ -13,7 +13,7 @@ CC_BIN = g++
 LFLAGS = 
 
 # Compiler flags
-CCFLAGS = $(CLFLAGS)
+CCFLAGS = $(CLFLAGS) -Wall
 
 # Compiler and compiler flags
 CC_FLAGS = $(CC_BIN) $(CCFLAGS)
