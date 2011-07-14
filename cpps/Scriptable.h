@@ -302,7 +302,7 @@ inline Scriptable::operator std::string( void ) const
 
 inline Scriptable::operator short( void ) const
 {
-    return toNumber();
+    return (short)toNumber();
 }
 
 
@@ -311,7 +311,7 @@ inline Scriptable::operator short( void ) const
 
 inline Scriptable::operator int( void ) const
 {
-    return toNumber();
+    return (int)toNumber();
 }
 
 
@@ -320,7 +320,7 @@ inline Scriptable::operator int( void ) const
 
 inline Scriptable::operator long( void ) const
 {
-    return toNumber();
+    return (long)toNumber();
 }
 
 
@@ -329,7 +329,7 @@ inline Scriptable::operator long( void ) const
 
 inline Scriptable::operator long long( void ) const
 {
-    return toNumber();
+    return (long long)toNumber();
 }
 
 
@@ -338,7 +338,7 @@ inline Scriptable::operator long long( void ) const
 
 inline Scriptable::operator float( void ) const
 {
-    return toNumber();
+    return (float)toNumber();
 }
 
 
@@ -347,7 +347,7 @@ inline Scriptable::operator float( void ) const
 
 inline Scriptable::operator double( void ) const
 {
-    return toNumber();
+    return (double)toNumber();
 }
 
 
