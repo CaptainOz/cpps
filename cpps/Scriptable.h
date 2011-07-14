@@ -92,6 +92,15 @@ public:
     Scriptable& operator()( Scriptable& args );
     Scriptable& operator[]( const Scriptable& index );
 
+    operator std::string( void ) const;
+    operator short( void ) const;
+    operator int( void ) const;
+    operator long( void ) const;
+    operator long long( void ) const;
+    operator float( void ) const;
+    operator double( void ) const;
+    operator bool( void ) const;
+
 private:
     unsigned int m_referenceCounter;
 
@@ -276,6 +285,78 @@ inline Scriptable& operator++( Scriptable& lhs )
 inline const Scriptable& operator>>( const Scriptable& lhs, const Scriptable& rhs )
 {
     return lhs.oprtrRightShift( rhs );
+}
+
+
+/******************************************************************************/
+
+
+inline Scriptable::operator std::string( void ) const
+{
+    return toString();
+}
+
+
+/******************************************************************************/
+
+
+inline Scriptable::operator short( void ) const
+{
+    return toNumber();
+}
+
+
+/******************************************************************************/
+
+
+inline Scriptable::operator int( void ) const
+{
+    return toNumber();
+}
+
+
+/******************************************************************************/
+
+
+inline Scriptable::operator long( void ) const
+{
+    return toNumber();
+}
+
+
+/******************************************************************************/
+
+
+inline Scriptable::operator long long( void ) const
+{
+    return toNumber();
+}
+
+
+/******************************************************************************/
+
+
+inline Scriptable::operator float( void ) const
+{
+    return toNumber();
+}
+
+
+/******************************************************************************/
+
+
+inline Scriptable::operator double( void ) const
+{
+    return toNumber();
+}
+
+
+/******************************************************************************/
+
+
+inline Scriptable::operator bool( void ) const
+{
+    return toBool();
 }
 
 
