@@ -11,7 +11,7 @@ namespace cpps
 {
 
 
-Scriptable::Reference Scriptable::oprtrAssign( const Scriptable::Reference& rhs )
+Scriptable& Scriptable::oprtrAssign( const Scriptable& rhs )
 {
     throw RuntimeException::undefinedOperator( "Assign" );
 }
@@ -20,7 +20,7 @@ Scriptable::Reference Scriptable::oprtrAssign( const Scriptable::Reference& rhs 
 /******************************************************************************/
 
 
-Scriptable::Reference Scriptable::oprtrAssignBitAnd( const Reference& rhs )
+Scriptable& Scriptable::oprtrAssignBitAnd( const Scriptable& rhs )
 {
     throw RuntimeException::undefinedOperator( "AssignBitAnd" );
 }
@@ -29,7 +29,7 @@ Scriptable::Reference Scriptable::oprtrAssignBitAnd( const Reference& rhs )
 /******************************************************************************/
 
 
-Scriptable::Reference Scriptable::oprtrAssignBitNot( const Reference& rhs )
+Scriptable& Scriptable::oprtrAssignBitNot( const Scriptable& rhs )
 {
     throw RuntimeException::undefinedOperator( "AssignBitNot" );
 }
@@ -38,7 +38,7 @@ Scriptable::Reference Scriptable::oprtrAssignBitNot( const Reference& rhs )
 /******************************************************************************/
 
 
-Scriptable::Reference Scriptable::oprtrAssignBitOr( const Reference& rhs )
+Scriptable& Scriptable::oprtrAssignBitOr( const Scriptable& rhs )
 {
     throw RuntimeException::undefinedOperator( "AssignBitOr" );
 }
@@ -47,7 +47,7 @@ Scriptable::Reference Scriptable::oprtrAssignBitOr( const Reference& rhs )
 /******************************************************************************/
 
 
-Scriptable::Reference Scriptable::oprtrAssignBitXOr( const Reference& rhs )
+Scriptable& Scriptable::oprtrAssignBitXOr( const Scriptable& rhs )
 {
     throw RuntimeException::undefinedOperator( "AssignBitXOr" );
 }
@@ -56,7 +56,7 @@ Scriptable::Reference Scriptable::oprtrAssignBitXOr( const Reference& rhs )
 /******************************************************************************/
 
 
-Scriptable::Reference Scriptable::oprtrAssignConcat( const Reference& rhs )
+Scriptable& Scriptable::oprtrAssignConcat( const Scriptable& rhs )
 {
     throw RuntimeException::undefinedOperator( "AssignConcat" );
 }
@@ -65,7 +65,7 @@ Scriptable::Reference Scriptable::oprtrAssignConcat( const Reference& rhs )
 /******************************************************************************/
 
 
-Scriptable::Reference Scriptable::oprtrAssignDivide( const Reference& rhs )
+Scriptable& Scriptable::oprtrAssignDivide( const Scriptable& rhs )
 {
     throw RuntimeException::undefinedOperator( "AssignDivide" );
 }
@@ -74,7 +74,7 @@ Scriptable::Reference Scriptable::oprtrAssignDivide( const Reference& rhs )
 /******************************************************************************/
 
 
-Scriptable::Reference Scriptable::oprtrAssignLeftShift( const Reference& rhs )
+Scriptable& Scriptable::oprtrAssignLeftShift( const Scriptable& rhs )
 {
     throw RuntimeException::undefinedOperator( "AssignLeftShift" );
 }
@@ -83,7 +83,7 @@ Scriptable::Reference Scriptable::oprtrAssignLeftShift( const Reference& rhs )
 /******************************************************************************/
 
 
-Scriptable::Reference Scriptable::oprtrAssignMinus( const Reference& rhs )
+Scriptable& Scriptable::oprtrAssignMinus( const Scriptable& rhs )
 {
     throw RuntimeException::undefinedOperator( "AssignMinus" );
 }
@@ -92,7 +92,7 @@ Scriptable::Reference Scriptable::oprtrAssignMinus( const Reference& rhs )
 /******************************************************************************/
 
 
-Scriptable::Reference Scriptable::oprtrAssignModulo( const Reference& rhs )
+Scriptable& Scriptable::oprtrAssignModulo( const Scriptable& rhs )
 {
     throw RuntimeException::undefinedOperator( "AssignModulo" );
 }
@@ -101,7 +101,7 @@ Scriptable::Reference Scriptable::oprtrAssignModulo( const Reference& rhs )
 /******************************************************************************/
 
 
-Scriptable::Reference Scriptable::oprtrAssignMultiply( const Reference& rhs )
+Scriptable& Scriptable::oprtrAssignMultiply( const Scriptable& rhs )
 {
     throw RuntimeException::undefinedOperator( "AssignMultiply" );
 }
@@ -110,7 +110,7 @@ Scriptable::Reference Scriptable::oprtrAssignMultiply( const Reference& rhs )
 /******************************************************************************/
 
 
-Scriptable::Reference Scriptable::oprtrAssignPlus( const Reference& rhs )
+Scriptable& Scriptable::oprtrAssignPlus( const Scriptable& rhs )
 {
     throw RuntimeException::undefinedOperator( "AssignPlus" );
 }
@@ -119,7 +119,7 @@ Scriptable::Reference Scriptable::oprtrAssignPlus( const Reference& rhs )
 /******************************************************************************/
 
 
-Scriptable::Reference Scriptable::oprtrAssignRightShift( const Reference& rhs )
+Scriptable& Scriptable::oprtrAssignRightShift( const Scriptable& rhs )
 {
     throw RuntimeException::undefinedOperator( "AssignRightShift" );
 }
@@ -128,7 +128,7 @@ Scriptable::Reference Scriptable::oprtrAssignRightShift( const Reference& rhs )
 /******************************************************************************/
 
 
-Scriptable::Reference Scriptable::oprtrBitAnd( const Reference& rhs ) const
+Scriptable& Scriptable::oprtrBitAnd( const Scriptable& rhs ) const
 {
     throw RuntimeException::undefinedOperator( "BitAnd" );
 }
@@ -137,7 +137,7 @@ Scriptable::Reference Scriptable::oprtrBitAnd( const Reference& rhs ) const
 /******************************************************************************/
 
 
-Scriptable::Reference Scriptable::oprtrBitNot( const Reference& rhs ) const
+Scriptable& Scriptable::oprtrBitNot( const Scriptable& rhs ) const
 {
     throw RuntimeException::undefinedOperator( "BitNot" );
 }
@@ -146,7 +146,7 @@ Scriptable::Reference Scriptable::oprtrBitNot( const Reference& rhs ) const
 /******************************************************************************/
 
 
-Scriptable::Reference Scriptable::oprtrBitOr( const Reference& rhs ) const
+Scriptable& Scriptable::oprtrBitOr( const Scriptable& rhs ) const
 {
     throw RuntimeException::undefinedOperator( "BitOr" );
 }
@@ -155,7 +155,7 @@ Scriptable::Reference Scriptable::oprtrBitOr( const Reference& rhs ) const
 /******************************************************************************/
 
 
-Scriptable::Reference Scriptable::oprtrBitXOr( const Reference& rhs ) const
+Scriptable& Scriptable::oprtrBitXOr( const Scriptable& rhs ) const
 {
     throw RuntimeException::undefinedOperator( "BitXOr" );
 }
@@ -164,7 +164,7 @@ Scriptable::Reference Scriptable::oprtrBitXOr( const Reference& rhs ) const
 /******************************************************************************/
 
 
-Scriptable::Reference Scriptable::oprtrCall( const Reference& args )
+Scriptable& Scriptable::oprtrCall( const Scriptable& args )
 {
     throw RuntimeException::undefinedOperator( "Call" );
 }
@@ -173,7 +173,7 @@ Scriptable::Reference Scriptable::oprtrCall( const Reference& args )
 /******************************************************************************/
 
 
-Scriptable::Reference Scriptable::oprtrConcat( const Reference& args ) const
+Scriptable& Scriptable::oprtrConcat( const Scriptable& args ) const
 {
     throw RuntimeException::undefinedOperator( "Concat" );
 }
@@ -182,7 +182,7 @@ Scriptable::Reference Scriptable::oprtrConcat( const Reference& args ) const
 /******************************************************************************/
 
 
-Scriptable::Reference Scriptable::oprtrDivide( const Reference& args ) const
+Scriptable& Scriptable::oprtrDivide( const Scriptable& args ) const
 {
     throw RuntimeException::undefinedOperator( "Divide" );
 }
@@ -191,7 +191,7 @@ Scriptable::Reference Scriptable::oprtrDivide( const Reference& args ) const
 /******************************************************************************/
 
 
-Scriptable::Reference Scriptable::oprtrEquality( const Reference& rhs ) const
+Scriptable& Scriptable::oprtrEquality( const Scriptable& rhs ) const
 {
     throw RuntimeException::undefinedOperator( "Equality" );
 }
@@ -200,7 +200,7 @@ Scriptable::Reference Scriptable::oprtrEquality( const Reference& rhs ) const
 /******************************************************************************/
 
 
-Scriptable::Reference Scriptable::oprtrGreaterEqual( const Reference& rhs ) const
+Scriptable& Scriptable::oprtrGreaterEqual( const Scriptable& rhs ) const
 {
     throw RuntimeException::undefinedOperator( "GreaterEqual" );
 }
@@ -209,7 +209,7 @@ Scriptable::Reference Scriptable::oprtrGreaterEqual( const Reference& rhs ) cons
 /******************************************************************************/
 
 
-Scriptable::Reference Scriptable::oprtrGreaterThan( const Reference& rhs ) const
+Scriptable& Scriptable::oprtrGreaterThan( const Scriptable& rhs ) const
 {
     throw RuntimeException::undefinedOperator( "GreaterThan" );
 }
@@ -218,7 +218,7 @@ Scriptable::Reference Scriptable::oprtrGreaterThan( const Reference& rhs ) const
 /******************************************************************************/
 
 
-Scriptable::Reference Scriptable::oprtrIndex( const Reference& index )
+Scriptable& Scriptable::oprtrIndex( const Scriptable& index )
 {
     throw RuntimeException::undefinedOperator( "Index" );
 }
@@ -227,7 +227,7 @@ Scriptable::Reference Scriptable::oprtrIndex( const Reference& index )
 /******************************************************************************/
 
 
-Scriptable::Reference Scriptable::oprtrInstanceOf( const Reference& rhs ) const
+Scriptable& Scriptable::oprtrInstanceOf( const Scriptable& rhs ) const
 {
     throw RuntimeException::undefinedOperator( "InstanceOf" );
 }
@@ -236,7 +236,7 @@ Scriptable::Reference Scriptable::oprtrInstanceOf( const Reference& rhs ) const
 /******************************************************************************/
 
 
-Scriptable::Reference Scriptable::oprtrLeftShift( const Reference& rhs ) const
+Scriptable& Scriptable::oprtrLeftShift( const Scriptable& rhs ) const
 {
     throw RuntimeException::undefinedOperator( "LeftShift" );
 }
@@ -245,7 +245,7 @@ Scriptable::Reference Scriptable::oprtrLeftShift( const Reference& rhs ) const
 /******************************************************************************/
 
 
-Scriptable::Reference Scriptable::oprtrLessEqual( const Reference& rhs ) const
+Scriptable& Scriptable::oprtrLessEqual( const Scriptable& rhs ) const
 {
     throw RuntimeException::undefinedOperator( "LessEqual" );
 }
@@ -254,7 +254,7 @@ Scriptable::Reference Scriptable::oprtrLessEqual( const Reference& rhs ) const
 /******************************************************************************/
 
 
-Scriptable::Reference Scriptable::oprtrLessThan( const Reference& rhs ) const
+Scriptable& Scriptable::oprtrLessThan( const Scriptable& rhs ) const
 {
     throw RuntimeException::undefinedOperator( "LessThan" );
 }
@@ -263,7 +263,7 @@ Scriptable::Reference Scriptable::oprtrLessThan( const Reference& rhs ) const
 /******************************************************************************/
 
 
-Scriptable::Reference Scriptable::oprtrMemberAccess( const Reference &rhs )
+Scriptable& Scriptable::oprtrMemberAccess( const Reference &rhs )
 {
     throw RuntimeException::undefinedOperator( "MemberAccess" );
 }
@@ -272,7 +272,7 @@ Scriptable::Reference Scriptable::oprtrMemberAccess( const Reference &rhs )
 /******************************************************************************/
 
 
-Scriptable::Reference Scriptable::oprtrMinus( const Reference& rhs ) const
+Scriptable& Scriptable::oprtrMinus( const Scriptable& rhs ) const
 {
     throw RuntimeException::undefinedOperator( "Minus" );
 }
@@ -281,7 +281,7 @@ Scriptable::Reference Scriptable::oprtrMinus( const Reference& rhs ) const
 /******************************************************************************/
 
 
-Scriptable::Reference Scriptable::oprtrModulo( const Reference& rhs ) const
+Scriptable& Scriptable::oprtrModulo( const Scriptable& rhs ) const
 {
     throw RuntimeException::undefinedOperator( "Modulo" );
 }
@@ -290,7 +290,7 @@ Scriptable::Reference Scriptable::oprtrModulo( const Reference& rhs ) const
 /******************************************************************************/
 
 
-Scriptable::Reference Scriptable::oprtrMultiply( const Reference& rhs ) const
+Scriptable& Scriptable::oprtrMultiply( const Scriptable& rhs ) const
 {
     throw RuntimeException::undefinedOperator( "Multiply" );
 }
@@ -299,7 +299,7 @@ Scriptable::Reference Scriptable::oprtrMultiply( const Reference& rhs ) const
 /******************************************************************************/
 
 
-Scriptable::Reference Scriptable::oprtrNegate( void ) const
+Scriptable& Scriptable::oprtrNegate( void ) const
 {
     throw RuntimeException::undefinedOperator( "Negate" );
 }
@@ -308,7 +308,7 @@ Scriptable::Reference Scriptable::oprtrNegate( void ) const
 /******************************************************************************/
 
 
-Scriptable::Reference Scriptable::oprtrNotEquality( const Reference& rhs ) const
+Scriptable& Scriptable::oprtrNotEquality( const Scriptable& rhs ) const
 {
     throw RuntimeException::undefinedOperator( "NotEquality" );
 }
@@ -317,7 +317,7 @@ Scriptable::Reference Scriptable::oprtrNotEquality( const Reference& rhs ) const
 /******************************************************************************/
 
 
-Scriptable::Reference Scriptable::oprtrPlus( const Reference& rhs ) const
+Scriptable& Scriptable::oprtrPlus( const Scriptable& rhs ) const
 {
     throw RuntimeException::undefinedOperator( "Plus" );
 }
@@ -326,7 +326,7 @@ Scriptable::Reference Scriptable::oprtrPlus( const Reference& rhs ) const
 /******************************************************************************/
 
 
-Scriptable::Reference Scriptable::oprtrPostDecrement( void )
+Scriptable& Scriptable::oprtrPostDecrement( void )
 {
     throw RuntimeException::undefinedOperator( "PostDecrement" );
 }
@@ -335,7 +335,7 @@ Scriptable::Reference Scriptable::oprtrPostDecrement( void )
 /******************************************************************************/
 
 
-Scriptable::Reference Scriptable::oprtrPostIncrement( void )
+Scriptable& Scriptable::oprtrPostIncrement( void )
 {
     throw RuntimeException::undefinedOperator( "PostIncrement" );
 }
@@ -344,7 +344,7 @@ Scriptable::Reference Scriptable::oprtrPostIncrement( void )
 /******************************************************************************/
 
 
-Scriptable::Reference Scriptable::oprtrPreDecrement( void )
+Scriptable& Scriptable::oprtrPreDecrement( void )
 {
     throw RuntimeException::undefinedOperator( "PreDecrement" );
 }
@@ -353,7 +353,7 @@ Scriptable::Reference Scriptable::oprtrPreDecrement( void )
 /******************************************************************************/
 
 
-Scriptable::Reference Scriptable::oprtrPreIncrement( void )
+Scriptable& Scriptable::oprtrPreIncrement( void )
 {
     throw RuntimeException::undefinedOperator( "PreIncrement" );
 }
@@ -362,7 +362,7 @@ Scriptable::Reference Scriptable::oprtrPreIncrement( void )
 /******************************************************************************/
 
 
-Scriptable::Reference Scriptable::oprtrRightShift( const Reference& rhs ) const
+Scriptable& Scriptable::oprtrRightShift( const Scriptable& rhs ) const
 {
     throw RuntimeException::undefinedOperator( "RightShift" );
 }
@@ -371,7 +371,7 @@ Scriptable::Reference Scriptable::oprtrRightShift( const Reference& rhs ) const
 /******************************************************************************/
 
 
-Scriptable::Reference Scriptable::oprtrTypeName( void ) const
+Scriptable& Scriptable::oprtrTypeName( void ) const
 {
     throw RuntimeException::undefinedOperator( "TypeName" );
 }
