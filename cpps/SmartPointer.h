@@ -145,6 +145,9 @@ public:
 
     //! Pointer conversion constructor
     /**
+     * With this constructor the given pointer will become owned by the new
+     * SmartPointer object.
+     *
      * @param dataPtr The pointer to convert into a SmartPointer.
      */
     SmartPointer( DataType* dataPtr ) throw();
@@ -216,7 +219,7 @@ SmartPointer<D,R,C>::SmartPointer( const ThisType& other ) throw()
 
 template< typename D, typename R, typename C >
 SmartPointer<D,R,C>::SmartPointer( D* dataPtr ) throw()
-    : m_data( new C(dataPtr) )
+    : m_data( dataPtr )
 {
 }
 
