@@ -24,18 +24,18 @@ int Parser::lex( void )
 
     if( type == Token::NumericLiteral )
     {
-        d_val__ = strtod( token.getString().c_str(), NULL );
+        d_val__ = new Number( strtod( token.getString().c_str(), NULL ) );
         return Parser::NUM;
     }
 
     return type;
 }
 
-int Parser::exec( const string& code )
+void Parser::exec( const string& code )
 {
     Token::tokenize( code, tokens );
     it = tokens.begin();
-    return parse();
+    parse();
 }
 
 } // end namespace cpps
