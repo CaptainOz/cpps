@@ -7,7 +7,7 @@
 
 #include <string>
 
-#include "Scriptable.h"
+#include "Object.h"
 
 namespace cpps
 {

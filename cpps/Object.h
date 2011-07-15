@@ -10,6 +10,7 @@
 #define __CPPS_OBJECT_H_INCLUDED__
 
 #include <string>
+#include "Scriptable.h"
 
 namespace cpps
 {
