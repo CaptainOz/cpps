@@ -2,6 +2,7 @@
  *
  */
 
+#include <sstream>
 
 #include "Exceptions.h"
 
@@ -40,6 +41,22 @@ ParseException::ParseException(
 /******************************************************************************/
 
 
+const char* ParseException::what( void ) throw()
+{
+    ostringstream ss;
+    const string& type = mType == InvalidName     ? "InvalidName"     :
+                         mType == UnexpectedToken ? "UnexpectedToken" :
+                         mType == UnknownToken    ? "UnknownToken"    :
+                                                    "UnknownError"    ;
+    ss << "ParseException (" << type << "): " << mMessage << " at line "
+       << mLineNumber << " char " << mOffset << ": " << mCodeLine;
+    return ss.str().c_str();
+}
+
+
+/******************************************************************************/
+
+
 RuntimeException::RuntimeException(
         const RuntimeException::Type& exceptionType,
         const unsigned int& lineNumber,
@@ -69,6 +86,22 @@ RuntimeException* RuntimeException::undefinedMethod( const std::string& method )
     throw()
 {
     return new RuntimeException( UndefinedMethod, 0, method );
+}
+
+
+/******************************************************************************/
+
+
+const char* RuntimeException::what( void ) throw()
+{
+    ostringstream ss;
+    const string& type = m_type == UndefinedOperator ? "InvalidName"     :
+                         m_type == UndefinedMethod   ? "UnexpectedToken" :
+                         m_type == Scripted          ? "std::Exception"  :
+                                                       "UnknownError"    ;
+    ss << "RuntimeException (" << type << "): " << m_message << " at line "
+       << m_lineNumber;
+    return ss.str().c_str();
 }
 
 

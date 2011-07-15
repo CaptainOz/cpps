@@ -30,6 +30,7 @@ public:
         ) throw();
 
     virtual ~ParseException( void ) throw() {}
+    virtual const char* what( void ) throw();
 
 private:
     const ParseException::Type mType;
@@ -61,6 +62,7 @@ public:
         ) throw();
 
     virtual ~RuntimeException( void ) throw() {}
+    virtual const char* what( void ) throw();
 
     static RuntimeException* undefinedOperator( const std::string& oprtr )
             throw();
