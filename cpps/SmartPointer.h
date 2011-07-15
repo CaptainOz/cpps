@@ -10,7 +10,6 @@
 #ifndef __CPPS_SMART_POINTER_H_INCLUDED__
 #define __CPPS_SMART_POINTER_H_INCLUDED__
 
-
 namespace cpps
 {
 
@@ -221,6 +220,7 @@ template< typename D, typename R, typename C >
 SmartPointer<D,R,C>::SmartPointer( D* dataPtr ) throw()
     : m_data( dataPtr )
 {
+    _increment();
 }
 
 template< typename D, typename R, typename C >
@@ -427,4 +427,3 @@ inline C& SmartPointerData<D,C>::getCounter( void )
 
 
 #endif // __CPPS_SMART_POINTER_H_INCLUDED__
-
