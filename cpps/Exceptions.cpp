@@ -27,9 +27,9 @@ ParseException::ParseException(
         ; // Do nothing in loop.
 
     // Find the next newline
-    int end;
+    unsigned int end;
     for( end = offset; end < code.size() && code[ end ] != '\n'; ++end )
-        ; // Do nothing in loop.
+    {}  // Do nothing in loop.
 
     // Take the substring between them and get the offset from the substr.
     mCodeLine = code.substr( start, end );
