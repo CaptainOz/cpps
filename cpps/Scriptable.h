@@ -92,14 +92,14 @@ public:
     Scriptable& operator()( Scriptable& args );
     Scriptable& operator[]( const Scriptable& index );
 
-    operator std::string( void ) const;
-    operator short( void ) const;
-    operator int( void ) const;
-    operator long( void ) const;
-    operator long long( void ) const;
-    operator float( void ) const;
-    operator double( void ) const;
-    operator bool( void ) const;
+    explicit operator std::string( void ) const;
+    explicit operator short( void ) const;
+    explicit operator int( void ) const;
+    explicit operator long( void ) const;
+    explicit operator long long( void ) const;
+    explicit operator float( void ) const;
+    explicit operator double( void ) const;
+    explicit operator bool( void ) const;
 
 private:
     unsigned int m_referenceCounter;
