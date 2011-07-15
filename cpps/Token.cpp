@@ -539,17 +539,17 @@ Token::Token(
         const unsigned int& lineNumber,
         const string& tokenStr
     ) throw()
-    : mTokenStr( tokenStr ),
-      mType( type ),
-      mLineNumber( lineNumber )
+    : m_tokenStr( tokenStr ),
+      m_type( type ),
+      m_lineNumber( lineNumber )
 {
 }
 
 
 Token::Token( const Token& other ) throw()
-    : mTokenStr( other.mTokenStr ),
-      mType( other.mType ),
-      mLineNumber( other.mLineNumber )
+    : m_tokenStr( other.m_tokenStr ),
+      m_type( other.m_type ),
+      m_lineNumber( other.m_lineNumber )
 {
 }
 

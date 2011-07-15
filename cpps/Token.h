@@ -223,9 +223,9 @@ public:
     static const std::string getTypeString( const Token::Type& type );
 
 private:
-    std::string mTokenStr;
-    Token::Type mType;
-    unsigned int mLineNumber;
+    std::string m_tokenStr;
+    Token::Type m_type;
+    unsigned int m_lineNumber;
 
     //! Array of keyword strings as they should appear in the code.
     static const char* _keywords[];
@@ -401,7 +401,7 @@ public:
 
 inline const Token::Type& Token::getType( void ) const
 {
-    return mType;
+    return m_type;
 }
 
 
@@ -431,7 +431,7 @@ inline const std::string Token::getString( void ) const
     const Token::Type& type = getType();
     return isOperator() ? Token::_operators[ ((int)type) - Token::Scope ] :
            isKeyword()  ? Token::_keywords[  ((int)type) - Token::Break ]  :
-                          mTokenStr                 ;
+                          m_tokenStr                 ;
 }
 
 
@@ -440,7 +440,7 @@ inline const std::string Token::getString( void ) const
 
 inline const unsigned int& Token::getLineNumber( void ) const
 {
-    return mLineNumber;
+    return m_lineNumber;
 }
 
 
