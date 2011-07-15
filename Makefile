@@ -33,6 +33,8 @@ all: cpps cli bison
 # CPPS Core
 cppsObjs 	= \
 			Exceptions.o \
+			Number.o \
+			Object.o \
 			Scriptable.o \
 			Token.o \
 			parser.o \
