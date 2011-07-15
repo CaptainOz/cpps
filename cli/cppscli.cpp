@@ -23,7 +23,7 @@ int main( int argc, const char* argv[] )
     while( getline( cin, line ).good() )
     {
         bool lineDone = false;
-        for( int semicolonPos = line.find( ';' );
+        for( unsigned int semicolonPos = line.find( ';' );
              semicolonPos != string::npos;
              semicolonPos = line.find( ';' ) )
         {
