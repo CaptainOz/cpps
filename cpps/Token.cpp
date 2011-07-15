@@ -231,7 +231,7 @@ void Token::tokenize( const string& code, Token::List& tokenList ) throw( ParseE
 
         // If we still haven't tokenized the string yet, lets see if its a
         // typename (i.e. class name, function name, etc).
-        if( !tokenized && isalpha( thisC ) || thisC == '_' )
+        if( !tokenized && (isalpha( thisC ) || thisC == '_') )
         {
             tokenList.push_back( Token::_extractIdentifier( code, pos, lineCounter ) );
             tokenized = true;
@@ -441,7 +441,7 @@ Token Token::_extractIdentifier(
     string tokenStr;
     const int codeLength = code.size();
     for( char c = code[ pos ];
-         pos < codeLength && isalnum( c ) || c == '_';
+         pos < codeLength && (isalnum( c ) || c == '_');
          c = code[ ++pos ] )
         tokenStr += c;
 
