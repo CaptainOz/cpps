@@ -223,8 +223,8 @@ public:
     static const std::string getTypeString( const Token::Type& type );
 
 private:
-    std::string m_tokenStr;
-    Token::Type m_type;
+    std::string  m_tokenStr;
+    Token::Type  m_type;
     unsigned int m_lineNumber;
 
     //! Array of keyword strings as they should appear in the code.
