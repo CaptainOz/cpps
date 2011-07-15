@@ -6,8 +6,9 @@
  * @author Nate Lillich
  */
 
-#include <string>
+#include <exception>
 #include <iostream>
+#include <string>
 #include <cpps/cpps.h>
 
 using namespace cpps;
@@ -30,7 +31,16 @@ int main( int argc, const char* argv[] )
             lineDone = true;
             // We have a semicolon! Execute the code.
             code += line.substr( 0, semicolonPos + 1 );
-            parser.exec( code );
+
+            // Try to execute this code.
+            try{
+                parser.exec( code );
+            }
+            catch( exception* e )
+            {
+                cout << "ERROR: " << e->what() << endl;
+                delete e;
+            }
 
             // Grab any code off the end of line
             code.clear();
