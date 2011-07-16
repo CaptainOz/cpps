@@ -24,7 +24,12 @@ public:
     Object( void );
     virtual ~Object( void );
 
-    // TODO: Add operator actions.
+    virtual Scriptable oprtrDivide( const Scriptable& rhs ) const;
+    virtual Scriptable oprtrMinus( const Scriptable& rhs ) const;
+    virtual Scriptable oprtrModulo( const Scriptable& rhs ) const;
+    virtual Scriptable oprtrMultiply( const Scriptable& rhs ) const;
+    virtual Scriptable oprtrNegate( void ) const; // Unary minus
+    virtual Scriptable oprtrPlus( const Scriptable& rhs ) const;
 
 }; // end class Object
 
