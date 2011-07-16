@@ -1,0 +1,13 @@
+# Visual Studio project files
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+
+# Visual Studio solution files
+*.suo
+*.sln
+*.sdf
+*.opensdf
+
+# Intermediate build files
+*.o
