@@ -3,6 +3,7 @@
  */
 
 #include <cstdlib>
+#include <cstdio>
 
 #include "Number.h"
 
@@ -27,6 +28,8 @@ Number::Number( const string& val )
         m_value = strtol( val.substr(2).c_str(), NULL, 2 );
     else if( val.find( "0" ) == 0 )
         m_value = strtol( val.substr(1).c_str(), NULL, 8 );
+    else if( val.find( "e" ) != string::npos )
+        sscanf( val.c_str(), "%le", &m_value );
     else
         m_value = strtol( val.c_str(), NULL, 10 );
 
