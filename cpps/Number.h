@@ -1,5 +1,9 @@
 /**
+ * @file
  *
+ * Describes the Number class.
+ *
+ * @author Nate Lillich
  */
 
 #ifndef __CPPS_NUMBER_H_INCLUDED__
@@ -12,6 +16,10 @@
 namespace cpps
 {
 
+//! The numeric base type for CPPS.
+/**
+ * This is the base type used to represent number literals in CPPS.
+ */
 class Number : public Object
 {
 public:
@@ -21,20 +29,49 @@ public:
         Real
     }; // end enum Number::Type
 
+    //! Default constructor
     Number( void );
+
+    //! Integer constructor
+    /**
+     * @param val The value to initialize with.
+     */
     Number( int val );
+
+    //! Double constructor
+    /**
+     * @param val The value to initialize with.
+     */
     Number( double val );
+
+    //! String constructor
+    /**
+     * @param val The string to convert into a number.
+     */
     explicit Number( const std::string& val );
 
+    //! Virtual destructor does nothing.
     virtual ~Number( void ) {};
-    
+
+    //! Converts this cpps::Number to a double.
+    /**
+     * @return The floating point value of the Number.
+     */
     virtual double toNumber( void ) const;
+
+    //! Converts this
+    /**
+     * @return The boolean value of the Number (i.e. Number != 0).
+     */
     virtual bool toBool( void ) const;
 
+    //! Assigns another Scriptable's numeric value to this one.
+    /**
+     * @param rhs The right-hand-side Scriptable.
+     *
+     * @return A reference to this Number.
+     */
     virtual Scriptable& oprtrAssign( const Scriptable& rhs );
-
-protected:
-    // TODO: Add oprtr* methods here.
 
 private:
     double m_value;
