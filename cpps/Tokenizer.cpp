@@ -4,8 +4,6 @@
  * @author Nate Lillich
  */
 
-#include <iostream>
-
 #include <cstring>
 
 #include "Tokenizer.h"
@@ -329,7 +327,7 @@ Token Tokenizer::_extractKeyword( const int& keywordIndex ) throw()
 {
     // Calculate the token type and move the position up
     const Token::Type tokenType = (Token::Type)((int)Token::Break + keywordIndex);
-    m_pos += strlen( Token::_keywords[ keywordIndex ] ) - 1;
+    m_pos += strlen( Token::_keywords[ keywordIndex ] );
     return Token( tokenType, m_lineCounter );
 }
 
@@ -341,7 +339,7 @@ Token Tokenizer::_extractOperator( const int& operatorIndex ) throw()
 {
     // Calculate the token type and move the position up
     const Token::Type tokenType = (Token::Type)((int)Token::Scope + operatorIndex);
-    m_pos += strlen( Token::_operators[ operatorIndex ] ) - 1;
+    m_pos += strlen( Token::_operators[ operatorIndex ] );
     return Token( tokenType, m_lineCounter );
 }
 
