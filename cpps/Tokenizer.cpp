@@ -4,6 +4,8 @@
  * @author Nate Lillich
  */
 
+#include <cstring>
+
 #include "Tokenizer.h"
 
 using namespace std;
@@ -13,6 +15,7 @@ namespace cpps
 
 Token Tokenizer::getNextToken( void ) throw( ParseException )
 {
+    // Loop through the code string until we reach the end or extract a token.
     for( char thisC = m_code[ m_pos ];
          m_pos < m_length;
          thisC = m_code[ ++m_pos ] )
@@ -78,6 +81,9 @@ Token Tokenizer::getNextToken( void ) throw( ParseException )
                 "Unrecognized token."
             );
     }
+
+    // We reached the end of the code.
+    return Token( Token::EndOfFile, m_lineCounter );
 }
 
 
@@ -92,7 +98,7 @@ bool Tokenizer::_matchKeyword( const char* keyword ) const throw()
 
     // The string matches the keyword, but is it the whole word? It could be the
     // start of another (i.e. newFooBar).
-    const char&   charAfter = m_code[ m_pos + strlen(keyword) ];
+    const char& charAfter = m_code[ m_pos + strlen(keyword) ];
     return !isalnum( charAfter ) && // char after is not alphanumeric
             charAfter != '_';       // char after is not underscore
 }

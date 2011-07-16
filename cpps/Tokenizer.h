@@ -15,6 +15,8 @@
 namespace cpps
 {
 
+class Token;
+
 class Tokenizer
 {
 public:
@@ -31,7 +33,7 @@ public:
     /**
      * @return The extracted token.
      */
-    Token getNextToken( void );
+    Token getNextToken( void ) throw( ParseException );
 
 private:
     const std::string   m_code;

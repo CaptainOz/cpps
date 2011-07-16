@@ -13,6 +13,7 @@
 #include <vector>
 
 #include "Exceptions.h"
+#include "Tokenizer.h"
 
 namespace cpps
 {
@@ -164,6 +165,7 @@ public:
         Var,             // var
         // *** End Keywords *** //
 
+        EndOfFile,
         TokenTypeCount
     }; // end Token::Type
 
@@ -226,6 +228,8 @@ private:
     std::string  m_tokenStr;
     Token::Type  m_type;
     unsigned int m_lineNumber;
+
+    friend class Tokenizer;
 
     //! Array of keyword strings as they should appear in the code.
     static const char* _keywords[];

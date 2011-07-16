@@ -121,6 +121,7 @@ const char* Token::TypeNames[] = {
         "Var",             // var
         // *** End Keywords *** //
 
+        "EndOfFile",
         0 // End array
     };
 
