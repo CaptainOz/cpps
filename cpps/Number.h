@@ -27,9 +27,11 @@ public:
     explicit Number( const std::string& val );
 
     virtual ~Number( void ) {};
-
+    
     virtual double toNumber( void ) const;
     virtual bool toBool( void ) const;
+
+    virtual Scriptable& oprtrAssign( const Scriptable& rhs );
 
 protected:
     // TODO: Add oprtr* methods here.

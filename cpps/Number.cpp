@@ -53,5 +53,15 @@ bool Number::toBool( void ) const
 
 
 
+/******************************************************************************/
+
+
+Scriptable& Number::oprtrAssign( const Scriptable& rhs )
+{
+    m_value = rhs.toNumber();
+    return *this;
+}
+
+
 } // end namespace cpps
 
