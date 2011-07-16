@@ -36,10 +36,10 @@ public:
     Token getNextToken( void ) throw( ParseException );
 
 private:
-    const std::string   m_code;
-    const unsigned int& m_length;
-          unsigned int  m_lineCounter;
-          unsigned int  m_pos;
+    const std::string  m_code;
+    const unsigned int m_length;
+          unsigned int m_lineCounter;
+          unsigned int m_pos;
 
 
     //! Detects if the @p code at the given @p position matches the @p keyword.
@@ -121,7 +121,7 @@ private:
 
 inline Tokenizer::Tokenizer( const std::string& code )
     : m_code( code ),
-      m_length( m_code.size() ),
+      m_length( code.size() ),
       m_lineCounter( 1 ),
       m_pos( 0 )
 {

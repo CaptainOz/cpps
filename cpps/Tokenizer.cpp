@@ -4,6 +4,8 @@
  * @author Nate Lillich
  */
 
+#include <iostream>
+
 #include <cstring>
 
 #include "Tokenizer.h"
@@ -150,6 +152,7 @@ Token Tokenizer::_extractString( void ) throw( ParseException )
     }
 
     // Create and return a new token.
+    ++m_pos;
     return Token( Token::StringLiteral, m_lineCounter, tokenStr );
 }
 
