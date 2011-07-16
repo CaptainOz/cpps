@@ -13,11 +13,11 @@ namespace cpps
 
 int Parser::lex( void )
 {
-    if( it == tokens.end() )
-        return 0;
-
-    const Token& token = *(it++);
+    const Token& token = m_tokenizer->getNextToken();
     const Token::Type& type = token.getType();
+
+    if( type == Token::EndOfFile )
+        return 0;
 
     if( token.isOperator() )
         return token.getString().at(0);
@@ -33,8 +33,9 @@ int Parser::lex( void )
 
 void Parser::exec( const string& code )
 {
-    Token::tokenize( code, tokens );
-    it = tokens.begin();
+    if( m_tokenizer )
+        delete m_tokenizer;
+    m_tokenizer = new Tokenizer( code );
     parse();
 }
 

@@ -5,7 +5,7 @@
 
 // $insert baseclass
 #include "Parserbase.h"
-#include "Token.h"
+#include "Tokenizer.h"
 
 // $insert namespace-open
 namespace cpps
@@ -14,25 +14,39 @@ namespace cpps
 #undef Parser
 class Parser: public ParserBase
 {
-    Token::List tokens;
-    Token::List::iterator it;
+private:
+    Tokenizer* m_tokenizer;
 
-    public:
-        int parse();
-        void exec( const std::string& code );
+    void error(char const *msg);    // called on (syntax) errors
+    int lex();                      // returns the next token from the
+                                    // lexical scanner. 
+    void print();                   // use, e.g., d_token, d_loc
 
-    private:
-        void error(char const *msg);    // called on (syntax) errors
-        int lex();                      // returns the next token from the
-                                        // lexical scanner. 
-        void print();                   // use, e.g., d_token, d_loc
+// support functions for parse():
+    void executeAction(int ruleNr);
+    void errorRecovery();
+    int lookup(bool recovery);
+    void nextToken();
 
-    // support functions for parse():
-        void executeAction(int ruleNr);
-        void errorRecovery();
-        int lookup(bool recovery);
-        void nextToken();
+public:
+    Parser( void );
+
+    int parse();
+    void exec( const std::string& code );
 };
+
+
+/*****************************************************************************/
+
+
+inline Parser::Parser( void )
+    : m_tokenizer( NULL )
+{
+}
+
+
+/*****************************************************************************/
+
 
 inline void Parser::error(char const *msg)
 {

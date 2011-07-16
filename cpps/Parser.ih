@@ -4,6 +4,8 @@
 
 // $insert class.h
 #include "Parser.h"
+#include <cmath>
+#include <string>
 
     // Add below here any includes etc. that are only 
     // required for the compilation of Parser's sources.
