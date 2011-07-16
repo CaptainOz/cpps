@@ -37,6 +37,7 @@ cppsObjs 	= \
 			Object.o \
 			Scriptable.o \
 			Token.o \
+			Tokenizer.o \
 			parser.o \
 			parse.o \
 
