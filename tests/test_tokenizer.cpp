@@ -34,20 +34,27 @@ int main( void )
 void tokenTest_one( void )
 {
     string code = "'hello world'";
-    Token::List* tokenList = Token::tokenize( code );
+    Tokenizer tokenizer( code );
+    Token::List tokenList;
 
     cout << "Basic parse test (" << code << "): ";
 
-    if( tokenList->size() < 1 )
-        cout << "Error: Too few tokens found. Expected 1, found "
-             << tokenList->size() << endl;
+    do
+    {
+        tokenList.push_back( tokenizer.getNextToken() );
+    } while( tokenList[ tokenList.size() - 1 ].getType() != Token::EndOfFile );
+    tokenList.pop_back();
 
-    else if( tokenList->size() > 1 )
+    if( tokenList.size() < 1 )
+        cout << "Error: Too few tokens found. Expected 1, found "
+             << tokenList.size() << endl;
+
+    else if( tokenList.size() > 1 )
         cout << "Error: Too many tokens found. Expected 1, found "
-             << tokenList->size() << endl;
+             << tokenList.size() << endl;
     else
     {
-        Token& token = *tokenList->at(0);
+        Token& token = tokenList.at(0);
         if( token.getType() != Token::StringLiteral )
             cout << "Error: Wrong token type found. Expected StringLiteral, found "
                  << token.getTypeString() << endl;
@@ -65,21 +72,23 @@ void tokenTest_two( void )
 {
     string code = "::;:,||&&?{}()[]==!=>=<==+=-=.=*=/=%=&=^=|=<<=>>=++--!~"
                   ">><<->><+-*/%.&^|";
-    Token::List* tokenList = Token::tokenize( code );
+    Tokenizer tokenizer( code );
 
     cout << "Token extraction order test: ";
 
     bool error = false;
-    int type = (int)Token::Scope;
-    for( Token::List::iterator it = tokenList->begin();
-         it != tokenList->end();
-         ++it, ++type )
-        if( (*it)->getType() != (Token::Type)type )
+    int type;
+    for( type = (int)Token::Scope; type < (int)Token::Break; ++type )
+    {
+        const Token& token = tokenizer.getNextToken();
+        const Token::Type& tokenType = token.getType();
+        if( tokenType != Token::EndOfFile && tokenType != (Token::Type)type )
         {
             cout << "Error: Expected " << Token::getTypeString( (Token::Type)type )
-                 << ", found " << (*it)->getTypeString() << endl;
+                 << ", found " << token.getTypeString() << endl;
             error = true;
         }
+    }
     if( !error && type == (int)Token::BitwiseOr + 1 )
         cout << "Pass!" << endl;
 }
@@ -94,23 +103,22 @@ void tokenTest_three( void )
          protected;    public;      return;   sizeof;     static;     struct;  \
          switch;       this;        throw;    true;       try;        typedef; \
          typename;     union;       using;    while;      var;";
-    Token::List* tokenList = Token::tokenize( code );
+    Tokenizer tokenizer( code );
 
     cout << "Operator extraction test: ";
 
     bool error = false;
-    int type = (int)Token::Break;
-    for( Token::List::iterator it = tokenList->begin();
-         it != tokenList->end();
-         ++it )
+    int type;
+    for( type = (int)Token::Break; type != Token::EndOfFile; )
     {
-        const Token::Type& itType = (*it)->getType();
-        if( itType == Token::Semicolon )
+        const Token& token = tokenizer.getNextToken();
+        const Token::Type& tokenType = token.getType();
+        if( tokenType == Token::Semicolon )
             ++type;
-        else if( itType != (Token::Type)type )
+        else if( tokenType != Token::EndOfFile && tokenType != (Token::Type)type )
         {
             cout << "Error: Expected " << Token::getTypeString( (Token::Type)type )
-                 << ", found " << (*it)->getTypeString() << endl;
+                 << ", found " << token.getTypeString() << endl;
             error = true;
         }
     }
