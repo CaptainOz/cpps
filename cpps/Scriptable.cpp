@@ -173,7 +173,7 @@ Scriptable& Scriptable::oprtrCall( Scriptable& args )
 /******************************************************************************/
 
 
-Scriptable Scriptable::oprtrConcat( const Scriptable& args ) const
+Scriptable Scriptable::oprtrConcat( const Scriptable& rhs ) const
 {
     throw RuntimeException::undefinedOperator( "Concat" );
 }
@@ -182,7 +182,7 @@ Scriptable Scriptable::oprtrConcat( const Scriptable& args ) const
 /******************************************************************************/
 
 
-Scriptable Scriptable::oprtrDivide( const Scriptable& args ) const
+Scriptable Scriptable::oprtrDivide( const Scriptable& rhs ) const
 {
     throw RuntimeException::undefinedOperator( "Divide" );
 }

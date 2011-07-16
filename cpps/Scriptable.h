@@ -64,8 +64,8 @@ public:
     virtual Scriptable  oprtrBitOr( const Scriptable& rhs ) const;
     virtual Scriptable  oprtrBitXOr( const Scriptable& rhs ) const;
     virtual Scriptable& oprtrCall( Scriptable& args ); // Function call
-    virtual Scriptable  oprtrConcat( const Scriptable& args ) const;
-    virtual Scriptable  oprtrDivide( const Scriptable& args ) const;
+    virtual Scriptable  oprtrConcat( const Scriptable& rhs ) const;
+    virtual Scriptable  oprtrDivide( const Scriptable& rhs ) const;
     virtual Scriptable  oprtrEquality( const Scriptable& rhs ) const;
     virtual Scriptable  oprtrGreaterEqual( const Scriptable& rhs ) const;
     virtual Scriptable  oprtrGreaterThan( const Scriptable& rhs ) const;
