@@ -1,59 +1,111 @@
 %baseclass-preinclude "Types.h"
 %namespace cpps
-%stype Scriptable::Reference
+%stype AbstractSyntaxTree::Node
 
-%token NUM
-%left  '-' '+'
-%left  '*' '/'
-%right '^'
+%token TypeName
+%token Variable
+%token StringLiteral
+%token NumericLiteral
+%token Colon
+%token Semicolon
+%token Increment
+%token Decrement
+%token OpenParen
+%token CloseParen
+%token OpenBracket
+%token CloseBraket
+%token OpenBrace
+%token CloseBrace
+
+%left   Comma
+%right  Throw
+%right  Assign
+        AssignPlus      AssignMinus     AssignConcat
+        AssignMultiply  AssignDivide    AssignModulo
+        AssignButAnd    AssignBitXOr    AssignBitOr
+        AssignLeftShift AssignRightShift
+%right  TernaryIf
+%left   LogicalOr
+%left   LogicalAnd
+%left   BitwiseOr
+%left   BitwiseXOr
+%left   BitwiseAnd
+%left   Equality    NotEquality
+%left   LessThan    LessEqual
+        GreaterThan GreaterEqual
+%left   LeftShift   RightShift
+%left   Minus   Plus    Concat
+%left   Divide  Multiply    Modulo
+%right  PreIncrement    PreDecrement
+        UnaryMinus      UnaryPlus
+        LogicalNot      BitwiseNot
+        TypeCast
+        Reference
+        SizeOf
+        New
+        Delete
+%left   PostIncrement   PostDecrement
+        FunctionCall
+        Index
+        MemberAccess
+        TypeName
+%left   Scope
 
 %%
 
-input:
-    // empty
-|
-    input line
-;
+block
+    : // empty
+    | block statement
+    ;
 
-line:
-    ';'
-|
-    exp ';'
-    {
-        std::cout << "    " << *$1 << std::endl;
-    }
-;
+statement
+    : Semicolon
+    | exp Semicolon
+        {
+            $$ = _addStatement( $1 );
+        }
+    ;
 
-exp:
-    NUM
-|
-    exp '+' exp
-    {
-        $$ = *$1 + *$3;
-    }
-|
-    exp '-' exp
-    {
-        $$ = *$1 - *$3;
-    }
-|
-    exp '*' exp
-    {
-        $$ = *$1 * *$3;
-    }
-|
-    exp '/' exp
-    {
-        $$ = *$1 / *$3;
-    }
-|
-    exp '^' exp
-    {
-        $$ = std::pow( $1->toNumber(), $3->toNumber() );
-    }
-|
-    '-' exp
-    {
-        $$ = *$2 * -1;
-    }
-;
+var
+    : Variable
+        {
+            $$ = _addVariable( $1 );
+        }
+
+string
+    : StringLiteral
+        {
+            $$ = _addStringLiteral( $1 );
+        }
+
+number
+    : NumericLiteral
+        {
+            $$ = _addNumericLiteral( $1 );
+        }
+
+exp
+    : var
+    | string
+    | number
+    | exp Plus exp
+        {
+            $$ = _addAddition( $1, $3 );
+        }
+    | exp Minus exp
+        {
+            $$ = _addMinus( $1, $3 );
+        }
+    | exp Multiply exp
+        {
+            $$ = _addMultiply( $1, $3 );
+        }
+    | exp Divide exp
+        {
+            $$ = _addDivide( $1, $3 );
+        }
+    | UnaryMinus exp
+        {
+            $$ = _addNegate( $2 );
+        }
+    ;
