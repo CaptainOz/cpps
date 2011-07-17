@@ -48,7 +48,7 @@
         FunctionCall
         Index
         MemberAccess
-        TypeName
+        TypeNameOperator
 %left   Scope
 
 %%
@@ -71,18 +71,21 @@ var
         {
             $$ = _addVariable( $1 );
         }
+    ;
 
 string
     : StringLiteral
         {
             $$ = _addStringLiteral( $1 );
         }
+    ;
 
 number
     : NumericLiteral
         {
             $$ = _addNumericLiteral( $1 );
         }
+    ;
 
 exp
     : var
