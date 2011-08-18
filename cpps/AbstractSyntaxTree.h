@@ -28,7 +28,7 @@ public:
         Node( const Node& other );
         virtual ~Node( void );
 
-        virtual Scriptable::Reference& getValue( void );
+        virtual Scriptable::Reference getValue( void );
     }; // end class AbstractSyntaxTree::Node
 
 private:
