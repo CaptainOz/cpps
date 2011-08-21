@@ -207,6 +207,9 @@ public:
     //! Returns true if this token is for a keyword.
     bool isKeyword( void ) const;
 
+    //! Returns the ParserBase equivalent token type.
+    const ParserBase::Tokens__& getParserType( void ) const;
+
     //! Returns the name of the token type.
     /**
      * @param type The type to get the name of.
@@ -342,6 +345,14 @@ inline bool Token::isKeyword( void ) const
     return type >= Token::Break && type <= Token::Var;
 }
 
+
+/*****************************************************************************/
+
+
+inline const ParserBase::Tokens__& Token::getParserType( void ) const
+{
+    return Token::_conversion.find( getType() )->second;
+}
 
 } // end namespace cpps
 
