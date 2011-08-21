@@ -8,6 +8,7 @@
 #define __CPPS_ABSTRACT_SYNTAX_TREE_H_INCLUDED__
 
 #include "Scriptable.h"
+#include "Null.h"
 
 namespace cpps
 {
@@ -70,6 +71,15 @@ inline AbstractSyntaxTree::Node::Node( void )
 
 inline AbstractSyntaxTree::Node::~Node( void )
 {
+}
+
+
+/*****************************************************************************/
+
+
+inline Scriptable::Reference AbstractSyntaxTree::Node::getValue( void )
+{
+    return Null::NullReference;
 }
 
 
