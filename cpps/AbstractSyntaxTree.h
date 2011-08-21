@@ -19,9 +19,7 @@ public:
     {
     protected:
         //! Right-sizes the node's datastructures.
-        virtual void _finalize( void );
-
-        virtual void _addNode( Node* node );
+//        virtual void _finalize( void );
 
     public:
         Node( void );
@@ -63,6 +61,14 @@ inline AbstractSyntaxTree::AbstractSyntaxTree( void )
 
 
 inline AbstractSyntaxTree::Node::Node( void )
+{
+}
+
+
+/*****************************************************************************/
+
+
+inline AbstractSyntaxTree::Node::~Node( void )
 {
 }
 
