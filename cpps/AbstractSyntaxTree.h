@@ -39,16 +39,6 @@ public:
     AbstractSyntaxTree( void );
     ~AbstractSyntaxTree( void );
 
-    Node* addStatement( Node* statement );
-    Node* addVariable( Node* variable );
-    Node* addStringLiteral( Node* stringLiteral );
-    Node* addNumericLiteral( Node* numericLiteral );
-    Node* addAddition( Node* lhs, Node* rhs );
-    Node* addMinus( Node* lhs, Node* rhs );
-    Node* addMultiply( Node* lhs, Node* rhs );
-    Node* addDivide( Node* lhs, Node* rhs );
-    Node* addNegate( Node* node );
-
     /// Resets the AST by removing the root node.
     ///
     /// @note The root node is not deleted, simply forgotten. Use

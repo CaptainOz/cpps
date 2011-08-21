@@ -32,6 +32,7 @@ all: cpps cli bison
 
 # CPPS Core
 cppsObjs 	= \
+            AbstractSyntaxTree.o \
 			Exceptions.o \
 			Number.o \
 			Object.o \
