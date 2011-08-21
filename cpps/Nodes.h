@@ -44,8 +44,7 @@ public:
 
 template< unsigned char c >
 Operator<c>::Operator( void )
-    : m_setOperands( 0 ),
-      m_operands( NULL )
+    : m_setOperands( 0 )
 {
 }
 
