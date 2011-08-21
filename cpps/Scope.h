@@ -44,6 +44,16 @@ public:
     void addStatement( AbstractSyntaxTree::Node* statement );
 }; // end class Scope
 
+
+/*****************************************************************************/
+
+
+inline Scope::Scope( const bool& liveExecution )
+    : m_liveExecution( liveExecution )
+{
+}
+
+
 } // end namespace cpps
 
 #endif // __CPPS_SCOPE_H_INCLUDED__
