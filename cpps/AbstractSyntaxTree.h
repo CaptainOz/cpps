@@ -49,6 +49,11 @@ public:
     Node* addDivide( Node* lhs, Node* rhs );
     Node* addNegate( Node* node );
 
+    /// Resets the AST by removing the root node.
+    ///
+    /// @note The root node is not deleted, simply forgotten. Use
+    ///       AbstractSyntaxTree::clear to delete the nodes in the tree.
+    void reset( void );
 }; // end class AbstractSyntaxTree
 
 

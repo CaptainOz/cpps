@@ -17,8 +17,11 @@ using namespace std;
 int main( int argc, const char* argv[] )
 {
     Parser parser;
+    Scope global( true ); // Interpreter mode
     string line;
     string code;
+
+    parser.setGlobal( global );
 
     cout << "cpps > ";
     while( getline( cin, line ).good() )

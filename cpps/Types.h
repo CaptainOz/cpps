@@ -8,6 +8,7 @@
 
 #include "Scriptable.h"
 #include "Object.h"
+#include "Nodes.h"
 #include "Number.h"
 
 #endif // __CPPS_TYPES_H_INCLUDED__
