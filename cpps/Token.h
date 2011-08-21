@@ -207,6 +207,8 @@ public:
     //! Returns true if this token is for a keyword.
     bool isKeyword( void ) const;
 
+    bool is( const Token::Type& type ) const;
+
     //! Returns the ParserBase equivalent token type.
     const ParserBase::Tokens__& getParserType( void ) const;
 
@@ -343,6 +345,15 @@ inline bool Token::isKeyword( void ) const
 {
     const Token::Type& type = getType();
     return type >= Token::Break && type <= Token::Var;
+}
+
+
+/*****************************************************************************/
+
+
+inline bool Token::is( const Token::Type& type ) const
+{
+    return getType() == type;
 }
 
 

@@ -15,23 +15,16 @@ typedef AbstractSyntaxTree AST;
 int Parser::lex( void )
 {
     const Token& token = m_tokenizer->getNextToken();
-    const Token::Type& type = token.getType();
 
-    if( type == Token::EndOfFile )
+    if( token.is( Token::EndOfFile ) )
         return 0;
 
-    if( token.isOperator() )
-        return token.getParserType();
-
-    if( type == Token::NumericLiteral )
-    {
+    if( token.is( Token::NumericLiteral ) )
         d_val__ = new nodes::NumericLiteral(
                 strtod( token.getString().c_str(), NULL )
             );
-        return Parser::NumericLiteral;
-    }
 
-    return type;
+    return token.getParserType();
 }
 
 void Parser::exec( const string& code )
