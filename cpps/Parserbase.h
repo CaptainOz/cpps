@@ -8,6 +8,7 @@
 
 // $insert preincludes
 #include "Types.h"
+#include "Nodes.h"
 
 namespace // anonymous
 {

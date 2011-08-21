@@ -15,6 +15,7 @@
 #include "Scriptable.h"
 #include "SmartPointer.h"
 #include "Token.h"
+#include "Types.h"
 
 #endif // __CPPS_H_INCLUDED__
 
