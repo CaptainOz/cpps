@@ -6,6 +6,6 @@
 
 namespace cpps
 {
-Null::reference( new Null() );
+Scriptable::Reference Null::reference = new Null();
 
 } // end namespace cpps
