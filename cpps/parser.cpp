@@ -21,7 +21,7 @@ int Parser::lex( void )
         return 0;
 
     if( token.isOperator() )
-        return token.getString().at(0);
+        return token.getParserType();
 
     if( type == Token::NumericLiteral )
     {
