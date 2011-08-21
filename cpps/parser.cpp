@@ -25,7 +25,7 @@ int Parser::lex( void )
 
     if( type == Token::NumericLiteral )
     {
-        d_val__ = nodes::NumericLiteral(
+        d_val__ = new nodes::NumericLiteral(
                 strtod( token.getString().c_str(), NULL )
             );
         return Parser::NumericLiteral;
