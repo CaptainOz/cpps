@@ -3,6 +3,7 @@
  */
 
 #include "Nodes.h"
+#include "Types.h"
 
 namespace cpps
 {
@@ -70,6 +71,15 @@ AST::Node* TernaryOperator::_operate( AST::Node** operands )
 Scriptable::Reference Variable::getValue( void )
 {
     return m_value;
+}
+
+
+/*****************************************************************************/
+
+
+Scriptable::Reference NumericLiteral::getValue( void )
+{
+    return Scriptable::Reference( new Number( m_value ) );
 }
 
 
