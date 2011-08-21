@@ -1,6 +1,6 @@
 %baseclass-preinclude "Types.h"
 %namespace cpps
-%stype AbstractSyntaxTree::Node
+%stype AbstractSyntaxTree::Node*
 
 %token TypeName
 %token Variable
@@ -49,7 +49,7 @@
         Index
         MemberAccess
         TypeNameOperator
-%left   Scope
+%left   ResolveScope
 
 %%
 
@@ -62,28 +62,29 @@ statement
     : Semicolon
     | exp Semicolon
         {
-            $$ = _addStatement( $1 );
+            m_currentScope->addStatement( $1 );
+            $$ = NULL;
         }
     ;
 
 var
     : Variable
         {
-            $$ = _addVariable( $1 );
+            $$ = $1;
         }
     ;
 
 string
     : StringLiteral
         {
-            $$ = _addStringLiteral( $1 );
+            $$ = $1;
         }
     ;
 
 number
     : NumericLiteral
         {
-            $$ = _addNumericLiteral( $1 );
+            $$ = $1;
         }
     ;
 
@@ -93,22 +94,22 @@ exp
     | number
     | exp Plus exp
         {
-            $$ = _addAddition( $1, $3 );
+            $$ = new nodes::Addition( $1, $3 );
         }
     | exp Minus exp
         {
-            $$ = _addMinus( $1, $3 );
+            $$ = new nodes::Subtraction( $1, $3 );
         }
     | exp Multiply exp
         {
-            $$ = _addMultiply( $1, $3 );
+            $$ = new nodes::Multiplication( $1, $3 );
         }
     | exp Divide exp
         {
-            $$ = _addDivide( $1, $3 );
+            $$ = new nodes::Division( $1, $3 );
         }
     | UnaryMinus exp
         {
-            $$ = _addNegate( $2 );
+            $$ = new nodes::Negation( $2 );
         }
     ;
