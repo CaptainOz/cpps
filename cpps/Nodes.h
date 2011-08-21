@@ -140,6 +140,29 @@ inline Variable::Variable( const Scriptable::Reference& value )
 /*****************************************************************************/
 
 
+class NumericLiteral : public AST::Node
+{
+private:
+    double m_value;
+
+public:
+    NumericLiteral( const double& value );
+    Scriptable::Reference getValue( void );
+}; // end class NumericLiteral
+
+
+/*****************************************************************************/
+
+
+inline NumericLiteral::NumericLiteral( const double& value )
+    : m_value( value )
+{
+}
+
+
+/*****************************************************************************/
+
+
 class Block : public AST::Node
 {
     typedef std::vector<AST::Node*> StatementList;
