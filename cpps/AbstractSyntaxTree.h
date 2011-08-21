@@ -25,7 +25,6 @@ public:
 
     public:
         Node( void );
-        Node( const Node& other );
         virtual ~Node( void );
 
         virtual Scriptable::Reference getValue( void );
@@ -53,6 +52,14 @@ public:
 inline AbstractSyntaxTree::AbstractSyntaxTree( void )
     : m_root( NULL ),
       m_working( NULL )
+{
+}
+
+
+/*****************************************************************************/
+
+
+inline AbstractSyntaxTree::Node::Node( void )
 {
 }
 
