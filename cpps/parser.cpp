@@ -10,6 +10,7 @@ using namespace std;
 
 namespace cpps
 {
+typedef AbstractSyntaxTree AST;
 
 int Parser::lex( void )
 {
@@ -25,7 +26,7 @@ int Parser::lex( void )
     if( type == Token::NumericLiteral )
     {
         d_val__ = new Number( strtod( token.getString().c_str(), NULL ) );
-        return Parser::NUM;
+        return Parser::NumericLiteral;
     }
 
     return type;

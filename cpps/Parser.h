@@ -5,6 +5,7 @@
 
 // $insert baseclass
 #include "Parserbase.h"
+#include "Scope.h"
 #include "Tokenizer.h"
 
 // $insert namespace-open
@@ -16,23 +17,26 @@ class Parser: public ParserBase
 {
 private:
     Tokenizer* m_tokenizer;
+    Scope*     m_global;
+    Scope*     m_currentScope;
 
     void error(char const *msg);    // called on (syntax) errors
-    int lex();                      // returns the next token from the
+    int lex( void );                // returns the next token from the
                                     // lexical scanner. 
-    void print();                   // use, e.g., d_token, d_loc
+    void print( void );             // use, e.g., d_token, d_loc
 
 // support functions for parse():
     void executeAction(int ruleNr);
-    void errorRecovery();
+    void errorRecovery( void );
     int lookup(bool recovery);
-    void nextToken();
+    void nextToken( void );
 
 public:
     Parser( void );
 
-    int parse();
+    int parse( void );
     void exec( const std::string& code );
+    void setGlobal( Scope& global );
 };
 
 
@@ -51,6 +55,15 @@ inline Parser::Parser( void )
 inline void Parser::error(char const *msg)
 {
     std::cerr << msg << std::endl;
+}
+
+
+/*****************************************************************************/
+
+
+inline void Parser::setGlobal( Scope& global )
+{
+    m_global = &global;
 }
 
 // $insert lex

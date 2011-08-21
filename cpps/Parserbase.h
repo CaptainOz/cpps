@@ -91,7 +91,7 @@ class ParserBase
         Index,
         MemberAccess,
         TypeNameOperator,
-        Scope,
+        ResolveScope,
     };
 
 // $insert STYPE
