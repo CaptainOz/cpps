@@ -27,66 +27,67 @@ class Scriptable : public SmartPointerData_base< Scriptable >
 public:
     typedef SmartPointer< Scriptable, unsigned int, Scriptable > Reference;
 
-    //! Constructor and destructor do nothing.
+    /// Constructor and destructor do nothing.
     Scriptable( void );
     virtual ~Scriptable( void );
 
-    //! Converts this object to a printable string.
+    /// Converts this object to a printable string.
     virtual std::string toString( void ) const;
 
-    //! Converts this object to a number.
+    /// Converts this object to a number.
     virtual double toNumber( void ) const;
 
-    //! Converts this object to true or false.
+    /// Converts this object to true or false.
     virtual bool toBool( void ) const;
 
+    /// Interface from SmartPointerData_base
     const Scriptable& getData( void ) const;
     Scriptable& getData( void );
     
     const unsigned int& getCounter( void ) const;
     unsigned int& getCounter( void );
 
-    virtual Scriptable& oprtrAssign( const Scriptable& rhs );
-    virtual Scriptable& oprtrAssignBitAnd( const Scriptable& rhs );
-    virtual Scriptable& oprtrAssignBitNot( const Scriptable& rhs );
-    virtual Scriptable& oprtrAssignBitOr( const Scriptable& rhs );
-    virtual Scriptable& oprtrAssignBitXOr( const Scriptable& rhs );
-    virtual Scriptable& oprtrAssignConcat( const Scriptable& rhs );
-    virtual Scriptable& oprtrAssignDivide( const Scriptable& rhs );
-    virtual Scriptable& oprtrAssignLeftShift( const Scriptable& rhs );
-    virtual Scriptable& oprtrAssignMinus( const Scriptable& rhs );
-    virtual Scriptable& oprtrAssignModulo( const Scriptable& rhs );
-    virtual Scriptable& oprtrAssignMultiply( const Scriptable& rhs );
-    virtual Scriptable& oprtrAssignPlus( const Scriptable& rhs );
-    virtual Scriptable& oprtrAssignRightShift( const Scriptable& rhs );
-    virtual Scriptable  oprtrBitAnd( const Scriptable& rhs ) const;
-    virtual Scriptable  oprtrBitNot( void ) const;
-    virtual Scriptable  oprtrBitOr( const Scriptable& rhs ) const;
-    virtual Scriptable  oprtrBitXOr( const Scriptable& rhs ) const;
-    virtual Scriptable& oprtrCall( Scriptable& args ); // Function call
-    virtual Scriptable  oprtrConcat( const Scriptable& rhs ) const;
-    virtual Scriptable  oprtrDivide( const Scriptable& rhs ) const;
-    virtual Scriptable  oprtrEquality( const Scriptable& rhs ) const;
-    virtual Scriptable  oprtrGreaterEqual( const Scriptable& rhs ) const;
-    virtual Scriptable  oprtrGreaterThan( const Scriptable& rhs ) const;
-    virtual Scriptable& oprtrIndex( const Scriptable& index );
-    virtual Scriptable  oprtrInstanceOf( const Scriptable& rhs ) const;
-    virtual Scriptable  oprtrLeftShift( const Scriptable& rhs ) const;
-    virtual Scriptable  oprtrLessEqual( const Scriptable& rhs ) const;
-    virtual Scriptable  oprtrLessThan( const Scriptable& rhs ) const;
-    virtual Scriptable& oprtrMemberAccess( const Scriptable& rhs );
-    virtual Scriptable  oprtrMinus( const Scriptable& rhs ) const;
-    virtual Scriptable  oprtrModulo( const Scriptable& rhs ) const;
-    virtual Scriptable  oprtrMultiply( const Scriptable& rhs ) const;
-    virtual Scriptable  oprtrNegate( void ) const; // Unary minus
-    virtual Scriptable  oprtrNotEquality( const Scriptable& rhs ) const;
-    virtual Scriptable  oprtrPlus( const Scriptable& rhs ) const;
-    virtual Scriptable& oprtrPostDecrement( void );
-    virtual Scriptable& oprtrPostIncrement( void );
-    virtual Scriptable& oprtrPreDecrement( void );
-    virtual Scriptable& oprtrPreIncrement( void );
-    virtual Scriptable  oprtrRightShift( const Scriptable& rhs ) const;
-    virtual Scriptable  oprtrTypeName( void ) const;
+    virtual Reference oprtrAssign( const Scriptable& rhs );
+    virtual Reference oprtrAssignBitAnd( const Scriptable& rhs );
+    virtual Reference oprtrAssignBitNot( const Scriptable& rhs );
+    virtual Reference oprtrAssignBitOr( const Scriptable& rhs );
+    virtual Reference oprtrAssignBitXOr( const Scriptable& rhs );
+    virtual Reference oprtrAssignConcat( const Scriptable& rhs );
+    virtual Reference oprtrAssignDivide( const Scriptable& rhs );
+    virtual Reference oprtrAssignLeftShift( const Scriptable& rhs );
+    virtual Reference oprtrAssignMinus( const Scriptable& rhs );
+    virtual Reference oprtrAssignModulo( const Scriptable& rhs );
+    virtual Reference oprtrAssignMultiply( const Scriptable& rhs );
+    virtual Reference oprtrAssignPlus( const Scriptable& rhs );
+    virtual Reference oprtrAssignRightShift( const Scriptable& rhs );
+    virtual Reference oprtrBitAnd( const Scriptable& rhs ) const;
+    virtual Reference oprtrBitNot( void ) const;
+    virtual Reference oprtrBitOr( const Scriptable& rhs ) const;
+    virtual Reference oprtrBitXOr( const Scriptable& rhs ) const;
+    virtual Reference oprtrCall( Scriptable& args ); // Function call
+    virtual Reference oprtrConcat( const Scriptable& rhs ) const;
+    virtual Reference oprtrDivide( const Scriptable& rhs ) const;
+    virtual Reference oprtrEquality( const Scriptable& rhs ) const;
+    virtual Reference oprtrGreaterEqual( const Scriptable& rhs ) const;
+    virtual Reference oprtrGreaterThan( const Scriptable& rhs ) const;
+    virtual Reference oprtrIndex( const Scriptable& index );
+    virtual Reference oprtrInstanceOf( const Scriptable& rhs ) const;
+    virtual Reference oprtrLeftShift( const Scriptable& rhs ) const;
+    virtual Reference oprtrLessEqual( const Scriptable& rhs ) const;
+    virtual Reference oprtrLessThan( const Scriptable& rhs ) const;
+    virtual Reference oprtrMemberAccess( const Scriptable& rhs );
+    virtual Reference oprtrMinus( const Scriptable& rhs ) const;
+    virtual Reference oprtrModulo( const Scriptable& rhs ) const;
+    virtual Reference oprtrMultiply( const Scriptable& rhs ) const;
+    virtual Reference oprtrNegate( void ) const; // Unary minus
+    virtual Reference oprtrNotEquality( const Scriptable& rhs ) const;
+    virtual Reference oprtrPlus( const Scriptable& rhs ) const;
+    virtual Reference oprtrPostDecrement( void );
+    virtual Reference oprtrPostIncrement( void );
+    virtual Reference oprtrPreDecrement( void );
+    virtual Reference oprtrPreIncrement( void );
+    virtual Reference oprtrRightShift( const Scriptable& rhs ) const;
+    virtual Reference oprtrTypeName( void ) const;
 
     Scriptable& operator=( const Scriptable& rhs );
     Scriptable& operator()( Scriptable& args );
@@ -114,177 +115,177 @@ inline std::ostream& operator<<( std::ostream& out, const Scriptable& obj )
 
 inline Scriptable& Scriptable::operator=( const Scriptable& rhs )
 {
-    return oprtrAssign( rhs );
+    return *oprtrAssign( rhs );
 }
 
 inline Scriptable& operator&=( Scriptable& lhs, const Scriptable& rhs )
 {
-    return lhs.oprtrAssignBitAnd( rhs );
+    return *lhs.oprtrAssignBitAnd( rhs );
 }
 
 inline Scriptable& operator|=( Scriptable& lhs, const Scriptable& rhs )
 {
-    return lhs.oprtrAssignBitOr( rhs );
+    return *lhs.oprtrAssignBitOr( rhs );
 }
 
 inline Scriptable& operator^=( Scriptable& lhs, const Scriptable& rhs )
 {
-    return lhs.oprtrAssignBitXOr( rhs );
+    return *lhs.oprtrAssignBitXOr( rhs );
 }
 
 inline Scriptable& operator/=( Scriptable& lhs, const Scriptable& rhs )
 {
-    return lhs.oprtrAssignDivide( rhs );
+    return *lhs.oprtrAssignDivide( rhs );
 }
 
 inline Scriptable& operator<<=( Scriptable& lhs, const Scriptable& rhs )
 {
-    return lhs.oprtrAssignLeftShift( rhs );
+    return *lhs.oprtrAssignLeftShift( rhs );
 }
 
 inline Scriptable& operator-=( Scriptable& lhs, const Scriptable& rhs )
 {
-    return lhs.oprtrAssignMinus( rhs );
+    return *lhs.oprtrAssignMinus( rhs );
 }
 
 inline Scriptable& operator%=( Scriptable& lhs, const Scriptable& rhs )
 {
-    return lhs.oprtrAssignModulo( rhs );
+    return *lhs.oprtrAssignModulo( rhs );
 }
 
 inline Scriptable& operator*=( Scriptable& lhs, const Scriptable& rhs )
 {
-    return lhs.oprtrAssignMultiply( rhs );
+    return *lhs.oprtrAssignMultiply( rhs );
 }
 
 inline Scriptable& operator+=( Scriptable& lhs, const Scriptable& rhs )
 {
-    return lhs.oprtrAssignPlus( rhs );
+    return *lhs.oprtrAssignPlus( rhs );
 }
 
 inline Scriptable& operator>>=( Scriptable& lhs, const Scriptable& rhs )
 {
-    return lhs.oprtrAssignRightShift( rhs );
+    return *lhs.oprtrAssignRightShift( rhs );
 }
 
 inline Scriptable operator&( const Scriptable& lhs, const Scriptable& rhs )
 {
-    return lhs.oprtrBitAnd( rhs );
+    return *lhs.oprtrBitAnd( rhs );
 }
 
 inline Scriptable operator~( const Scriptable& lhs )
 {
-    return lhs.oprtrBitNot();
+    return *lhs.oprtrBitNot();
 }
 
 inline Scriptable operator|( const Scriptable& lhs, const Scriptable& rhs )
 {
-    return lhs.oprtrBitOr( rhs );
+    return *lhs.oprtrBitOr( rhs );
 }
 
 inline Scriptable operator^( const Scriptable& lhs, const Scriptable& rhs )
 {
-    return lhs.oprtrBitXOr( rhs );
+    return *lhs.oprtrBitXOr( rhs );
 }
 
 inline Scriptable& Scriptable::operator()( Scriptable& args )
 {
-    return oprtrCall( args );
+    return *oprtrCall( args );
 }
 
 inline Scriptable operator/( const Scriptable& lhs, const Scriptable& rhs )
 {
-    return lhs.oprtrDivide( rhs );
+    return *lhs.oprtrDivide( rhs );
 }
 
 inline Scriptable operator==( const Scriptable& lhs, const Scriptable& rhs )
 {
-    return lhs.oprtrEquality( rhs );
+    return *lhs.oprtrEquality( rhs );
 }
 
 inline Scriptable operator>=( const Scriptable& lhs, const Scriptable& rhs )
 {
-    return lhs.oprtrGreaterEqual( rhs );
+    return *lhs.oprtrGreaterEqual( rhs );
 }
 
 inline Scriptable operator>( const Scriptable& lhs, const Scriptable& rhs )
 {
-    return lhs.oprtrGreaterThan( rhs );
+    return *lhs.oprtrGreaterThan( rhs );
 }
 
 inline Scriptable& Scriptable::operator[]( const Scriptable& index )
 {
-    return oprtrIndex( index );
+    return *oprtrIndex( index );
 }
 
 inline Scriptable operator<<( const Scriptable& lhs, const Scriptable& rhs )
 {
-    return lhs.oprtrLeftShift( rhs );
+    return *lhs.oprtrLeftShift( rhs );
 }
 
 inline Scriptable operator<=( const Scriptable& lhs, const Scriptable& rhs )
 {
-    return lhs.oprtrLessEqual( rhs );
+    return *lhs.oprtrLessEqual( rhs );
 }
 
 inline Scriptable operator<( const Scriptable& lhs, const Scriptable& rhs )
 {
-    return lhs.oprtrLessThan( rhs );
+    return *lhs.oprtrLessThan( rhs );
 }
 
 inline Scriptable operator-( const Scriptable& lhs, const Scriptable& rhs )
 {
-    return lhs.oprtrMinus( rhs );
+    return *lhs.oprtrMinus( rhs );
 }
 
 inline Scriptable operator%( const Scriptable& lhs, const Scriptable& rhs )
 {
-    return lhs.oprtrModulo( rhs );
+    return *lhs.oprtrModulo( rhs );
 }
 
 inline Scriptable operator*( const Scriptable& lhs, const Scriptable& rhs )
 {
-    return lhs.oprtrMultiply( rhs );
+    return *lhs.oprtrMultiply( rhs );
 }
 
 inline Scriptable operator-( const Scriptable& lhs )
 {
-    return lhs.oprtrNegate();
+    return *lhs.oprtrNegate();
 }
 
 inline Scriptable operator!=( const Scriptable& lhs, const Scriptable& rhs )
 {
-    return lhs.oprtrNotEquality( rhs );
+    return *lhs.oprtrNotEquality( rhs );
 }
 
 inline Scriptable operator+( const Scriptable& lhs, const Scriptable& rhs )
 {
-    return lhs.oprtrPlus( rhs );
+    return *lhs.oprtrPlus( rhs );
 }
 
 inline Scriptable& operator--( Scriptable& lhs, int x )
 {
-    return lhs.oprtrPostDecrement();
+    return *lhs.oprtrPostDecrement();
 }
 
 inline Scriptable& operator++( Scriptable& lhs, int x )
 {
-    return lhs.oprtrPostIncrement();
+    return *lhs.oprtrPostIncrement();
 }
 
 inline Scriptable& operator--( Scriptable& lhs )
 {
-    return lhs.oprtrPreDecrement();
+    return *lhs.oprtrPreDecrement();
 }
 
 inline Scriptable& operator++( Scriptable& lhs )
 {
-    return lhs.oprtrPreIncrement();
+    return *lhs.oprtrPreIncrement();
 }
 
 inline Scriptable operator>>( const Scriptable& lhs, const Scriptable& rhs )
 {
-    return lhs.oprtrRightShift( rhs );
+    return *lhs.oprtrRightShift( rhs );
 }
 
 

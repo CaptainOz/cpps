@@ -8,54 +8,54 @@
 namespace cpps
 {
 
-Scriptable Object::oprtrDivide( const Scriptable& rhs ) const
+Scriptable::Reference Object::oprtrDivide( const Scriptable& rhs ) const
 {
-    return Number( toNumber() / rhs.toNumber() );
+    return Reference( new Number( toNumber() / rhs.toNumber() ) );
 }
 
 
 /******************************************************************************/
 
 
-Scriptable Object::oprtrMinus( const Scriptable& rhs ) const
+Scriptable::Reference Object::oprtrMinus( const Scriptable& rhs ) const
 {
-    return Number( toNumber() - rhs.toNumber() );
+    return Reference( new Number( toNumber() - rhs.toNumber() ) );
 }
 
 
 /******************************************************************************/
 
 
-Scriptable Object::oprtrModulo( const Scriptable& rhs ) const
+Scriptable::Reference Object::oprtrModulo( const Scriptable& rhs ) const
 {
-    return Number( (int)*this % (int)rhs );
+    return Reference( new Number( (int)*this % (int)rhs ) );
 }
 
 
 /******************************************************************************/
 
 
-Scriptable Object::oprtrMultiply( const Scriptable& rhs ) const
+Scriptable::Reference Object::oprtrMultiply( const Scriptable& rhs ) const
 {
-    return Number( toNumber() * rhs.toNumber() );
+    return Reference( new Number( toNumber() * rhs.toNumber() ) );
 }
 
 
 /******************************************************************************/
 
 
-Scriptable Object::oprtrNegate( void ) const
+Scriptable::Reference Object::oprtrNegate( void ) const
 {
-    return Number( -toNumber() );
+    return Reference( new Number( -toNumber() ) );
 }
 
 
 /******************************************************************************/
 
 
-Scriptable Object::oprtrPlus( const Scriptable& rhs ) const
+Scriptable::Reference Object::oprtrPlus( const Scriptable& rhs ) const
 {
-    return Number( toNumber() + rhs.toNumber() );
+    return Reference( new Number( toNumber() + rhs.toNumber() ) );
 }
 
 } // end namespace cpps

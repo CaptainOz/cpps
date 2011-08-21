@@ -24,12 +24,12 @@ public:
     Object( void );
     virtual ~Object( void );
 
-    virtual Scriptable oprtrDivide( const Scriptable& rhs ) const;
-    virtual Scriptable oprtrMinus( const Scriptable& rhs ) const;
-    virtual Scriptable oprtrModulo( const Scriptable& rhs ) const;
-    virtual Scriptable oprtrMultiply( const Scriptable& rhs ) const;
-    virtual Scriptable oprtrNegate( void ) const; // Unary minus
-    virtual Scriptable oprtrPlus( const Scriptable& rhs ) const;
+    virtual Reference oprtrDivide( const Scriptable& rhs ) const;
+    virtual Reference oprtrMinus( const Scriptable& rhs ) const;
+    virtual Reference oprtrModulo( const Scriptable& rhs ) const;
+    virtual Reference oprtrMultiply( const Scriptable& rhs ) const;
+    virtual Reference oprtrNegate( void ) const; // Unary minus
+    virtual Reference oprtrPlus( const Scriptable& rhs ) const;
 
 }; // end class Object
 

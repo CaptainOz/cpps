@@ -17,16 +17,19 @@ namespace cpps
 {
 
 
-//! This namespace contains all the Scope::Node subclasses.
-namespace ast
+/// This namespace contains all the AbstractSyntaxTree::Node subclasses.
+namespace nodes
 {
-
 typedef AbstractSyntaxTree AST;
 
-template< unsigned int operandCount >
+/// Base class for all Operator nodes.
+///
+/// @tparam operandCount The number of operands the operator takes. The maximum
+//                       number of operands is 255.
+template< unsigned char operandCount >
 class Operator : public AST::Node
 {
-    unsigned int m_setOperands;
+    unsigned char m_setOperands;
 	AST::Node* m_operands[ operandCount ];
 
 protected:
@@ -39,14 +42,14 @@ public:
     Scriptable::Reference getValue( void ) override;
 }; // end class Operator
 
-template< unsigned int c >
+template< unsigned char c >
 Operator<c>::Operator( void )
     : m_setOperands( 0 ),
       m_operands( NULL )
 {
 }
 
-template< unsigned int c >
+template< unsigned char c >
 void Operator<c>::_addNode( AST::Node* node )
 {
     if( m_setOperands == c )
@@ -54,13 +57,13 @@ void Operator<c>::_addNode( AST::Node* node )
     m_operands[ m_setOperands++ ] = node;
 }
 
-template< unsigned int c >
+template< unsigned char c >
 Scriptable::Reference Operator<c>::getValue( void )
 {
     return _operate( _getOperands() )->getValue();
 }
 
-template< unsigned int c >
+template< unsigned char c >
 inline AST::Node** Operator<c>::_getOperands( void )
 {
     return m_operands;
@@ -72,8 +75,12 @@ inline AST::Node** Operator<c>::_getOperands( void )
 
 class UnaryOperator : public Operator<1>
 {
+protected:
     AST::Node* _operate( AST::Node** operands ) override;
     virtual AST::Node* _operate( AST::Node* operand ) = 0;
+
+public:
+    UnaryOperator( AST::Node* operand );
 }; // end class UnaryOperator
 
 
@@ -85,6 +92,9 @@ class BinaryOperator : public Operator<2>
 protected:
     AST::Node* _operate( AST::Node** operands ) override;
     virtual AST::Node* _operate( AST::Node* lhs, AST::Node* rhs ) = 0;
+
+public:
+    BinaryOperator( AST::Node* lhs, AST::Node* rhs );
 }; // end class BinaryOperator
 
 
@@ -96,6 +106,9 @@ class TernaryOperator : public Operator<3>
 protected:
     AST::Node* _operate( AST::Node** operands ) override;
     virtual AST::Node* _operate( AST::Node* lhs, AST::Node* mhs, AST::Node* rhs ) = 0;
+
+public:
+    TernaryOperator( AST::Node* lhs, AST::Node* mhs, AST::Node* rhs );
 }; // end class TernaryOperator
 
 
@@ -110,8 +123,18 @@ class Variable : public AST::Node
     Scriptable::Reference m_value;
 
 public:
+    Variable( const Scriptable::Reference& value );
     Scriptable::Reference getValue( void );
 }; // end class Variable
+
+
+/*****************************************************************************/
+
+
+inline Variable::Variable( const Scriptable::Reference& value )
+    : m_value( value )
+{
+}
 
 
 /*****************************************************************************/
@@ -133,7 +156,117 @@ class Function : public AST::Node
 };
 
 
-} // end namespace ast
+/*****************************************************************************/
+
+
+class Addition : public BinaryOperator
+{
+protected:
+    AST::Node* _operate( AST::Node* lhs, AST::Node* rhs ) override;
+
+public:
+    Addition( AST::Node* lhs, AST::Node* rhs );
+}; // end class Addition
+
+
+/*****************************************************************************/
+
+
+inline Addition::Addition( AST::Node* lhs, AST::Node* rhs )
+    : BinaryOperator( lhs, rhs )
+{
+}
+
+
+/*****************************************************************************/
+
+
+class Subtraction : public BinaryOperator
+{
+protected:
+    AST::Node* _operate( AST::Node* lhs, AST::Node* rhs ) override;
+
+public:
+    Subtraction( AST::Node* lhs, AST::Node* rhs );
+}; // end class Addition
+
+
+/*****************************************************************************/
+
+
+inline Subtraction::Subtraction( AST::Node* lhs, AST::Node* rhs )
+    : BinaryOperator( lhs, rhs )
+{
+}
+
+
+/*****************************************************************************/
+
+
+class Multiplication : public BinaryOperator
+{
+protected:
+    AST::Node* _operate( AST::Node* lhs, AST::Node* rhs ) override;
+
+public:
+    Multiplication( AST::Node* lhs, AST::Node* rhs );
+}; // end class Addition
+
+
+/*****************************************************************************/
+
+
+inline Multiplication::Multiplication( AST::Node* lhs, AST::Node* rhs )
+    : BinaryOperator( lhs, rhs )
+{
+}
+
+
+/*****************************************************************************/
+
+
+class Division : public BinaryOperator
+{
+protected:
+    AST::Node* _operate( AST::Node* lhs, AST::Node* rhs ) override;
+
+public:
+    Division( AST::Node* lhs, AST::Node* rhs );
+}; // end class Addition
+
+
+/*****************************************************************************/
+
+
+inline Division::Division( AST::Node* lhs, AST::Node* rhs )
+    : BinaryOperator( lhs, rhs )
+{
+}
+
+
+/*****************************************************************************/
+
+
+class Negation : public UnaryOperator
+{
+protected:
+    AST::Node* _operate( AST::Node* operand ) override;
+
+public:
+    Negation( AST::Node* operand );
+}; // end class Addition
+
+
+/*****************************************************************************/
+
+
+inline Negation::Negation( AST::Node* operand )
+    : UnaryOperator( operand )
+{
+}
+
+
+} // end namespace nodes
 
 
 } // emd namespace cpps

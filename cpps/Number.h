@@ -71,7 +71,7 @@ public:
      *
      * @return A reference to this Number.
      */
-    virtual Scriptable& oprtrAssign( const Scriptable& rhs );
+    virtual Reference oprtrAssign( const Scriptable& rhs );
 
 private:
     double m_value;

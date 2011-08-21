@@ -59,10 +59,10 @@ bool Number::toBool( void ) const
 /******************************************************************************/
 
 
-Scriptable& Number::oprtrAssign( const Scriptable& rhs )
+Scriptable::Reference Number::oprtrAssign( const Scriptable& rhs )
 {
     m_value = rhs.toNumber();
-    return *this;
+    return Reference( this );
 }
 
 
