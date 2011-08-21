@@ -13,6 +13,7 @@ using namespace std;
 
 namespace cpps
 {
+typedef AbstractSyntaxTree AST;
 
 
 /******************************************************************************/

@@ -43,6 +43,9 @@ public:
     /// @note The root node is not deleted, simply forgotten. Use
     ///       AbstractSyntaxTree::clear to delete the nodes in the tree.
     void reset( void );
+
+    void addStatement( Node* statement );
+
 }; // end class AbstractSyntaxTree
 
 

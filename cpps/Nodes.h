@@ -165,9 +165,22 @@ inline NumericLiteral::NumericLiteral( const double& value )
 
 class Block : public AST::Node
 {
+private:
     typedef std::vector<AST::Node*> StatementList;
     StatementList m_statements;
+
+public:
+    void addStatement( AST::Node* statement );
 }; // end class Block
+
+
+/*****************************************************************************/
+
+
+inline void Block::addStatement( AST::Node* statement )
+{
+    m_statements.push_back( statement );
+}
 
 
 /*****************************************************************************/
