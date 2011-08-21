@@ -432,55 +432,56 @@ void Parser::executeAction(int production)
         
         case 4:
         {
-         d_val__ = _addStatement( d_vsp__[-1] );
+         m_currentScope->addStatement( d_vsp__[-1] );
+         d_val__ = NULL;
          }
         break;
 
         case 5:
         {
-         d_val__ = _addVariable( d_vsp__[0] );
+         d_val__ = d_vsp__[0];
          }
         break;
 
         case 6:
         {
-         d_val__ = _addStringLiteral( d_vsp__[0] );
+         d_val__ = d_vsp__[0];
          }
         break;
 
         case 7:
         {
-         d_val__ = _addNumericLiteral( d_vsp__[0] );
+         d_val__ = d_vsp__[0];
          }
         break;
 
         case 11:
         {
-         d_val__ = _addAddition( d_vsp__[-2], d_vsp__[0] );
+         d_val__ = new nodes::Addition( d_vsp__[-2], d_vsp__[0] );
          }
         break;
 
         case 12:
         {
-         d_val__ = _addMinus( d_vsp__[-2], d_vsp__[0] );
+         d_val__ = new nodes::Subtraction( d_vsp__[-2], d_vsp__[0] );
          }
         break;
 
         case 13:
         {
-         d_val__ = _addMultiply( d_vsp__[-2], d_vsp__[0] );
+         d_val__ = new nodes::Multiplication( d_vsp__[-2], d_vsp__[0] );
          }
         break;
 
         case 14:
         {
-         d_val__ = _addDivide( d_vsp__[-2], d_vsp__[0] );
+         d_val__ = new nodes::Division( d_vsp__[-2], d_vsp__[0] );
          }
         break;
 
         case 15:
         {
-         d_val__ = _addNegate( d_vsp__[0] );
+         d_val__ = new nodes::Negation( d_vsp__[0] );
          }
         break;
 

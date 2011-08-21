@@ -95,7 +95,7 @@ class ParserBase
     };
 
 // $insert STYPE
-typedef  AbstractSyntaxTree::Node STYPE__;
+typedef  AbstractSyntaxTree::Node* STYPE__;
 
 
     private:
