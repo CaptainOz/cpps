@@ -15,7 +15,7 @@
 
 namespace cpps
 {
-
+/* Temporarilly disabled
 class Function : public Scope
 {
 public:
@@ -23,7 +23,7 @@ public:
 
     Scriptable::Reference call( Sciptable::Reference args );
 }; // end class Function
-
+*/
 } // end namespace cpps
 
 #endif // __CPPS_FUNCTION_H_INCLUDED__

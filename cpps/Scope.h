@@ -26,12 +26,12 @@ class Scope : public Scriptable
 {
 private:
     typedef std::map< std::string, Scope* > ScopeMap;
-    typedef std::map< std::string, Function* > FunctionMap;
+//    typedef std::map< std::string, Function* > FunctionMap;
     typedef std::map< std::string, Scriptable* > ScriptableMap;
 
     Scope*        m_parentScope;
     ScopeMap      m_namespaces;
-    FunctionMap   m_functions;
+//    FunctionMap   m_functions;
     ScriptableMap m_variables;
     AbstractSyntaxTree m_statements;
 
