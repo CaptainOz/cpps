@@ -122,25 +122,10 @@ AST::Node* Division::_operate( AST::Node* lhs, AST::Node* rhs )
 /*****************************************************************************/
 
 
-class Negation : public UnaryOperator
+AST::Node* Negation::_operate( AST::Node* operand )
 {
-protected:
-    AST::Node* _operate( AST::Node* operand ) override;
-
-public:
-    Negation( AST::Node* operand );
-}; // end class Addition
-
-
-/*****************************************************************************/
-
-
-inline Negation::Negation( AST::Node* operand )
-    : UnaryOperator( operand )
-{
+    return new Variable( operand->getValue()->oprtrNegate() );
 }
-
-
 
 
 
