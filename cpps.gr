@@ -13,7 +13,7 @@
 %token OpenParen
 %token CloseParen
 %token OpenBracket
-%token CloseBraket
+%token CloseBracket
 %token OpenBrace
 %token CloseBrace
 
@@ -22,7 +22,7 @@
 %right  Assign
         AssignPlus      AssignMinus     AssignConcat
         AssignMultiply  AssignDivide    AssignModulo
-        AssignButAnd    AssignBitXOr    AssignBitOr
+        AssignBitAnd    AssignBitXOr    AssignBitOr
         AssignLeftShift AssignRightShift
 %right  TernaryIf
 %left   LogicalOr

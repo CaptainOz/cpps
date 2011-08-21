@@ -9,10 +9,12 @@
 #ifndef __CPPS_TOKEN_H_INCLUDED__
 #define __CPPS_TOKEN_H_INCLUDED__
 
+#include <map>
 #include <string>
 #include <vector>
 
 #include "Exceptions.h"
+#include "ParserBase.h"
 #include "Tokenizer.h"
 
 namespace cpps
@@ -105,7 +107,7 @@ public:
         LogicalNot,      // !           Right associative unary operators
         BitwiseNot,      // ~
 
-        RighShift,       // >>          Left associative binary operators
+        RightShift,      // >>          Left associative binary operators
         LeftShift,       // <<
         MemberAccess,    // ->
         GreaterThan,     // >
@@ -225,6 +227,8 @@ private:
 
     //! Array of operator strings as they should appear in the code.
     static const char* _operators[];
+
+    static const std::map< Token::Type, ParserBase::Tokens__ > _conversion;
 
     //! Private token constructor used by Tokenizer.
     /**
