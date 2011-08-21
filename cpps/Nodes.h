@@ -39,7 +39,7 @@ protected:
 
 public:
     Operator( void );
-    Scriptable::Reference getValue( void ) override;
+    Scriptable::Reference getValue( void );
 }; // end class Operator
 
 template< unsigned char c >
@@ -76,7 +76,7 @@ inline AST::Node** Operator<c>::_getOperands( void )
 class UnaryOperator : public Operator<1>
 {
 protected:
-    AST::Node* _operate( AST::Node** operands ) override;
+    AST::Node* _operate( AST::Node** operands );
     virtual AST::Node* _operate( AST::Node* operand ) = 0;
 
 public:
@@ -90,7 +90,7 @@ public:
 class BinaryOperator : public Operator<2>
 {
 protected:
-    AST::Node* _operate( AST::Node** operands ) override;
+    AST::Node* _operate( AST::Node** operands );
     virtual AST::Node* _operate( AST::Node* lhs, AST::Node* rhs ) = 0;
 
 public:
@@ -104,7 +104,7 @@ public:
 class TernaryOperator : public Operator<3>
 {
 protected:
-    AST::Node* _operate( AST::Node** operands ) override;
+    AST::Node* _operate( AST::Node** operands );
     virtual AST::Node* _operate( AST::Node* lhs, AST::Node* mhs, AST::Node* rhs ) = 0;
 
 public:
@@ -162,7 +162,7 @@ class Function : public AST::Node
 class Addition : public BinaryOperator
 {
 protected:
-    AST::Node* _operate( AST::Node* lhs, AST::Node* rhs ) override;
+    AST::Node* _operate( AST::Node* lhs, AST::Node* rhs );
 
 public:
     Addition( AST::Node* lhs, AST::Node* rhs );
@@ -184,7 +184,7 @@ inline Addition::Addition( AST::Node* lhs, AST::Node* rhs )
 class Subtraction : public BinaryOperator
 {
 protected:
-    AST::Node* _operate( AST::Node* lhs, AST::Node* rhs ) override;
+    AST::Node* _operate( AST::Node* lhs, AST::Node* rhs );
 
 public:
     Subtraction( AST::Node* lhs, AST::Node* rhs );
@@ -206,7 +206,7 @@ inline Subtraction::Subtraction( AST::Node* lhs, AST::Node* rhs )
 class Multiplication : public BinaryOperator
 {
 protected:
-    AST::Node* _operate( AST::Node* lhs, AST::Node* rhs ) override;
+    AST::Node* _operate( AST::Node* lhs, AST::Node* rhs );
 
 public:
     Multiplication( AST::Node* lhs, AST::Node* rhs );
@@ -228,7 +228,7 @@ inline Multiplication::Multiplication( AST::Node* lhs, AST::Node* rhs )
 class Division : public BinaryOperator
 {
 protected:
-    AST::Node* _operate( AST::Node* lhs, AST::Node* rhs ) override;
+    AST::Node* _operate( AST::Node* lhs, AST::Node* rhs );
 
 public:
     Division( AST::Node* lhs, AST::Node* rhs );
@@ -250,7 +250,7 @@ inline Division::Division( AST::Node* lhs, AST::Node* rhs )
 class Negation : public UnaryOperator
 {
 protected:
-    AST::Node* _operate( AST::Node* operand ) override;
+    AST::Node* _operate( AST::Node* operand );
 
 public:
     Negation( AST::Node* operand );
