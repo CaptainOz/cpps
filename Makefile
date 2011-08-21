@@ -34,6 +34,8 @@ all: cpps cli bison
 cppsObjs 	= \
             AbstractSyntaxTree.o \
 			Exceptions.o \
+			Nodes.o \
+			Null.o \
 			Number.o \
 			Object.o \
 			Scriptable.o \

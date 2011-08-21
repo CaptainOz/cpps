@@ -21,7 +21,7 @@ public:
     double toNumber( void ) const;
     bool toBool( void ) const;
 
-    static Scriptable::Reference NullReference( Null() );
+    static Scriptable::Reference reference;
 }; // end class Null
 
 

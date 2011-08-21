@@ -79,7 +79,7 @@ inline AbstractSyntaxTree::Node::~Node( void )
 
 inline Scriptable::Reference AbstractSyntaxTree::Node::getValue( void )
 {
-    return Null::NullReference;
+    return Null::reference;
 }
 
 
