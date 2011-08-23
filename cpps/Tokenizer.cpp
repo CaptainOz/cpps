@@ -241,7 +241,6 @@ Token Tokenizer::_extractNumber( void ) throw( ParseException )
     }
 
     // Create and return a new token.
-    --m_pos;
     return Token( Token::NumericLiteral, m_lineCounter, tokenStr );
 }
 
