@@ -8,14 +8,11 @@
 %token NumericLiteral
 %token Colon
 %token Semicolon
-%token Increment
-%token Decrement
-%token OpenParen
-%token CloseParen
-%token OpenBracket
-%token CloseBracket
-%token OpenBrace
-%token CloseBrace
+%token Increment   Decrement
+%token OpenParen   CloseParen
+%token OpenBracket CloseBracket
+%token OpenBrace   CloseBrace
+%token If          Else
 
 %left   Comma
 %right  Throw
@@ -53,20 +50,6 @@
 
 %%
 
-block
-    : // empty
-    | block statement
-    ;
-
-statement
-    : Semicolon
-    | exp Semicolon
-        {
-            m_currentScope->addStatement( $1 );
-            $$ = NULL;
-        }
-    ;
-
 var
     : Variable
         {
@@ -86,6 +69,155 @@ number
         {
             $$ = $1;
         }
+    ;
+
+statement
+    : exp_statement
+    | complex_statement
+        {
+            m_currentScope->addStatement( $1 );
+            $$ = NULL;
+        }
+    ;
+
+complex_statement
+    : if_statement
+    | compound_statement
+    | switch_statement
+    | loop_statement
+    | jump_statement
+    | function_definition
+    ;
+
+compound_statement
+    : OpenBrace CloseBrace
+    | OpenBrace statement_list CloseBrace
+    ;
+
+statement_list
+    : // empty
+    | statement_list statement
+    ;
+
+exp_statement
+    : Semicolon
+    | exp Semicolon
+        {
+            m_currentScope->addStatement( $1 );
+            $$ = NULL;
+        }
+    ;
+
+if_statement
+    : If OpenParen exp CloseParen statement
+        {
+            $$ = new nodes::IfStatement( $3, $5 );
+        }
+    ;
+
+switch_statement
+    : Switch OpenParen exp CloseParen case_list
+        {
+            $$ = new nodes::SwitchStatement( $3, $5 );
+        }
+    ;
+
+case_statement
+    : Case exp Colon statement
+        {
+            $$ = new nodes::CaseStatement( $2, $4 );
+        }
+    | Default Colon statement
+        {
+            $$ = new nodes::DefaultCaseStatement( $3 );
+        }
+    ;
+
+case_list
+    : // empty
+    | case_list case_statement
+    ;
+
+loop_statement
+    : While OpenParen exp CloseParen statement
+        {
+            $$ = new nodes::WhileLoop( $3, $5 );
+        }
+    | Do statement While OpenParen exp CloseParen Semicolon
+        {
+            $$ = new nodes::DoWhileLoop( $5, $2 );
+        }
+    | For OpenParen exp_statement exp_statement CloseParen statement
+        {
+            $$ = new nodes::ForLoop( $3, $4, NULL, $6 );
+        }
+    | For OpenParen exp_statement exp_statement exp CloseParen statement
+        {
+            $$ = new nodes::ForLoop( $3, $4, $5, $7 );
+        }
+    | Foreach OpenParen exp Comma var CloseParen statement
+        {
+            $$ = new nodes::ForeachLoop( $3, NULL, $5, $7 );
+        }
+    | Foreach OpenParen exp Comma var Colon var CloseParen statement
+        {
+            $$ = new nodes::ForeachLoop( $4, $5, $7, $9 );
+        }
+    ;
+
+jump_statement
+    : Continue Semicolon
+        {
+            $$ = new nodes::ContinueStatement();
+        }
+    | Break Semicolon
+        {
+            $$ = new nodes::BreakStatement();
+        }
+    | Return Semicolon
+        {
+            $$ = new nodes::ReturnStatement( NULL );
+        }
+    | Return exp Semicolon
+        {
+            $$ = new nodes::ReturnStatement( $2 );
+        }
+    ;
+
+function_definition
+    : declaration OpenParen parameter_list CloseParen compound_statement
+        {
+            $$ = new nodes::FunctionDefinition( $1, $3, $5 );
+        }
+    ;
+
+parameter_list
+    : // empty
+    | var_declaration
+    | parameter_list Comma var_declaration
+    ;
+
+var_declaration
+    : var_qualifier_list TypeName Variable
+        {
+            $$ = new nodes::VariableDeclaration( $2, $3, $1 );
+        }
+    ;
+
+var_qualifier_list
+    : // empty
+    | var_qualifier_list var_qualifier
+        {
+            if( $$ == NULL ){
+                $$ = new nodes::VariableQualifierList();
+            }
+            dynamic_cast<nodes::VariableQualifierList*>($$)->addQualifier( $2 );
+        }
+    ;
+
+var_qualifier
+    : Const
+    | Static
     ;
 
 exp
