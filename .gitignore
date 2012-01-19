@@ -9,5 +9,8 @@
 *.sdf
 *.opensdf
 
+# Netbeans project directory
+nbproject
+
 # Intermediate build files
 *.o
