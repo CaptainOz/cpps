@@ -1,10 +1,10 @@
-/**
- * @file cppscli.cpp
- *
- * @brief Main file for the CPPS Command Line Interpreter.
- *
- * @author Nate Lillich
- */
+///
+/// @file cppscli.cpp
+///
+/// @brief Main file for the CPPS Command Line Interpreter.
+///
+/// @author Nate Lillich
+///
 
 #include <exception>
 #include <iostream>
@@ -14,33 +14,30 @@
 using namespace cpps;
 using namespace std;
 
-int main( int argc, const char* argv[] )
-{
+int main( int argc, const char* argv[] ){
     Parser parser;
     Scope global( true ); // Interpreter mode
     string line;
     string code;
+    const string& CPPS_PROMPT = "cpps > ";
 
     parser.setGlobal( global );
 
-    cout << "cpps > ";
-    while( getline( cin, line ).good() )
-    {
+    cout << CPPS_PROMPT;
+    while( getline( cin, line ).good() ){
         bool lineDone = false;
         for( unsigned int semicolonPos = line.find( ';' );
-             semicolonPos != string::npos;
-             semicolonPos = line.find( ';' ) )
-        {
+             semicolonPos != line.npos;
+             semicolonPos = line.find( ';' ) ){
             lineDone = true;
             // We have a semicolon! Execute the code.
             code += line.substr( 0, semicolonPos + 1 );
 
             // Try to execute this code.
-            try{
+            try {
                 parser.exec( code );
             }
-            catch( exception* e )
-            {
+            catch( exception* e ){
                 cout << "ERROR: " << e->what() << endl;
                 delete e;
             }
@@ -51,12 +48,12 @@ int main( int argc, const char* argv[] )
         }
 
         // Line completed?
-        if( lineDone )
-            cout << "cpps > ";
+        if( lineDone ){
+            cout << CPPS_PROMPT;
+        }
 
         // No semi-colon yet? Tack the line on and keep pulling.
-        else
-        {
+        else {
             code += '\n' + line;
             cout << "     > ";
         }
