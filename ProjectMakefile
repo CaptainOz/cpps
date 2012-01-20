@@ -1,0 +1,42 @@
+
+PROJECT = $(shell basename `pwd`)
+default: $(PROJECT)
+
+# Directory Paths
+CWD       = $(shell readlink -f "`pwd`/..")
+BIN_DIR   = $(CWD)/bin/$(PROJECT)
+BUILD_DIR = $(CWD)/build/$(PROJECT)
+DEPS_DIR  = $(CWD)/deps/$(PROJECT)
+
+# File lists
+SRCS = $(shell ls *.cpp)
+OBJS = $(patsubst %.cpp,%.o,$(SRCS))
+DEPS = $(patsubst %.cpp,$(DEPS_DIR)/%.d,$(SRCS))
+BUILD_OBJS = $(patsubst %,$(BUILD_DIR)/%,$(OBJS))
+
+# Compiler and flags
+CC = g++
+LFLAGS   =
+CCFLAGS  = $(CLFLAGS) -Wall -std=c++0x -O3 -I$(CWD)
+CC_FLAGS = $(CC) $(CCFLAGS)
+
+# 
+MAKE_DEPS = $(CC_FLAGS) -MM -MF $(DEPS_DIR)/$*.d $<
+
+-include $(DEPS)
+
+#--- Make targets ---#
+
+$(DEPS_DIR)/%.d : %.cpp
+	$(MAKE_DEPS)
+
+$(BUILD_DIR)/%.o : %.cpp $(DEPS_DIR)/%.d 
+	$(CC_FLAGS) -c -o $@ $<
+
+$(PROJECT): $(BUILD_OBJS)
+
+configure:
+	mkdir -p $(BIN_DIR) $(BUILD_DIR) $(DEPS_DIR)
+
+clean:
+	rm -f $(BIN_DIR)/* $(BUILD_DIR)/*.o $(DEPS_DIR)/*.d
