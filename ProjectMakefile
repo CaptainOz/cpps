@@ -1,3 +1,10 @@
+###
+### DO NOT INVOKE THIS MAKEFILE DIRECTLY!
+###
+### This Makefile is meant to be executed in the directory of the project being
+### built. It is a generic Makefile that can work on any project as long as all
+### of its source files are contained in one directory.
+###
 
 PROJECT = $(shell basename `pwd`)
 default: $(PROJECT)
@@ -20,15 +27,15 @@ LFLAGS   =
 CCFLAGS  = $(CLFLAGS) -Wall -std=c++0x -O3 -I$(CWD)
 CC_FLAGS = $(CC) $(CCFLAGS)
 
-# 
+# Make and include dependencies.
 MAKE_DEPS = $(CC_FLAGS) -MM -MF $(DEPS_DIR)/$*.d $<
-
 -include $(DEPS)
+$(DEPS_DIR)/%.d : %.cpp
+	$(MAKE_DEPS)
 
 #--- Make targets ---#
 
-$(DEPS_DIR)/%.d : %.cpp
-	$(MAKE_DEPS)
+.PHONY: $(PROJECT) configure clean
 
 $(BUILD_DIR)/%.o : %.cpp $(DEPS_DIR)/%.d 
 	$(CC_FLAGS) -c -o $@ $<
