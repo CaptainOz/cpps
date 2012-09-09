@@ -3,10 +3,12 @@
 
 #include <cstdarg>
 #include <iostream>
+#include <string>
 
 namespace type {
     enum Type {
-        CONSTANT,
+        INTEGER,
+        REAL,
         IDENTIFIER,
         OPERATOR
     };
@@ -15,8 +17,12 @@ namespace type {
 namespace node {
     struct Node;
 
-    struct Constant {
+    struct Integer {
         int value;
+    };
+
+    struct Real {
+        double value;
     };
 
     struct Identifier {
@@ -32,7 +38,8 @@ namespace node {
     struct Node {
         type::Type type;
         union {
-            Constant    constant;
+            Integer     integer;
+            Real        real;
             Identifier  identifier;
             Operator    operatr;
         };
@@ -59,9 +66,15 @@ namespace node {
         }
 
         Node( const int value ):
-            type( type::CONSTANT )
+            type( type::INTEGER )
         {
-            constant.value = value;
+            integer.value = value;
+        }
+
+        Node( const double value ):
+            type( type::REAL )
+        {
+            real.value = value;
         }
 
         ~Node( void ){
@@ -76,7 +89,7 @@ namespace node {
 
 }
 
-extern int symbols[ 'z' - 'a' ];
+extern double symbols[ 'z' - 'a' ];
 
 class LexerContext {
 private:
@@ -89,10 +102,13 @@ public:
     std::istream* is;
 
     LexerContext( std::istream* _is = &std::cin ): is( _is ){
+        (*is) >> std::noskipws;
         initScanner();
     }
 
     ~LexerContext( void ){
         destroyScanner();
     }
+
+    int lookupKeyword( const std::string& str );
 };

@@ -3,13 +3,14 @@
 #include "cpps.h"
 #include "cpps.tab.hpp"
 
-int ex( node::Node* nodePtr ){
+double ex( node::Node* nodePtr ){
     if( nodePtr == NULL ){
         return 0;
     }
 
     switch( nodePtr->type ){
-        case type::CONSTANT:    return nodePtr->constant.value;
+        case type::INTEGER:     return nodePtr->integer.value;
+        case type::REAL:        return nodePtr->real.value;
         case type::IDENTIFIER:  return symbols[ nodePtr->identifier.index ];
         case type::OPERATOR:
             switch( nodePtr->operatr.operatorId ){
@@ -75,6 +76,24 @@ int ex( node::Node* nodePtr ){
     }
 
     return 0;
+}
+
+int LexerContext::lookupKeyword( const std::string& str ){
+    if( str == "while" ){
+        return WHILE;
+    }
+    else if( str == "if" ){
+        return IF;
+    }
+    else if( str == "else" ){
+        return ELSE;
+    }
+    else if( str == "print" ){
+        return PRINT;
+    }
+    else {
+        return 0;
+    }
 }
 
 int main( void ){

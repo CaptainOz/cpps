@@ -1,10 +1,12 @@
 
 %{
+    #include <iostream>
     #include <cstdlib>
+    #include <string>
     #include "cpps.h"
     #include "cpps.tab.hpp"
 
-    void cpps_error( YYLTYPE* location, LexerContext* context, const char* message );
+    void cpps_error( YYLTYPE* location, LexerContext* context, const std::string& message );
 %}
 
 %option reentrant
@@ -12,6 +14,7 @@
 %option bison-locations
 %option noyywrap
 %option yylineno
+%option header-file="cpps/cpps.lex.h"
 
 %option prefix="cpps_"
 
@@ -22,7 +25,7 @@
         char c;                                 \
         (*yyextra->is) >> c;                    \
         if( yyextra->is->eof() ){               \
-            result = NULL;                      \
+            result = 0;                         \
         }                                       \
         else {                                  \
             buf[ 0 ] = c;                       \
@@ -31,16 +34,25 @@
     }
 %}
 
+DIGIT       [0-9]
+OCT_DIGIT   [0-8]
+HEX_DIGIT   [0-9a-fA-F]
+BIN_DIGIT   [01]
+INTEGER     [1-9][0-9]*
+LETTER      [a-zA-Z_]
+IDENTIFIER  [a-zA-Z][a-zA-Z_0-9]*
+
 %%
 
-[a-z]               {
-                        yylval->symbolIndex = *yytext - 'a';
-                        return VARIABLE;
-                    }
+(0|{INTEGER})       {
 
-[0-9][0-9]*         {
                         yylval->integerValue = std::atoi( yytext );
                         return INTEGER;
+                    }
+
+({INTEGER}\.{DIGIT}*|\.{DIGIT}+)    {
+                        yylval->doubleValue = std::atof( yytext );
+                        return REAL;
                     }
 
 [\-()<>=+*/;{}\.]   {
@@ -51,14 +63,19 @@
 "<="                    return LE;
 "=="                    return EQ;
 "!="                    return NE;
-"while"                 return WHILE;
-"if"                    return IF;
-"else"                  return ELSE;
-"print"                 return PRINT;
 
-[ \t\n]+                ; // Ignore.
+{IDENTIFIER}        {
+                        int keyword = yyextra->lookupKeyword( yytext );
+                        if( keyword ){
+                            return keyword;
+                        }
+                        yylval->symbolIndex = *yytext - 'a';
+                        return VARIABLE;
+                    }
 
-.                       cpps_error( NULL, NULL, "Unknown character." );
+[ \t\n]+            ; // Ignore whitespace.
+
+.                   cpps_error( NULL, NULL, std::string( "Unknown token: " ) + std::string( yytext ) );
 
 %%
 
