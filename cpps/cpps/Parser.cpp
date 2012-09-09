@@ -18,4 +18,24 @@ Parser::~Parser( void ){
     cpps_lex_destroy( scanner );
 }
 
+// ---------------------------------------------------------------------------------------------- //
+
+int Parser::lookupKeyword( const std::string& str ) const {
+    if( str == "while" ){
+        return WHILE;
+    }
+    else if( str == "if" ){
+        return IF;
+    }
+    else if( str == "else" ){
+        return ELSE;
+    }
+    else if( str == "print" ){
+        return PRINT;
+    }
+    else {
+        return 0;
+    }
+}
+
 } // end namespace cpps

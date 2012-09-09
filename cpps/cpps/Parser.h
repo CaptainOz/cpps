@@ -3,8 +3,6 @@
 
 #include <string>
 
-#include "cpps/cpps.tab.hpp"
-
 namespace cpps {
 
 class Parser {
@@ -23,26 +21,6 @@ public:
 
     std::istream& getStream( void );
 }; // end class Parser
-
-// ---------------------------------------------------------------------------------------------- //
-
-inline int Parser::lookupKeyword( const std::string& str ) const {
-    if( str == "while" ){
-        return WHILE;
-    }
-    else if( str == "if" ){
-        return IF;
-    }
-    else if( str == "else" ){
-        return ELSE;
-    }
-    else if( str == "print" ){
-        return PRINT;
-    }
-    else {
-        return 0;
-    }
-}
 
 // ---------------------------------------------------------------------------------------------- //
 

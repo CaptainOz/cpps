@@ -2,6 +2,7 @@
 #include <iostream>
 
 #include "cpps/cpps.h"
+#include "cpps/cpps.tab.hpp"
 #include "cpps/Parser.h"
 
 double ex( node::Node* nodePtr ){

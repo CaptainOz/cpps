@@ -4,6 +4,7 @@
     #include <cstdlib>
     #include <string>
 
+    #include "cpps/cpps.tab.hpp"
     #include "cpps/Parser.h"
 
     void cpps_error( YYLTYPE* location, cpps::Parser* context, const std::string& message );
