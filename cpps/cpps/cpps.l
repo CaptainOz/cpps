@@ -3,28 +3,36 @@
     #include <iostream>
     #include <cstdlib>
     #include <string>
-    #include "cpps.h"
-    #include "cpps.tab.hpp"
 
-    void cpps_error( YYLTYPE* location, LexerContext* context, const std::string& message );
+    #include "cpps/Parser.h"
+
+    void cpps_error( YYLTYPE* location, cpps::Parser* context, const std::string& message );
 %}
+
+%top {
+
+    namespace cpps {
+        class Parser;
+    }
+    #define YY_EXTRA_TYPE   cpps::Parser*
+}
 
 %option reentrant
 %option bison-bridge
 %option bison-locations
 %option noyywrap
 %option yylineno
-%option header-file="cpps/cpps.lex.h"
+%option nounput
 
-%option prefix="cpps_"
+%option header-file = "cpps/cpps.lex.h"
+%option prefix      = "cpps_"
 
 %{
-    #define YY_EXTRA_TYPE   LexerContext*
     #define YY_USER_ACTION  yylloc->first_line = yylineno;
     #define YY_INPUT( buf, result, maxSize ){   \
         char c;                                 \
-        (*yyextra->is) >> c;                    \
-        if( yyextra->is->eof() ){               \
+        yyextra->getStream() >> c;              \
+        if( yyextra->getStream().eof() ){               \
             result = 0;                         \
         }                                       \
         else {                                  \
@@ -78,13 +86,3 @@ IDENTIFIER  [a-zA-Z][a-zA-Z_0-9]*
 .                   cpps_error( NULL, NULL, std::string( "Unknown token: " ) + std::string( yytext ) );
 
 %%
-
-void LexerContext::initScanner( void ){
-    cpps_lex_init( &scanner );
-    cpps_set_extra( this, scanner );
-}
-
-void LexerContext::destroyScanner( void ){
-    cpps_lex_destroy( scanner );
-}
-

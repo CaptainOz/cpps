@@ -3,13 +3,14 @@
     #include <iostream>
     #include <cstdlib>
     #include <string>
-    #include "cpps.h"
-    #include "cpps.tab.hpp"
+
+    #include "cpps/cpps.tab.hpp"
+    #include "cpps/Parser.h"
 
     double ex( node::Node* nodePtr );
     int cpps_lex( void );
 
-    void cpps_error( YYLTYPE* location, LexerContext* context, const std::string& message );
+    void cpps_error( YYLTYPE* location, cpps::Parser* context, const std::string& message );
     int cpps_lex( YYSTYPE* lval, YYLTYPE* location, void* scanner );
 
     #define scanner context->scanner
@@ -17,11 +18,20 @@
     double symbols[ 'z' - 'a' ];
 %}
 
+%code requires {
+
+    #include "cpps/cpps.h"
+
+    namespace cpps {
+        class Parser;
+    }
+}
+
 %pure-parser
 %name-prefix="cpps_"
 %locations
 %defines
-%parse-param { LexerContext* context }
+%parse-param { cpps::Parser* context }
 %lex-param { void* scanner }
 
 %union {
@@ -93,6 +103,6 @@ expr
 
 %%
 
-void cpps_error( YYLTYPE* location, LexerContext* context, const std::string& message ){
+void cpps_error( YYLTYPE* location, cpps::Parser* context, const std::string& message ){
     std::cout << message << std::endl;
 }

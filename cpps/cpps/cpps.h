@@ -90,25 +90,3 @@ namespace node {
 }
 
 extern double symbols[ 'z' - 'a' ];
-
-class LexerContext {
-private:
-    void initScanner( void );
-    void destroyScanner( void );
-
-public:
-    void* scanner;
-    int result;
-    std::istream* is;
-
-    LexerContext( std::istream* _is = &std::cin ): is( _is ){
-        (*is) >> std::noskipws;
-        initScanner();
-    }
-
-    ~LexerContext( void ){
-        destroyScanner();
-    }
-
-    int lookupKeyword( const std::string& str );
-};

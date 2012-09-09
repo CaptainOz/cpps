@@ -1,7 +1,8 @@
 
 #include <iostream>
-#include "cpps.h"
-#include "cpps.tab.hpp"
+
+#include "cpps/cpps.h"
+#include "cpps/Parser.h"
 
 double ex( node::Node* nodePtr ){
     if( nodePtr == NULL ){
@@ -78,28 +79,10 @@ double ex( node::Node* nodePtr ){
     return 0;
 }
 
-int LexerContext::lookupKeyword( const std::string& str ){
-    if( str == "while" ){
-        return WHILE;
-    }
-    else if( str == "if" ){
-        return IF;
-    }
-    else if( str == "else" ){
-        return ELSE;
-    }
-    else if( str == "print" ){
-        return PRINT;
-    }
-    else {
-        return 0;
-    }
-}
-
 int main( void ){
-    LexerContext context;
-    if( !cpps_parse( &context ) ){
-        std::cout << context.result << std::endl;
+    cpps::Parser parser;
+    if( !cpps_parse( &parser ) ){
+        std::cout << parser.result << std::endl;
     }
     return 0;
 }

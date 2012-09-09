@@ -17,6 +17,7 @@ ADD_FLEX_BISON_DEPENDENCY( CPPSScanner CPPSParser )
 
 set( CPPS_SRC
     cpps/cpps.cpp
+    cpps/Parser.cpp
     ${BISON_CPPSParser_OUTPUTS}
     ${FLEX_CPPSScanner_OUTPUTS}
 )
@@ -24,5 +25,7 @@ set( CPPS_SRC
 include_directories(
     ${CMAKE_CURRENT_LIST_DIR}
 )
+
+add_definitions( -std=c++11 -Wall )
 
 add_executable( cpps ${CPPS_SRC} )
