@@ -13,7 +13,7 @@
     void cpps_error( YYLTYPE* location, cpps::Parser* context, const std::string& message );
     int cpps_lex( YYSTYPE* lval, YYLTYPE* location, void* scanner );
 
-    #define scanner context->scanner
+    #define scanner parser->getScanner()
 
     double symbols[ 'z' - 'a' ];
 %}
@@ -31,7 +31,7 @@
 %name-prefix="cpps_"
 %locations
 %defines
-%parse-param { cpps::Parser* context }
+%parse-param { cpps::Parser* parser }
 %lex-param { void* scanner }
 
 %union {
@@ -59,7 +59,7 @@
 %%
 
 program
-    : function          { context->result = $1; }
+    : function          { }
     ;
 
 function
@@ -103,6 +103,6 @@ expr
 
 %%
 
-void cpps_error( YYLTYPE* location, cpps::Parser* context, const std::string& message ){
+void cpps_error( YYLTYPE* location, cpps::Parser* parser, const std::string& message ){
     std::cout << message << std::endl;
 }

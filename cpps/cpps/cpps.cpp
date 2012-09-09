@@ -82,8 +82,6 @@ double ex( node::Node* nodePtr ){
 
 int main( void ){
     cpps::Parser parser;
-    if( !cpps_parse( &parser ) ){
-        std::cout << parser.result << std::endl;
-    }
+    parser.parse( std::cin );
     return 0;
 }

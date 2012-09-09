@@ -6,16 +6,25 @@
 
 namespace cpps {
 
-Parser::Parser( std::istream* inStream ): m_inStream( inStream ){
-    getStream() >> std::noskipws;
-    cpps_lex_init( &scanner );
-    cpps_set_extra( this, scanner );
+Parser::Parser( void ): m_inStream( nullptr ){
+    cpps_lex_init( &m_scanner );
+    cpps_set_extra( this, m_scanner );
+}
+
+// ---------------------------------------------------------------------------------------------- //
+
+Parser::Parser( std::istream& inStream ): m_inStream( &inStream ){
+    if( m_inStream ){
+        getStream() >> std::noskipws;
+    }
+    cpps_lex_init( &m_scanner );
+    cpps_set_extra( this, m_scanner );
 }
 
 // ---------------------------------------------------------------------------------------------- //
 
 Parser::~Parser( void ){
-    cpps_lex_destroy( scanner );
+    cpps_lex_destroy( m_scanner );
 }
 
 // ---------------------------------------------------------------------------------------------- //
@@ -36,6 +45,20 @@ int Parser::lookupKeyword( const std::string& str ) const {
     else {
         return 0;
     }
+}
+
+// ---------------------------------------------------------------------------------------------- //
+
+void Parser::parse( void ){
+    cpps_parse( this );
+}
+
+// ---------------------------------------------------------------------------------------------- //
+
+void Parser::parse( std::istream& inStream ){
+    m_inStream = &inStream;
+    inStream >> std::noskipws;
+    parse();
 }
 
 } // end namespace cpps
