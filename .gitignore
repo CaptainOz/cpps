@@ -11,3 +11,14 @@
 
 # Intermediate build files
 *.o
+
+# Build directory.
+build/*
+
+# Output from Flex and Bison
+cpps/cpps/cpps.lex.cpp
+cpps/cpps/cpps.tab.cpp
+cpps/cpps/cpps.tab.hpp
+
+# OS Files
+.DS_Store

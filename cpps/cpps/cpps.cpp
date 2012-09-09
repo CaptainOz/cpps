@@ -1,0 +1,86 @@
+
+#include <iostream>
+#include "cpps.h"
+#include "cpps.tab.hpp"
+
+int ex( node::Node* nodePtr ){
+    if( nodePtr == NULL ){
+        return 0;
+    }
+
+    switch( nodePtr->type ){
+        case type::CONSTANT:    return nodePtr->constant.value;
+        case type::IDENTIFIER:  return symbols[ nodePtr->identifier.index ];
+        case type::OPERATOR:
+            switch( nodePtr->operatr.operatorId ){
+                case WHILE:
+                    while( ex( nodePtr->operatr.operands[0] ) ){
+                        ex( nodePtr->operatr.operands[1] );
+                    }
+                    return 0;
+
+                case IF:
+                    if( ex( nodePtr->operatr.operands[0] ) ){
+                        ex( nodePtr->operatr.operands[1] );
+                    }
+                    else if( nodePtr->operatr.operandCount > 2 ){
+                        ex( nodePtr->operatr.operands[2] );
+                    }
+                    return 0;
+
+                case PRINT:
+                    std::cout << ex( nodePtr->operatr.operands[0] ) << std::endl;
+                    return 0;
+
+                case ';':
+                    ex( nodePtr->operatr.operands[0] );
+                    return ex( nodePtr->operatr.operands[1] );
+
+                case '=':
+                    return symbols[ nodePtr->operatr.operands[0]->identifier.index ] = ex( nodePtr->operatr.operands[1] );
+
+                case UMINUS:
+                    return -ex( nodePtr->operatr.operands[0] );
+
+                case '+':
+                    return ex( nodePtr->operatr.operands[0] ) + ex( nodePtr->operatr.operands[1] );
+
+                case '-':
+                    return ex( nodePtr->operatr.operands[0] ) - ex( nodePtr->operatr.operands[1] );
+
+                case '*':
+                    return ex( nodePtr->operatr.operands[0] ) * ex( nodePtr->operatr.operands[1] );
+
+                case '/':
+                    return ex( nodePtr->operatr.operands[0] ) / ex( nodePtr->operatr.operands[1] );
+
+                case '<':
+                    return ex( nodePtr->operatr.operands[0] ) < ex( nodePtr->operatr.operands[1] );
+
+                case '>':
+                    return ex( nodePtr->operatr.operands[0] ) > ex( nodePtr->operatr.operands[1] );
+
+                case GE:
+                    return ex( nodePtr->operatr.operands[0] ) >= ex( nodePtr->operatr.operands[1] );
+
+                case LE:
+                    return ex( nodePtr->operatr.operands[0] ) <= ex( nodePtr->operatr.operands[1] );
+
+                case EQ:
+                    return ex( nodePtr->operatr.operands[0] ) == ex( nodePtr->operatr.operands[1] );
+
+                case NE:
+                    return ex( nodePtr->operatr.operands[0] ) != ex( nodePtr->operatr.operands[1] );
+            }
+    }
+
+    return 0;
+}
+
+int main( void ){
+    LexerContext context;
+    if( !cpps_parse( &context ) ){
+        std::cout << context.result << std::endl;
+    }
+    return 0;
+}
