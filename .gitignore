@@ -17,6 +17,7 @@ build/*
 
 # Output from Flex and Bison
 cpps/cpps/cpps.lex.cpp
+cpps/cpps/cpps.lex.h
 cpps/cpps/cpps.tab.cpp
 cpps/cpps/cpps.tab.hpp
 
