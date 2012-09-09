@@ -2,18 +2,19 @@
 %{
     #include <iostream>
     #include <cstdlib>
+    #include <string>
     #include "cpps.h"
     #include "cpps.tab.hpp"
 
-    int ex( node::Node* nodePtr );
+    double ex( node::Node* nodePtr );
     int cpps_lex( void );
 
-    void cpps_error( YYLTYPE* location, LexerContext* context, const char* message );
+    void cpps_error( YYLTYPE* location, LexerContext* context, const std::string& message );
     int cpps_lex( YYSTYPE* lval, YYLTYPE* location, void* scanner );
 
     #define scanner context->scanner
 
-    int symbols[ 'z' - 'a' ];
+    double symbols[ 'z' - 'a' ];
 %}
 
 %pure-parser
@@ -24,13 +25,15 @@
 %lex-param { void* scanner }
 
 %union {
-    int integerValue;
-    int symbolIndex;
+    int     integerValue;
+    double  doubleValue;
+    int     symbolIndex;
     node::Node* nodePtr;
 };
 
-%token <integerValue> INTEGER
-%token <symbolIndex> VARIABLE
+%token <integerValue>   INTEGER
+%token <doubleValue>    REAL
+%token <symbolIndex>    VARIABLE
 %token WHILE IF PRINT
 %nonassoc IFX
 %nonassoc ELSE
@@ -41,7 +44,7 @@
 %nonassoc UMINUS
 
 %type <nodePtr> stmt expr stmt_list
-%type <integerValue> function
+%type <doubleValue> function
 
 %%
 
@@ -58,7 +61,6 @@ stmt
     : ';'                               { $$ = new node::Node( ';', 2, NULL, NULL ); }
     | expr ';'                          { $$ = $1; }
     | PRINT expr ';'                    { $$ = new node::Node( PRINT, 1, $2 ); }
-    | VARIABLE '=' expr ';'             { $$ = new node::Node( '=', 2, new node::Node( (char)$1 ), $3 ); }
     | WHILE '(' expr ')' stmt           { $$ = new node::Node( WHILE, 2, $3, $5 ); }
     | IF '(' expr ')' stmt %prec IFX    { $$ = new node::Node( IF, 2, $3, $5 ); }
     | IF '(' expr ')' stmt ELSE stmt    { $$ = new node::Node( IF, 3, $3, $5, $7 ); }
@@ -72,7 +74,9 @@ stmt_list
 
 expr
     : INTEGER               { $$ = new node::Node( $1 ); }
+    | REAL                  { $$ = new node::Node( $1 ); }
     | VARIABLE              { $$ = new node::Node( (char)$1 ); }
+    | VARIABLE '=' expr     { $$ = new node::Node( '=', 2, new node::Node( (char)$1 ), $3 ); }
     | '-' expr %prec UMINUS { $$ = new node::Node( UMINUS, 1, $2 ); }
     | expr '+' expr         { $$ = new node::Node( '+', 2, $1, $3 ); }
     | expr '-' expr         { $$ = new node::Node( '-', 2, $1, $3 ); }
@@ -89,6 +93,6 @@ expr
 
 %%
 
-void cpps_error( YYLTYPE* location, LexerContext* context, const char* message ){
+void cpps_error( YYLTYPE* location, LexerContext* context, const std::string& message ){
     std::cout << message << std::endl;
 }

@@ -5,7 +5,7 @@ find_package( BISON )
 
 BISON_TARGET(
     CPPSParser
-    ${CMAKE_CURRENT_LIST_DIR}/cpps/cpps.ypp
+    ${CMAKE_CURRENT_LIST_DIR}/cpps/cpps.y
     ${CMAKE_CURRENT_LIST_DIR}/cpps/cpps.tab.cpp
 )
 FLEX_TARGET(
